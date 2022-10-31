@@ -232,11 +232,13 @@ form.input-search {
     position: absolute;
     left: 0;
     text-align: center;
-    border-radius: 5px;
-    background-color: #eee;
     min-width: 170px;
     transition-duration: .15s;
     transform: translateX(-40%) scale(0);
+    background: var(--primary-color);
+    color: var(--primary-text);
+    border: 2px var(--primary-text-hover) solid;
+    border-radius: 4px;
 }
 
 .member .menuMember a {
@@ -245,8 +247,8 @@ form.input-search {
 }
 
 .member .menuMember a:hover {
-    background-color: var(--primary-color);
-    color: #eee;
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-hover);
 }
 
 .member .hide {
