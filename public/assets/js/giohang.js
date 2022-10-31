@@ -4,7 +4,7 @@ window.onload = function() {
 
     // thêm tags (từ khóa) vào khung tìm kiếm
     var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
-    for (var t of tags) addTags(t, "index.php?search=" + t)
+    for (var t of tags) addTags(t, "home?search=" + t)
 
     var listGioHang = getListGioHang();
     getListFromDB(listGioHang);
@@ -23,11 +23,11 @@ function getListFromDB(list) {
 
     $.ajax({
         type: "POST",
-        url: "php/xulysanpham.php",
+        url: "api/products",
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getlistbyids",
+            function: "getByListId",
             listID: listID
         },
         success: function(data, status, xhr) {
@@ -40,7 +40,7 @@ function getListFromDB(list) {
                     	} else {
                     		p.SoLuongTrongGio = p.SoLuong;
 
-                    		g.soLuong = Number(p.SoLuong); // thay dổi trong localstorage luôn 
+                    		g.soLuong = Number(p.SoLuong); // thay dổi trong localstorage luôn
                     		setListGioHang(list); // cập nhật localstorage
             				animateCartNumber();
 
@@ -77,10 +77,10 @@ function addProductToTable(listProduct) {
     if (!listProduct || listProduct.length == 0) {
         s += `
 			<tr>
-				<td colspan="7"> 
+				<td colspan="7">
 					<h1 style="color:green; background-color:white; font-weight:bold; text-align:center; padding: 15px 0;">
 						Giỏ hàng trống !!
-					</h1> 
+					</h1>
 				</td>
 			</tr>
 		`;
@@ -112,8 +112,8 @@ function addProductToTable(listProduct) {
 					<button onclick="tangSoLuong('` + masp + `')"><i class="fa fa-plus"></i></button>
 				</td>
 				<td class="alignRight">` + numToString(thanhtien) + ` ₫</td>
-				<td class="noPadding"> 
-					<i class="fa fa-trash" onclick="xoaSanPhamTrongGioHang(` + masp + ",'" + p.TenSP + `')"></i> 
+				<td class="noPadding">
+					<i class="fa fa-trash" onclick="xoaSanPhamTrongGioHang(` + masp + ",'" + p.TenSP + `')"></i>
 				</td>
 			</tr>
 		`;
@@ -132,10 +132,10 @@ function addProductToTable(listProduct) {
 			<tr>
 				<td colspan="5">
 					<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="thanhToan()">
-						<i class="fa fa-usd"></i> Thanh Toán 
-					</button> 
+						<i class="fa fa-usd"></i> Thanh Toán
+					</button>
 					<button class="btn btn-danger" onclick="xoaHet()">
-						<i class="fa fa-trash-o"></i> Xóa hết 
+						<i class="fa fa-trash-o"></i> Xóa hết
 					</button>
 				</td>
 			</tr>
@@ -219,8 +219,6 @@ function thanhToan() {
 }
 
 function htmlThanhToan(userHienTai) {
-	console.log('abc')
-
 	$("#thongtinthanhtoan").html(`
 		<form>
 		  	<div class="form-group">
@@ -260,17 +258,27 @@ function xacNhanThanhToan() {
 		tongTien: TotalPrice,
 		ngayLap: new Date().toMysqlFormat()
 	}
+	if(dulieu.phuongThucTT==null)dulieu.phuongThucTT="Trực tiếp khi nhận hàng";
 
 	$.ajax({
 		type: "POST",
-		url: "php/xulythanhtoan.php",
+		url: "api/bills",
 		dataType: "json",
 		data: {
-			request: "themdonhang",
+            function: "add",
 			dulieu: dulieu
 		},
 		success: function(data) {
+            Swal.fire({
+                title: 'Đã đặt hàng!',
+                text: 'Đã đặt hàng!',
+                type: 'success',
+                grow: 'row',
+                confirmButtonText: 'Trở về'
+            });
+            location.reload();
 			capNhatMoiThu([]);
+
 		},
 		error: function(e) {
 			console.log(e.responseText)

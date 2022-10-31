@@ -8,10 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Bills extends Model
 {
     use HasFactory;
-    protected $table="hoadon";
-    function getHoaDonCuaNguoiDung($mand) {
-        $sql = "SELECT * FROM hoadon WHERE MaND=$mand";
-        $dsdh = (new HoaDonBUS())->get_list($sql);
-    }
 
+    protected $table = "hoadon";
+    protected $fillable = [
+        "MaND",
+        "NgayLap",
+        "NguoiNhan",
+        "SDT",
+        "DiaChi",
+        "PhuongThucTT",
+        "TongTien",
+        "TrangThai"
+    ];
 }

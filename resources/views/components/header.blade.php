@@ -1,37 +1,39 @@
-<div class="top-nav group">
-    <section>
-        <div class="social-top-nav">
-            <a class="fa fa-facebook"></a>
-            <a class="fa fa-twitter"></a>
-            <a class="fa fa-google"></a>
-            <a class="fa fa-youtube"></a>
-        </div> <!-- End Social Topnav -->
+<div class="header-container">
+    <div class="top-nav group">
+        <section>
+            <div class="social-top-nav">
+                <a class="fa fa-facebook"></a>
+                <a class="fa fa-twitter"></a>
+                <a class="fa fa-google"></a>
+                <a class="fa fa-youtube"></a>
+            </div> <!-- End Social Topnav -->
 
-        <ul class="top-nav-quicklink flexContain">
-            <li><a href="{{url("")}}"><i class="fa fa-home"></i> Trang chủ</a></li>
-            <li><a href=""><i class="fa fa-newspaper-o"></i> Tin tức</a></li>
-            <li><a href=""><i class="fa fa-handshake-o"></i> Tuyển dụng</a></li>
-            <li><a href=""><i class="fa fa-info-circle"></i> Giới thiệu</a></li>
-            <li><a href=""><i class="fa fa-wrench"></i> Bảo hành</a></li>
-            <li><a href=""><i class="fa fa-phone"></i> Liên hệ</a></li>
-        </ul> <!-- End Quick link -->
-    </section><!-- End Section -->
-</div><!-- End Top Nav  -->
-<section>
+            <ul class="top-nav-quicklink flexContain">
+                <li><a href="home"><i class="fa fa-home"></i> Trang chủ</a></li>
+                <li><a href=""><i class="fa fa-newspaper-o"></i> Tin tức</a></li>
+                <li><a href=""><i class="fa fa-handshake-o"></i> Tuyển dụng</a></li>
+                <li><a href=""><i class="fa fa-info-circle"></i> Giới thiệu</a></li>
+                <li><a href=""><i class="fa fa-wrench"></i> Bảo hành</a></li>
+                <li><a href=""><i class="fa fa-phone"></i> Liên hệ</a></li>
+            </ul> <!-- End Quick link -->
+        </section><!-- End Section -->
+    </div><!-- End Top Nav  -->
     <div class="header group">
         <div class="smallmenu" id="openmenu" onclick="smallmenu(1)">≡</div>
         <div style="display: none;" class="smallmenu" id="closemenu" onclick="smallmenu(0)">×</div>
         <div class="logo">
-            <a href="index.php">
-                <img src="{{asset("")}}assets/img/logo.jpg" alt="Trang chủ Smartphone Store" title="Trang chủ Smartphone Store">
+            <a href="home">
+                <img src="assets/img/Logo_Phone_Store.png" alt="Trang chủ Smartphone Store"
+                     title="Trang chủ Smartphone Store">
             </a>
         </div> <!-- End Logo -->
 
         <div class="content">
             <div class="search-header">
-                <form class="input-search" method="get" action="index.php">
+                <form class="input-search" method="get" action="home">
                     <div class="autocomplete">
-                        <input id="search-box" name="search" autocomplete="off" type="text" placeholder="Nhập từ khóa tìm kiếm...">
+                        <input id="search-box" name="search" autocomplete="off" type="text"
+                               placeholder="Nhập từ khóa tìm kiếm...">
                         <button type="submit">
                             <i class="fa fa-search"></i>
                             Tìm kiếm
@@ -50,13 +52,13 @@
                         Tài khoản
                     </a>
                     <div class="menuMember hide">
-                        <a href="nguoidung.php">Trang người dùng</a>
+                        <a href="user">Trang người dùng</a>
                         <a onclick="checkDangXuat();">Đăng xuất</a>
                     </div>
                 </div> <!-- End Member -->
 
                 <div class="cart">
-                    <a href="giohang.php">
+                    <a href="cart">
                         <i class="fa fa-shopping-cart"></i>
                         <span>Giỏ hàng</span>
                         <span class="cart-number"></span>
@@ -71,5 +73,5 @@
                 </div>  -->
             </div><!-- End Tools Member -->
         </div> <!-- End Content -->
-    </div> <!-- End Header -->
-</section>
+    </div>
+</div>

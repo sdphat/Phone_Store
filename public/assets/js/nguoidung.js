@@ -11,10 +11,15 @@ window.onload = function () {
 
     getCurrentUser((data) => {
         if(data) {
-
             $.ajax({
-                type: "GET",
-                url: "php/tabledonhang.php",
+                type: "POST",
+                url: "api/bills",
+                data:{
+                    function: "tableBills"
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function(data) {
                     $(".listDonHang").html(data);
                 },
@@ -37,10 +42,14 @@ window.onload = function () {
 
 function xemChiTiet(mahd) {
     $.ajax({
-        type: "GET",
-        url: "php/tablechitietdonhang.php",
-        data: {
+        type: "POST",
+        url: "api/bills",
+        data:{
+            function: "tableBills",
             mahd: mahd
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(data) {
             $("#chitietdonhang").html(data);

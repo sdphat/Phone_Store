@@ -12,4 +12,6 @@ class ProductTypes extends Model
 {
     use HasFactory;
     protected $table="loaisanpham";
+    protected $primaryKey="MaLSP";
+    protected $fillable=["MaLSP", "TenLSP", "HinhAnh", "Mota", "create_at"];
 }

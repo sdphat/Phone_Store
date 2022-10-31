@@ -4,6 +4,7 @@ use App\Http\Controllers\BillsController;
 use App\Http\Controllers\BillsDetailsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProductTypesController;
+use App\Http\Controllers\PromotionsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VotedController;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::apiResource('products',ProductsController::class);
 Route::apiResource('product_types', ProductTypesController::class);
+Route::apiResource("promotions", PromotionsController::class);
 Route::apiResource('bill-details', BillsDetailsController::class);
 Route::apiResource('voted', VotedController::class);
 Route::apiResource('bills', BillsController::class);

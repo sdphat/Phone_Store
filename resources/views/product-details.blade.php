@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -8,109 +8,107 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Phone Store</title>
     <link rel="shortcut icon" href="{{asset("")}}assets/img/icon_phone_store.png"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          crossorigin="anonymous">
-    <!-- Jquery -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
     <script src="{{asset("")}}assets/lib/Jquery/Jquery.min.js"></script>
-    <!-- owl carousel libraries -->
-    <link rel="stylesheet" href="{{asset("")}}assets/lib/owlcarousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="{{asset("")}}assets/lib/owlcarousel/owl.theme.default.min.css">
-    <script src="{{asset("")}}assets/lib/owlcarousel/owl.carousel.min.js"></script>
-
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
-    <!-- Slider -->
-    <link rel="stylesheet" href="{{asset("")}}assets/lib/ion.rangeSlider-2.2.0/css/ion.rangeSlider.css">
-    <link rel="stylesheet" href="{{asset("")}}assets/lib/ion.rangeSlider-2.2.0/css/ion.rangeSlider.skinHTML5.css">
-    <script src="{{asset("")}}assets/lib/ion.rangeSlider-2.2.0/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
-
-    <!-- tidio - live chat -->
-    <!-- <script src="//code.tidio.co/bfiiplaaohclhqwes5xivoizqkq56guu.js"></script> -->
 
     <!-- our files -->
     <!-- css -->
     <link rel="stylesheet" href="{{asset("")}}assets/css/style.css">
     <link rel="stylesheet" href="{{asset("")}}assets/css/topnav.css">
     <link rel="stylesheet" href="{{asset("")}}assets/css/header.css">
-    <link rel="stylesheet" href="{{asset("")}}assets/css/banner.css">
     <link rel="stylesheet" href="{{asset("")}}assets/css/taikhoan.css">
-    <link rel="stylesheet" href="{{asset("")}}assets/css/trangchu.css">
-    <link rel="stylesheet" href="{{asset("")}}assets/css/home_products.css">
-    <link rel="stylesheet" href="{{asset("")}}assets/css/pagination_phantrang.css">
+    <link rel="stylesheet" href="{{asset("")}}assets/css/chitietsanpham.css">
     <link rel="stylesheet" href="{{asset("")}}assets/css/footer.css">
     <!-- js -->
     <script src="{{asset("")}}assets/js/dungchung.js"></script>
-    <script src="{{asset("")}}assets/js/trangchu.js"></script>
-    <script src="{{asset("")}}assets/data/products.js"></script>
+    <script src="{{asset("")}}assets/js/chitietsanpham.js"></script>
 </head>
+
 <body>
 <x-header/>
 <section>
-    <div class="banner">
-        <div class="owl-carousel owl-theme"></div>
-    </div> <!-- End Banner -->
-    <div class="smallbanner" style="width: 100%;"></div>
-    <div class="companysFilter">
-        <button class="companysButton" onclick="setCompanysMenu()">
-            <p>Hãng</p>
-            <div id="iconOpenMenu">▷</div>
-            <div id="iconCloseMenu" style="display: none;">▽</div>
-        </button>
-    </div>
-    <div class="companyMenu group flexContain"></div>
 
-    <div class="timNangCao"style="max-width: 1200px;width: 100%;display: flex;flex-wrap:wrap;justify-content: center">
-        <div class="flexContain" style="width:100%">
-            <div class="pricesRangeFilter dropdown">
-                <button class="dropbtn">Giá tiền</button>
-                <div class="dropdown-content"></div>
+    <div class="chitietSanpham" style="min-height: 85vh">
+        <h1>Điện thoại </h1>
+        <div class="rowdetail group">
+            <div class="picture">
+                <img src="">
             </div>
-
-            <div class="promosFilter dropdown">
-                <button class="dropbtn">Khuyến mãi</button>
-                <div class="dropdown-content"></div>
+            <div class="price_sale">
+                <div class="area_price"> </div>
+                <div class="ship" style="display: none;">
+                    <i class="fa fa-clock-o"></i>
+                    <div>NHẬN HÀNG TRONG 1 GIỜ</div>
+                </div>
+                <div class="area_promo">
+                    <strong>khuyến mãi</strong>
+                    <div class="promo">
+                        <i class="fa fa-check-circle"></i>
+                        <div id="detailPromo"> </div>
+                    </div>
+                </div>
+                <div class="policy">
+                    <div>
+                        <i class="fa fa-archive"></i>
+                        <p>Trong hộp có: Sạc, Tai nghe, Sách hướng dẫn, Cây lấy sim, Ốp lưng </p>
+                    </div>
+                    <div>
+                        <i class="fa fa-star"></i>
+                        <p>Bảo hành chính hãng 12 tháng.</p>
+                    </div>
+                    <div class="last">
+                        <i class="fa fa-retweet"></i>
+                        <p>1 đổi 1 trong 1 tháng nếu lỗi, đổi sản phẩm tại nhà trong 1 ngày.</p>
+                    </div>
+                </div>
+                <div class="area_order">
+                    <!-- nameProduct là biến toàn cục được khởi tạo giá trị trong phanTich_URL_chiTietSanPham -->
+                    <a class="buy_now" onclick="themVaoGioHang(maProduct, nameProduct);">
+                        <h3><i class="fa fa-plus"></i> Thêm vào giỏ hàng</h3>
+                    </a>
+                </div>
             </div>
+            <div class="info_product">
+                <h2>Thông số kỹ thuật</h2>
+                <ul class="info">
 
-            <div class="starFilter dropdown">
-                <button class="dropbtn">Số lượng sao</button>
-                <div class="dropdown-content"></div>
-            </div>
-
-            <div class="sortFilter dropdown">
-                <button class="dropbtn">Sắp xếp</button>
-                <div class="dropdown-content"></div>
+                </ul>
             </div>
         </div>
-        <div style="width: 1000px;">
-            <input type="text" class="js-range-slider" id="demoSlider">
+        <hr>
+        <div class="comment-area">
+            <div class="guiBinhLuan">
+                <div class="stars">
+                    <form action="">
+                        <input class="star star-5" id="star-5" value="5" type="radio" name="star"/>
+                        <label class="star star-5" for="star-5" title="Tuyệt vời"></label>
+
+                        <input class="star star-4" id="star-4" value="4" type="radio" name="star"/>
+                        <label class="star star-4" for="star-4" title="Tốt"></label>
+
+                        <input class="star star-3" id="star-3" value="3" type="radio" name="star"/>
+                        <label class="star star-3" for="star-3" title="Tạm"></label>
+
+                        <input class="star star-2" id="star-2" value="2" type="radio" name="star"/>
+                        <label class="star star-2" for="star-2" title="Khá"></label>
+
+                        <input class="star star-1" id="star-1" value="1" type="radio" name="star"/>
+                        <label class="star star-1" for="star-1" title="Tệ"></label>
+                    </form>
+                </div>
+                <textarea maxlength="250" id="inpBinhLuan" placeholder="Viết suy nghĩ của bạn vào đây..."></textarea>
+                <input id="btnBinhLuan" type="button" onclick="checkGuiBinhLuan()" value="GỬI BÌNH LUẬN">
+            </div>
+            <!-- <h2>Bình luận</h2> -->
+            <div class="container-comment">
+                <div class="rating"></div>
+                <div class="comment-content">
+                </div>
+            </div>
         </div>
-
-    </div> <!-- End khung chọn bộ lọc -->
-
-    <div class="choosedFilter flexContain"></div> <!-- Những bộ lọc đã chọn -->
-    <hr>
-
-    <!-- Mặc định mới vào trang sẽ ẩn đi, nế có filter thì mới hiện lên -->
-    <div class="contain-products" style="display:none">
-        <div class="filterName">
-            <div id="divSoLuongSanPham"></div>
-            <input type="text" placeholder="Lọc trong trang theo tên..." onkeyup="filterProductsName(this)">
-            <div class="loader" style="display: none"></div>
-        </div> <!-- End FilterName -->
-
-        <ul id="products" class="homeproduct group flexContain">
-            <div id="khongCoSanPham">
-                <i class="fa fa-times-circle"></i>
-                Không có sản phẩm nào
-            </div> <!-- End Khong co san pham -->
-        </ul><!-- End products -->
-
-        <div class="pagination"></div>
     </div>
-
-    <!-- Div hiển thị khung sp hot, khuyến mãi, mới ra mắt ... -->
-    <div class="contain-khungSanPham"></div>
 </section>
 <div class="containTaikhoan">
     <span class="close" onclick="showTaiKhoan(false);">&times;</span>
@@ -196,20 +194,7 @@
         </div><!-- tab-content -->
     </div> <!-- /taikhoan -->
 </div>
-<div class="plc">
-    <section>
-        <ul class="flexContain">
-            <li>Giao hàng hỏa tốc trong 1 giờ</li>
-            <li>Thanh toán linh hoạt: tiền mặt, visa / master, trả góp</li>
-            <li>Trải nghiệm sản phẩm tại nhà</li>
-            <li>Lỗi đổi tại nhà trong 1 ngày</li>
-            <li>Hỗ trợ suốt thời gian sử dụng.
-                <br>Hotline:
-                <a href="tel:12345678" style="color: #288ad6;">1234.5678</a>
-            </li>
-        </ul>
-    </section>
-</div>
 <x-footer/>
 </body>
+
 </html>

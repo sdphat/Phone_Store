@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Products;
 use App\Models\Users;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
-    function index()
-    {
-        echo "Users";
-    }
-
-    function store(Request $request)
+    public function store(Request $request)
     {
         $f = $request->get("function");
         try {
@@ -24,114 +24,126 @@ class UsersController extends Controller
         }
     }
 
-    function login(Request $request)
+    public function getAll(Request $request)
     {
-        $taikhoan = $request->header('username');
-        $matkhau = $request->header('password');
-        $token = Str::random(60);
-        $matkhau = md5($matkhau);
-        $sql = "SELECT * FROM nguoidung WHERE TaiKhoan='$taikhoan' AND MatKhau='$matkhau' AND MaQuyen=1 AND TrangThai=1";
+        echo json_encode(Users::all());
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $key = $request->get('key');
+        $status = $request->get('trangThai');
+        echo json_encode(Users::where("MaND", $key)->update(["TrangThai" => $status]));
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->get('mand');
+        echo json_encode(Products::where('MaND', $id)->delete());
+    }
+
+    public function login(Request $request)
+    {
+        $token = $request->header("X-CSRF-TOKEN");
+        $username = $request->get('username');
+        $password = $request->get('password');
+        $password = md5($password);
+        $sql = "SELECT * FROM nguoidung WHERE TaiKhoan='$username' AND MatKhau='$password' AND MaQuyen=1 AND TrangThai=1";
         $result = DB::select($sql);
-        if ($result != false) {
-            Users::updateToken($result[0]->MaND, $token);
+        if (count($result) == 1) {
+            Users::where("MaND", $result[0]->MaND)->update(["api_token" => $token]);
             $result[0]->api_token = $token;
-            echo json_encode($result);
+            echo json_encode($result[0]);
         } else echo json_encode(null);
     }
 
-    public function getAll(){
-        $khachang = (new NguoiDungBUS())->select_all();
-        die (json_encode($khachang));
-    }
-    public function changeStatus(){
-        $khachhangBUS = new NguoiDungBUS();
-        $key = $_POST['key'];
-        $trangthai = $_POST['trangThai'];
-        die (json_encode($khachhangBUS->capNhapTrangThai($trangthai, $key)));
-    }
-    public function delete(){
-        $khachhangBUS = new NguoiDungBUS();
-        $mand = $_POST['mand'];
-
-        die (json_encode($khachhangBUS->delete_by_id($mand	)));
-    }
-
-    public function adminLogin()
+    public function adminLogin(Request $request)
     {
-        $taikhoan = $_POST['data_username'];
-        $matkhau = md5($_POST['data_password']);
-
-// Sau khi dang nhap
-        require("../BackEnd/ConnectionDB/DB_driver.php");
-
-        $db = new DB_driver();
-        $db->connect();
-
-        $taikhoan = mysqli_escape_string($db->__conn, $taikhoan);
-        $matkhau = mysqli_escape_string($db->__conn, $matkhau);
-
-// mysqli_set_charset($connSanPham,"utf8");
-        $sql = "SELECT * FROM nguoidung WHERE TaiKhoan = '$taikhoan' AND MatKhau='$matkhau' AND MaQuyen!='1' AND TrangThai=1";
-
-        $dsad = $db->get_list($sql);
-
-        if (sizeof($dsad) > 0) {
-            $_SESSION['currentUser'] = $dsad[0];
-            // header('Location: http://localhost/myweb/themplate/admin.php');
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'password' => 'required',
+//            'password' => 'required|min:6|max:20|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|confirmed',
+        ]);
+        if ($validator->fails()) {
+            foreach ($validator->messages()->getMessages() as $messages) {
+                foreach ($messages as $message) {
+                    echo $message;
+                    return;
+                }
+            }
+        }
+        $username = $request->get('username');
+        $password = md5($request->get('password'));
+        $token = $request->header("X-CSRF-TOKEN");
+        $sql = "SELECT * FROM nguoidung WHERE TaiKhoan = '$username' AND MatKhau='$password' AND MaQuyen!='1' AND TrangThai=1";
+        $result = DB::select($sql);
+        if (count($result) == 1) {
+            Users::where("MaND", $result[0]->MaND)->update(["api_token" => $token]);
             echo "yes";
-
         } else  echo "no";
-
-        $db->dis_connect();
     }
 
-    public function loginUserInformation(Request $request){
-        $user=Users::where("api_token",$request->get("token"))->get();
-        if($user!=false) {
-            echo json_encode($user);
+    public function register(Request $request)
+    {
+        $ho = $request->get('data_ho');
+        $ten = $request->get('data_ten');
+        $sdt = $request->get('data_sdt');
+        $email = $request->get('data_email');
+        $diachi = $request->get('data_diachi');
+        $newUser = $request->get('data_newUser');
+        $newPass = $request->get('data_newPass');
+        $newPass = md5($newPass);
+        $token = $request->header("X-CSRF-TOKEN");
+        Users::create([
+            "Ho" => $ho,
+            "Ten" => $ten,
+            "SDT" => $sdt,
+            "Email" => $email,
+            "DiaChi" => $diachi,
+            "TaiKhoan" => $newUser,
+            "MatKhau" => $newPass,
+            "MaQuyen" => 1,
+            "TrangThai" => 1,
+            "api_token" => NUll,
+        ]);
+//        login
+        $sql = "SELECT * FROM nguoidung WHERE TaiKhoan='$newUser' AND MatKhau='$newPass' AND MaQuyen=1 AND TrangThai=1";
+        $result = DB::select($sql);
+        if ($result != false) {
+            $result[0]->api_token = $token;
+            echo json_encode($result);
+        } else {
+            echo json_encode(null);
         }
-        echo json_encode(null);
+    }
+
+    public function loginUserInformation(Request $request)
+    {
+        $token = $request->header("X-CSRF-TOKEN");
+        $user = Users::where("api_token", $token)->get();
+        if (count($user) == 1) {
+            echo json_encode($user[0]);
+        } else {
+            echo json_encode(null);
+        }
+
     }
 
     public function logout(Request $request)
     {
-        $token = $request->get("token");
-        Users::where("api_token", $token)->update(["api_token" => null]);
+        $token = $request->header("X-CSRF-TOKEN");
+        Users::where("api_token", $token)->update(["api_token" => NULL]);
+        echo "ok";
     }
 
-    function register(Request $request)
+    public function admin(): Factory|View|Application
     {
-        $xuli_ho = $request->get('data_ho');
-        $xuli_ten = $request->get('data_ten');
-        $xuli_sdt = $request->get('data_sdt');
-        $xuli_email = $request->get('data_email');
-        $xuli_diachi = $request->get('data_diachi');
-        $xuli_newUser = $request->get('data_newUser');
-        $xuli_newPass = $request->get('data_newPass');
-        $xuli_newPass = md5($xuli_newPass);
-        $status = Users::create([
-            "MaND" => "",
-            "Ho" => $xuli_ho,
-            "Ten" => $xuli_ten,
-            "SDT" => $xuli_sdt,
-            "Email" => $xuli_email,
-            "DiaChi" => $xuli_diachi,
-            "TaiKhoan" => $xuli_newUser,
-            "MatKhau" => $xuli_newPass,
-            "MaQuyen" => 1,
-            "TrangThai" => 1,
-            "api_token" => null,
-        ]);
-
-        // đăng nhập vào ngay
-        $sql = "SELECT * FROM nguoidung WHERE TaiKhoan='$xuli_newUser' AND MatKhau='$xuli_newPass' AND MaQuyen=1 AND TrangThai=1";
-        $result = (new DB_driver())->get_row($sql);
-
-        if ($result != false) {
-            $_SESSION['currentUser'] = $result;
-            echo json_encode($result);
+        $token = csrf_token();
+        $user = Users::where("api_token", $token)->get();
+        if (count($user) == 1) {
+            return view("admin");
+        } else {
+            echo view("home");
         }
-
-        echo json_encode(null);
     }
 }

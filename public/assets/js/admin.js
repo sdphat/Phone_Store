@@ -4,7 +4,7 @@ window.onload = function() {
 
     document.getElementById("btnDangXuat").onclick = function() {
         checkDangXuat(()=>{
-            window.location.href = "login.php"
+            window.location.href = "admin_login"
         });
     }
 
@@ -24,11 +24,11 @@ window.onload = function() {
 function refreshTableSanPham() {
     $.ajax({
         type: "POST",
-        url: "php/xulysanpham.php",
+        url: "api/products",
         dataType: "json",
         // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getall",
+            function: "getall",
         },
         success: function(data, status, xhr) {
             list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
@@ -108,11 +108,11 @@ function addThongKe() {
 function ajaxLoaiSanPham() {
     $.ajax({
         type: "POST",
-        url: "php/xulyloaisanpham.php",
+        url: "api/product_types",
         dataType: "json",
         // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getall"
+            function: "getall"
         },
         success: function(data, status, xhr) {
             showLoaiSanPham(data);
@@ -135,11 +135,11 @@ function showLoaiSanPham(data) {
 function ajaxKhuyenMai() {
     $.ajax({
         type: "POST",
-        url: "php/xulykhuyenmai.php",
+        url: "api/promotions",
         dataType: "json",
         // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getall"
+            function: "getall"
         },
         success: function(data, status, xhr) {
             showKhuyenMai(data);
@@ -392,11 +392,11 @@ function themSanPham() {
 
     $.ajax({
         type: "POST",
-        url: "php/xulysanpham.php",
+        url: "api/products",
         dataType: "json",
         // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "add",
+            function: "add",
             dataAdd: newSp
         },
         success: function(data, status, xhr) {
@@ -462,11 +462,11 @@ function xoaSanPham(trangthai, masp, tensp) {
             if(result.value) {
                 $.ajax({
                     type: "POST",
-                    url: "php/xulysanpham.php",
+                    url: "api/products",
                     dataType: "json",
                     // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
                     data: {
-                        request: "hide",
+                        function: "hide",
                         id: masp,
                         trangthai: 0
                     },
@@ -494,11 +494,11 @@ function xoaSanPham(trangthai, masp, tensp) {
             // Xóa
             $.ajax({
                 type: "POST",
-                url: "php/xulysanpham.php",
+                url: "api/products",
                 dataType: "json",
                 // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
                 data: {
-                    request: "delete",
+                    function: "delete",
                     maspdelete: masp
                 },
                 success: function(data, status, xhr) {
@@ -716,11 +716,11 @@ function getValueOfTypeInTable_SanPham(tr, loai) {
 function refreshTableDonHang() {
     $.ajax({
         type: "POST",
-        url: "php/xulydonhang.php",
+        url: "api/bills",
         dataType: "json",
         // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getall",
+            function: "getall",
         },
         success: function(data, status, xhr) {
             addTableDonHang(data);

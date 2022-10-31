@@ -103,7 +103,7 @@ function themVaoGioHang(masp, tensp) {
 
 
     }, (error) => {
-       console.log(error.responseText)
+        console.log(error.responseText)
     })
 
     return false;
@@ -116,10 +116,15 @@ function getCurrentUser(onSuccess, onFail) {
     $.ajax({
         type: "POST",
         url: "api/users",
-        data: {"function":"loginUserInformation"},
-        headers:{"token":"abcdef"},
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+
+        timeout: 5000, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            function: "loginUserInformation"
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         success: function(data, status, xhr) {
             if(onSuccess) onSuccess(data);
         },
@@ -160,12 +165,12 @@ function checkDangKy() {
     var pass = document.getElementById('newPass').value;
 
     $.ajax({
-        url: "http://127.0.0.1:8000/api/products",
+        url: "api/users",
         type: "post",
         dataType: "json",
-        timeout: 1500,
+        timeout: 5000,
         data: {
-            name: 'dangky',
+            function: 'register',
             data_ho: ho,
             data_ten: ten,
             data_sdt: sdt,
@@ -181,7 +186,6 @@ function checkDangKy() {
                     title: 'Đăng kí thành công ' + kq.TaiKhoan,
                     text: 'Bạn sẽ được đăng nhập tự động',
                     confirmButtonText: 'Tuyệt'
-
                 }).then((result) => {
                     capNhatThongTinUser();
                     showTaiKhoan(false);
@@ -191,7 +195,7 @@ function checkDangKy() {
         error: function(e) {
             Swal.fire({
                 type: "error",
-                title: "Lỗi",
+                title: "Tên người dùng hoặc email đã được sử dụng trước đó",
                 // html: e.responseText
             });
             console.log(e.responseText)
@@ -202,22 +206,24 @@ function checkDangKy() {
 }
 
 function checkDangNhap() {
-    var a = document.getElementById('username').value;
-    var b = document.getElementById('pass').value;
+    var a = document.getElementById('username');
+    var b = document.getElementById('pass');
 
     $.ajax({
-        url: "http://127.0.0.1:8000/api/products",
+        url: "api/users",
         type: "post",
         dataType: "json",
-        timeout: 1500,
+        timeout: 5000,
         data: {
-            name: 'dangnhap',
-            data_username: a,
-            data_pass: b
+            function: 'login',
+            username: a.value,
+            password: b.value
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(data, status, xhr) {
             console.log(data);
-
             if(data != null) {
                 Swal.fire({
                     type: "success",
@@ -227,7 +233,8 @@ function checkDangNhap() {
                     capNhatThongTinUser();
                 });
                 showTaiKhoan(false);
-
+                a.value="";
+                b.value="";
             } else {
                 Swal.fire({
                     type: "error",
@@ -262,8 +269,13 @@ function checkDangXuat(onSuccess) {
                 type: "POST",
                 url: "api/users",
                 dataType: "text",
-                timeout: 1500,
-                data: {"function":"logout"},
+                timeout: 5000,
+                data: {
+                    function: 'logout',
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function(data) {
                     if(data == 'ok') {
                         Swal.fire({

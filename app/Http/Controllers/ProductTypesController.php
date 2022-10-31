@@ -16,8 +16,15 @@ class ProductTypesController extends Controller
             echo "Not found";
         }
     }
-    public function getAll(){
+    public function getAll(Request $request){
         $list = ProductTypes::all();
-        die (json_encode($list));
+        echo json_encode($list);
+    }
+    public function add(Request $request){
+        ProductTypes::create([
+            'TenLSP' => 'Maven',
+            "HinhAnh"=>"Maven.png",
+            "Mota"=>"All products of Maven",
+        ]);;
     }
 }

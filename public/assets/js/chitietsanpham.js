@@ -1,4 +1,4 @@
-var nameProduct, maProduct; // Tên sản phẩm trong trang này, 
+var nameProduct, maProduct; // Tên sản phẩm trong trang này,
 // // là biến toàn cục để có thể dùng ở bát cứ đâu trong trang
 // // không cần tính toán lấy tên từ url nhiều lần
 
@@ -7,7 +7,7 @@ window.onload = function() {
 
     // thêm tags (từ khóa) vào khung tìm kiếm
     var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
-    for (var t of tags) addTags(t, "index.php?search=" + t, true);
+    for (var t of tags) addTags(t, "home?search=" + t, true);
 
     phanTichURL_Web2();
 }
@@ -19,15 +19,14 @@ function phanTichURL_Web2() {
 
     $.ajax({
         type: "POST",
-        url: "php/xulysanpham.php",
+        url: "api/products",
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getbyid",
+            function: "getById",
             id: maProduct
         },
         success: function(data, status, xhr) {
-            // console.log(data);
             addChiTietToWeb(data);
             nameProduct = data.TenSP;
         },
@@ -76,7 +75,7 @@ function addChiTietToWeb(p) {
         area_price.innerHTML += promoToWeb(p.KM.LoaiKM, giaTriSauKM);
     } else {
         document.getElementsByClassName('ship')[0].style.display = ''; // hiển thị 'giao hàng trong 1 giờ'
-        
+
         khuyenmaidiv = promoToWeb(p.KM.LoaiKM, giaTrikhuyenMai);
         area_price.innerHTML = `<strong>` + giaTri.toLocaleString() + `&#8363;</strong>` + khuyenmaidiv;
     }
@@ -164,11 +163,11 @@ function guiBinhLuan(nguoidung) {
 
     $.ajax({
         type: "POST",
-        url: "php/xulydanhgia.php",
+        url: "api/voted",
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "thembinhluan",
+            function: "add",
             masp: maProduct,
             mand: nguoidung.MaND,
             sosao: soSao,
@@ -188,11 +187,11 @@ function guiBinhLuan(nguoidung) {
 function refreshBinhLuan() {
     $.ajax({
         type: "POST",
-        url: "php/xulydanhgia.php",
+        url: "api/voted",
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getbinhluan",
+            function: "get",
             masp: maProduct
         },
         success: function(data, status, xhr) {

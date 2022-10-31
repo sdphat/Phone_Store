@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Products;
+use App\Models\Users;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BillsDetailsController extends Controller
 {
-    function store(Request $request)
+    public function store(Request $request)
     {
         $f = $request->get("function");
         try {
@@ -17,25 +20,22 @@ class BillsDetailsController extends Controller
         }
     }
     public function tableBillDetails(Request $request){
-        if (isset($_SESSION['currentUser'])) {
-            $mahd = $request->get("mahd");
-
-            $sql="SELECT * FROM chitiethoadon WHERE MaHD=$mahd";
-            $dscthd=DB::select($sql);
-
-            for($i = 0; $i < sizeof($dscthd); $i++) {
-                $dscthd[$i]["SP"] = Products::find( $dscthd[$i]['MaSP']);
+        $token = $request->header("X-CSRF-TOKEN");
+        $user=Users::where("api_token", $token)->get();
+        if (count($user)==1) {
+            $billId = $request->get("mahd");
+            $sql="SELECT * FROM chitiethoadon WHERE MaHD=$billId";
+            $billDetails=DB::select($sql);
+            for($i = 0; $i < sizeof($billDetails); $i++) {
+                $billDetails[$i]["SP"] = Products::find( $billDetails[$i]['MaSP']);
             }
-
             echo '<table class="table table-striped" >
 		<tr style="text-align:center;vertical-align:middle;font-size:20px;background-color:coral;color:black!important">
 			<th scope="col" style="font-weight:600">Sản phẩm</th>
 			<th scope="col" style="font-weight:600">Số lượng</th>
 			<th scope="col" style="font-weight:600">Đơn giá</th>
 		</tr>';
-
-            forEach($dscthd as $row) {
-
+            forEach($billDetails as $row) {
                 echo '<tr>
 					<td scope="col" style="text-align:center;vertical-align:middle;">
 						<a href="chitietsanpham.php?'.$row['MaSP'].'">

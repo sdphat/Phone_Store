@@ -12,6 +12,5 @@
         </p>
     </div>
 </div>
-
 <i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
 <i class="fa fa-arrow-down" id="goto-bot-page" onclick="gotoBot()"></i>

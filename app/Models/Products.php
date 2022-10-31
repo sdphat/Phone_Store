@@ -6,14 +6,34 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @method static find(mixed $MaSP)
+ */
 class Products extends Model
 {
     use HasFactory;
     protected $table="sanpham";
     protected $primaryKey = "MaSP";
-    function capNhapTrangThai($trangthai, $id) {
-        Products::where("MaSP", $id)->update(["TrangThai" => $trangthai]);
-    }
+    protected $fillable=[
+        'MaLSP',
+        'TenSP',
+        'DonGia' ,
+        'SoLuong',
+        'HinhAnh' ,
+        'MaKM' ,
+        'ManHinh',
+        'HDH' ,
+        'CamSau',
+        'CamTruoc',
+        'CPU' ,
+        'Ram',
+        'Rom',
+        'SDCard',
+        'Pin',
+        'SoSao',
+        'SoDanhGia',
+        'TrangThai'
+    ];
 
     function themDanhGia($id) {
         // cập nhật số lượt đánh giá

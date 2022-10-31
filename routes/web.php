@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +16,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 Route::get("/home",function (){
     return view("home");
 });
+Route::get('/admin_login', function () {
+    return view('admin-login');
+});
+Route::get("/product_details",function (){
+    return view("product-details");
+});
+Route::get("/user",function (){
+    return view("user");
+});
+Route::get("/cart",function (){
+    return view("cart");
+});
+Route::get("/test",function (){
+    return view("welcome");
+});
+Route::get('admin', [UsersController::class, 'admin'])->name('users.admin');

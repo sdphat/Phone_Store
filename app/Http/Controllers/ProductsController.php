@@ -11,12 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
-    function index()
-    {
-        echo "Products";
-    }
-
-    function store(Request $request)
+    public function store(Request $request)
     {
         $f = $request->get("function");
         try {
@@ -26,17 +21,17 @@ class ProductsController extends Controller
         }
     }
 
-    function getAll(Request $request)
+    public function getAll(Request $request)
     {
         $list = Products::all();
         for ($i = 0; $i < sizeof($list); $i++) {
-            $list[$i]["KM"] = Promotions::whereIn("MaKM", [$list[$i]['MaKM']])->get();
-            $list[$i]["LSP"] = ProductTypes::whereIn("MaLSP", [$list[$i]['MaLSP']])->get();
+            $list[$i]["KM"] = Promotions::whereIn("MaKM", [$list[$i]['MaKM']])->get()[0];
+            $list[$i]["LSP"] = ProductTypes::whereIn("MaLSP", [$list[$i]['MaLSP']])->get()[0];
         }
         echo json_encode($list);
     }
 
-    function getById(Request $request)
+    public function getById(Request $request)
     {
         $id = $request->get("id");
         $sp = Products::find($id);
@@ -45,78 +40,66 @@ class ProductsController extends Controller
         echo json_encode($sp);
     }
 
-    function getByListId(Request $request)
+
+    public function getByListId(Request $request)
     {
         $listID = $request->get("listID");
         $result = array();
         foreach ($listID as $id) {
             $sp = Products::find($id);
-            $sp["KM"] = Promotions::whereIn("MaKM", [$sp['MaKM']])->get();
-            $sp["LSP"] = ProductTypes::whereIn("MaLSP", [$sp['MaLSP']])->get();
+            $sp["KM"] = Promotions::where("MaKM", $sp['MaKM'])->get()[0];
+            $sp["LSP"] = ProductTypes::where("MaLSP", $sp['MaLSP'])->get()[0];
             array_push($result, $sp);
         }
         echo json_encode($result);
     }
 
-    function handleFilters(Request $request){
+    public function handleFilters(Request $request)
+    {
         $filters = $request->get('filters');
         $ori = "SELECT * FROM SanPham WHERE TrangThai=1 AND SoLuong>0 AND ";
         $sql = $ori;
-
-        // $page = null;
         $tenThanhPhanCanSort = null;
         $typeSort = null;
-
         foreach ($filters as $filter) {
             $dauBang = explode("=", $filter);
             switch ($dauBang[0]) {
                 case 'search':
                     $dauBang[1] = explode("+", $dauBang[1]);
                     $dauBang[1] = join(" ", $dauBang[1]);
-                    $dauBang[1] = mysqli_escape_string(DB::getDefaultConnection(), $dauBang[1]);
                     $sql .= ($sql == $ori ? "" : " AND ") . " TenSP LIKE '%$dauBang[1]%' ";
                     break;
-
                 case 'price':
                     $prices = explode("-", $dauBang[1]);
                     $giaTu = (int)$prices[0];
                     $giaDen = (int)$prices[1];
-
                     // nếu giá đến = 0 thì cho giá đến = 100 triệu
                     if ($giaDen == 0) $giaDen = 1000000000;
-
                     $sql .= ($sql == $ori ? "" : " AND ") . " DonGia >= $giaTu AND DonGia <= $giaDen";
                     break;
-
                 case 'company':
                     $companyID = $dauBang[1];
                     $sql .= ($sql == $ori ? "" : " AND ") . " MaLSP='$companyID'";
                     break;
-
                 case 'star':
                     $soSao = (int)$dauBang[1];
                     $sql .= ($sql == $ori ? "" : " AND ") . " SoSao >= $soSao";
                     break;
-
                 case 'promo':
                     // lấy id khuyến mãi
                     $loaikm = $dauBang[1];
-                    $khuyenmai = (new DB_driver())->get_row("SELECT * FROM KhuyenMai WHERE LoaiKM='$loaikm'");
-                    $khuyenmaiID = $khuyenmai["MaKM"];
-
+                    $khuyenmai = DB::selectOne("SELECT * FROM KhuyenMai WHERE LoaiKM='$loaikm'");
+                    $khuyenmaiID = $khuyenmai->MaKM;
                     $sql .= ($sql == $ori ? "" : " AND ") . " MaKM='$khuyenmaiID'";
                     break;
-
                 case 'sort':
                     $s = explode("-", $dauBang[1]);
                     $tenThanhPhanCanSort = $s[0];
                     $typeSort = ($s[1] == "asc" ? "ASC" : "DESC");
                     break;
-
                 // case 'page':
                 //     $page = $dauBang[1];
                 //     break;
-
                 default:
                     # code...
                     break;
@@ -141,21 +124,18 @@ class ProductsController extends Controller
         // chạy sql
         $list = DB::select($sql);
         for ($i = 0; $i < sizeof($list); $i++) {
-            $list[$i]->KM= Promotions::whereIn("MaKM", [$list[$i]->MaKM])->get();
-            $list[$i]->LSP = ProductTypes::whereIn("MaLSP", [$list[$i]->MaLSP])->get();
+            $list[$i]->KM = Promotions::whereIn("MaKM", [$list[$i]->MaKM])->get()[0];
+            $list[$i]->LSP = ProductTypes::whereIn("MaLSP", [$list[$i]->MaLSP])->get()[0];
         }
         echo json_encode($list);
     }
 
 
-    function addFromWeb1(Request $request)
+    public function addFromWeb1(Request $request)
     {
-        $spBUS = new SanPhamBUS();
         $sp = $request->get('sanpham');
-        $loaisanpham = (new DB_driver())->get_row("SELECT * FROM LoaiSanPham WHERE TenLSP='" . $sp["company"] . "'");
-
+        $loaisanpham = DB::select("SELECT * FROM LoaiSanPham WHERE TenLSP='" . $sp["company"] . "'");
         $sanphamArr = array(
-            'MaSP' => "",
             'MaLSP' => $loaisanpham['MaLSP'],
             'TenSP' => $sp['name'],
             'DonGia' => $sp['price'],
@@ -175,11 +155,49 @@ class ProductsController extends Controller
             'SoDanhGia' => 0,
             'TrangThai' => 1
         );
-
-        echo json_encode($spBUS->add_new($sanphamArr));
+        echo json_encode(Products::insert($sanphamArr));
     }
 
-    function getAllBanners(Request $request)
+    public function add(Request $request)
+    {
+        $data = $request->get('dataAdd');
+        $spAddArr = array(
+            'MaLSP' => $data['company'],
+            'TenSP' => $data['name'],
+            'DonGia' => $data['price'],
+            'SoLuong' => $data['amount'],
+            'HinhAnh' => $data['img'],
+            'MaKM' => $data['promo']['name'],
+            'ManHinh' => $data['detail']['screen'],
+            'HDH' => $data['detail']['os'],
+            'CamSau' => $data['detail']['camara'],
+            'CamTruoc' => $data['detail']['camaraFront'],
+            'CPU' => $data['detail']['cpu'],
+            'Ram' => $data['detail']['ram'],
+            'Rom' => $data['detail']['rom'],
+            'SDCard' => $data['detail']['microUSB'],
+            'Pin' => $data['detail']['battery'],
+            'SoSao' => $data['star'],
+            'SoDanhGia' => $data['rateCount'],
+            'TrangThai' => $data['TrangThai']
+        );
+        echo json_encode(Products::insert($spAddArr));
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->get('maspdelete');
+        echo json_encode(Products::where('MaSP', $id)->delete());
+    }
+
+    public function hide(Request $request)
+    {
+        $id = $request->get("id");
+        $status = $request->get("trangthai");
+        echo json_encode(Products::where("MaSP", $id)->update(["TrangThai" => $status]));
+    }
+
+    public function getAllBanners(Request $request)
     {
         $directory = asset("assets") . "/img/banners";
         $images = glob($directory . "/*.{png,gif}", GLOB_BRACE);
@@ -197,8 +215,54 @@ class ProductsController extends Controller
         ]';
     }
 
-    function getSmallBanner(Request $request)
+    public function getSmallBanner(Request $request)
     {
         echo '["../assets/img/smallBanners/blackFriday.gif"]';
+    }
+
+    public function uploadImage(Request $request)
+    {
+        $target_dir = "img/products/";
+        $target_file = $target_dir . basename($_FILES["hinhanh"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        if ($request->get("submit")) {
+            $check = getimagesize($_FILES["hinhanh"]["tmp_name"]);
+            if ($check !== false) {
+                echo "File is an image - " . $check["mime"] . ".";
+                $uploadOk = 1;
+            } else {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+        }
+        // Check file size
+        if ($_FILES["hinhanh"]["size"] > 500000) {
+            echo "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif") {
+            echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+            // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["hinhanh"]["tmp_name"], $target_file)) {
+                echo "The file " . basename($_FILES["hinhanh"]["name"]) . " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
     }
 }

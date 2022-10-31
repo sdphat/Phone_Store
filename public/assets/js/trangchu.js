@@ -6,13 +6,11 @@ var CurrentFilters = [];
 
 window.onload = function() {
     khoiTao();
-
     // autocomplete cho khung tim kiem
     // autocomplete(document.getElementById('search-box'), list_products);
-
     // thêm tags (từ khóa) vào khung tìm kiếm
     var tags = ["Samsung", "iPhone", "Coolpad", "Oppo", "Mobi"];
-    for (var t of tags) addTags(t, "index.php?search=" + t);
+    for (var t of tags) addTags(t, "home?search=" + t);
 
     // =================== web 2 tìm nâng cao ================
     // Thêm hình vào banner
@@ -108,9 +106,11 @@ function setupBanner() {
     $.ajax({
         type: "POST",
         url: "api/products",
-        data: {"function":"getallbanners"},
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            function: "getallbanners",
+        },
         success: function(data, status, xhr) {
             for (var url of data) {
                 var realPath = url.split('../').join('');
@@ -154,9 +154,11 @@ function setupBanner() {
     $.ajax({
         type: "POST",
         url: "api/products",
-        data: {"function":"getSmallBanner"},
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            function: "getsmallbanner",
+        },
         success: function(data, status, xhr) {
             for (var url of data) {
                 var realPath = url.split('../').join('');
@@ -179,14 +181,14 @@ function setupCompany() {
         type: "POST",
         url: "api/product_types",
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            function: "getAll",
+            function: "getall",
         },
         success: function(data, status, xhr) {
             DataCompany = data;
-            for (var c of data) {
-                addCompany("img/company/" + c.HinhAnh, c.MaLSP);
+            for (let c of data) {
+                addCompany("assets/img/company/" + c.HinhAnh, c.MaLSP);
             }
         },
         error: function(e) {
@@ -200,7 +202,6 @@ function setupCompany() {
 }
 
 function addProductsFromList(list, filters) {
-
     DanhSachSanPham = list; // lưu danh sách hiện thời
     $("#divSoLuongSanPham").html("Tìm thấy <span>"+ list.length + "</span> sản phẩm")
 
@@ -210,6 +211,7 @@ function addProductsFromList(list, filters) {
     } else {
         alertNotHaveProduct(true);
     }
+
     var phantrang = 1;
     for (var f of filters) {
         var splitValue = f.split('=');
@@ -266,18 +268,16 @@ function filtersAjax(filters, callback) {
         $(".contain-products li.sanPham").remove(); // xóa các sản phẩm hiện tại
         $(".loader").css("display", "block");
     }
-    console.log(filters);
     $.ajax({
         type: "POST",
         url: "api/products",
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
             function: "handleFilters",
             filters: filters
         },
         success: function(data, status, xhr) {
-
             if (callback) callback(data);
             else {
                 addProductsFromList(data, filters);
@@ -289,7 +289,7 @@ function filtersAjax(filters, callback) {
         error: function(e) {
             Swal.fire({
                 type: "error",
-                title: "Lỗi lấy dữ liệu sản phẩm filters (trangchu.js > filtersAjax)",
+                title: "Lỗi lấy dữ liệu sản phẩm filters (trangchu.js > filtersAjax)"+filters,
                 html: e.responseText
             });
         }
@@ -301,7 +301,7 @@ function ajaxThemSanPham(p, onSuccess, onFail) {
         type: "POST",
         url: "api/products",
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
             function: "addFromWeb1",
             sanpham: p
@@ -360,7 +360,7 @@ function addToWeb(p, ele, returnString) {
 
     // tách theo dấu ' ' vào gắn lại bằng dấu '-', code này giúp bỏ hết khoảng trắng và thay vào bằng dấu '-'.
     // Tạo link tới chi tiết sản phẩm, chuyển tất cả ' ' thành '-'
-    var chitietSp = 'chitietsanpham.php?' + p.MaSP;
+    var chitietSp = 'product_details?' + p.MaSP;
 
     // Cho mọi thứ vào tag <li>... </li>
     var newLi =
@@ -472,7 +472,7 @@ function themNutPhanTrang(soTrang, trangHienTai) {
 }
 
 function pushState(filters) {
-    var str = "index.php?";
+    var str = "home?";
     var fsort = "";
     for(var f of filters) {
         if(f.split('=')[0] != 'sort') {

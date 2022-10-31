@@ -12,4 +12,5 @@ class Promotions extends Model
 {
     use HasFactory;
     protected $table="khuyenmai";
+    protected $primaryKey="MaKM";
 }

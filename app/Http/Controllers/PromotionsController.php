@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Promotions;
 use Illuminate\Http\Request;
 
 class PromotionsController extends Controller
 {
-    function store(Request $request)
+    public function store(Request $request)
     {
         $f = $request->get("function");
         try {
@@ -15,12 +16,13 @@ class PromotionsController extends Controller
             echo "Not found";
         }
     }
-    public function getAll(){
-        $dskm = (new KhuyenMaiBUS())->select_all();
-        die (json_encode($dskm));
+    public function getAll(Request $request){
+        echo json_encode(Promotions::all());
     }
-    public function getByID(){
-        $km = (new KhuyenMaiBUS())->select_by_id('*', $_POST['id']);
-        die (json_encode($km));
+    public function getById(Request $request)
+    {
+        $id = $request->get("id");
+        $sp = Promotions::find($id);
+        echo json_encode($sp);
     }
 }
