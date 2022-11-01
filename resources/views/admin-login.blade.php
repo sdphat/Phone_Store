@@ -1,74 +1,83 @@
+<!doctype html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="{{asset("")}}assets/css/login.css">
-    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Admin Login</title>
+    <link rel="shortcut icon" href="{{asset("")}}assets/img/icon_phone_store.png"/>
     <!-- Jquery -->
     <script src="{{asset("")}}assets/lib/Jquery/Jquery.min.js"></script>
-
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <script>
-
-        function kiemTraDangNhap() {
-            a = document.getElementById("username").value;
-            b = document.getElementById("password").value;
-            $.ajax({
-                url: "api/users",
-                type: "post",
-                data: {
-                    function: "adminLogin",
-                    username: a,
-                    password: b,
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                //async:true,
-                success: function (kq) {
-                    console.log(kq);
-                    if (kq.indexOf("yes") != -1) {
-                        alert("Đăng nhập thành công");
-                        window.location = "admin";
-                    } else {
-                        alert(kq);
-                        form.username.focus();
-                    }
-                }
-
-            });
-        }
-    </script>
-
+    <link rel="stylesheet" href="{{asset("")}}assets/css/login.css">
 </head>
-<body class="main-bg" id="hienthiadmin">
-<div class="login-container text-c animated flipInX">
-    <div>
-        <h1 class="logo-badge text-whitesmoke"><span class="fa fa-user-circle"></span></h1>
-    </div>
-    <h3 class="text-whitesmoke">Đăng nhập Admin</h3>
-    <p class="text-whitesmoke"></p>
+<body>
+<div class="login-container">
+    <h1 class="text-whitesmoke">
+        <img src="{{asset("assets/img/Logo_Phone_Store.png")}}" alt=""><br>
+    </h1>
     <div class="container-content">
-        <form action="" method="post" name="form" class="margin-t">
+        <h3 class="title-form">Admin login</h3>
+        <form onsubmit="return false;" class="margin-t">
             <div class="form-group">
-                <input name="username" id="username" type="text" class="form-control" placeholder="Tên đăng nhập">
+                <input type="text" class="form-control" placeholder="Tên đăng nhập" name="username" id="username">
             </div>
             <div class="form-group">
-                <input name="password" id="password" type="password" class="form-control" placeholder="*****">
+                <input name="password" id="password" type="password" class="form-control"
+                       placeholder="*****">
             </div>
-            <button type="button" class="form-button button-l margin-b" onclick="kiemTraDangNhap()">Sign In</button>
-            <div id="hienthiketqua"></div>
-            <!-- Xử lí đăng nhập với thông tin tài khoản trên database -->
+            <div class="form-group">
+                {!! NoCaptcha::renderJs("vi",false,'') !!}
+                {!! NoCaptcha::display() !!}
+            </div>
+            <button type="submit" onclick="login()" class="btn btn-info">Đăng nhập</button>
 
-            <!-- <a class="text-darkyellow" href="#"><small>Forgot your password?</small></a> -->
-            <!-- <p class="text-whitesmoke text-center"><small>Do not have an account?</small></p> -->
+            {{--            <a class="text-darkyellow" href="#"><small>Quên mật khẩu?</small></a>--}}
+            {{--            <p class="text-whitesmoke text-center"><small>Do not have an account?</small></p>--}}
         </form>
-        <!-- <p class="margin-t text-whitesmoke"><small> Your Name &copy; 2019</small> </p> -->
+        <p class="margin-t"><small> Dat's Team &copy; {{date("Y")}}</small></p>
     </div>
 </div>
-</body>
+<script>
+    let a = document.getElementById('username');
+    let b = document.getElementById('password');
 
+    function login() {
+        $.ajax({
+            url: "api/users",
+            type: "post",
+            dataType: "json",
+            timeout: 5000,
+            data: {
+                function: 'adminLogin',
+                username: a.value,
+                password: b.value,
+                "g-recaptcha-response": grecaptcha.getResponse()
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data, status, xhr) {
+                let title = "";
+                for (let m of data.message) {
+                    title += m + "\n";
+                }
+                alert(title);
+                if (data.success) {
+                    window.location="admin";
+                }
+            },
+            error: function (e) {
+                console.log(e.responseText)
+            }
+        });
+        grecaptcha.reset();
+        return false;
+    }
+</script>
+</body>
+</html>

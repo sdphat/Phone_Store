@@ -1,22 +1,22 @@
-var TONGTIEN = 0;
+let TONGTIEN = 0;
 
 window.onload = function() {
 
     document.getElementById("btnDangXuat").onclick = function() {
         checkDangXuat(()=>{
-            window.location.href = "admin_login"
+            window.location.href = "admin"
         });
     }
 
     getCurrentUser((user)=>{
-        if(user != null && user.MaQuyen != 1) {
+        if(user !== null && user.MaQuyen !== 1) {
             addEventChangeTab();
             addThongKe();
             openTab('Home');
         } else {
             document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
         }
-    }, (e)=> {
+    }, ()=> {
         document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
     });
 }
@@ -30,7 +30,7 @@ function refreshTableSanPham() {
         data: {
             function: "getall",
         },
-        success: function(data, status, xhr) {
+        success: function(data) {
             list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
             addTableProducts(data);
         },
@@ -46,12 +46,12 @@ function refreshTableSanPham() {
 }
 
 function addChart(id, chartOption) {
-    var ctx = document.getElementById(id).getContext('2d');
-    var chart = new Chart(ctx, chartOption);
+    let ctx = document.getElementById(id).getContext('2d');
+    let chart = new Chart(ctx, chartOption);
 }
 
 function addThongKe() {
-    var dataChart = {
+    let dataChart = {
         type: 'bar',
         data: {
             labels: ["Apple", "Samsung", "Xiaomi", "Vivo", "Oppo", "Mobiistar"],
@@ -88,19 +88,19 @@ function addThongKe() {
     };
 
     // Thêm thống kê
-    var barChart = copyObject(dataChart);
+    let barChart = copyObject(dataChart);
     barChart.type = 'bar';
     addChart('myChart1', barChart);
 
-    var doughnutChart = copyObject(dataChart);
+    let doughnutChart = copyObject(dataChart);
     doughnutChart.type = 'doughnut';
     addChart('myChart2', doughnutChart);
 
-    var pieChart = copyObject(dataChart);
+    let pieChart = copyObject(dataChart);
     pieChart.type = 'pie';
     addChart('myChart3', pieChart);
 
-    var lineChart = copyObject(dataChart);
+    let lineChart = copyObject(dataChart);
     lineChart.type = 'line';
     addChart('myChart4', lineChart);
 }
@@ -114,7 +114,7 @@ function ajaxLoaiSanPham() {
         data: {
             function: "getall"
         },
-        success: function(data, status, xhr) {
+        success: function(data) {
             showLoaiSanPham(data);
         },
         error: function(e) {
@@ -124,9 +124,9 @@ function ajaxLoaiSanPham() {
 }
 
 function showLoaiSanPham(data) {
-    var s="";
-    for (var i = 0; i < data.length; i++) {
-            var p = data[i];
+    let s="";
+    for (let i = 0; i < data.length; i++) {
+            let p = data[i];
                 s +=`<option value="` + p.MaLSP + `">` + p.TenLSP + `</option>`;
         }
     document.getElementsByName("chonCompany")[0].innerHTML = s;
@@ -141,29 +141,27 @@ function ajaxKhuyenMai() {
         data: {
             function: "getall"
         },
-        success: function(data, status, xhr) {
+        success: function(data) {
             showKhuyenMai(data);
             showGTKM(data);
         },
         error: function(e) {
-
         }
     });
 }
 
 function showKhuyenMai(data) {
-    var s=`
-        <option selected="selected" value="`+data[0].MaKM+`">Không</option>
-        <option value="`+data[1].MaKM+`">Trả góp</option>
-        <option value="`+data[2].MaKM+`">Giảm giá</option>
-        <option value="`+data[3].MaKM+`">Giá rẻ online</option>
-        <option value="`+data[4].MaKM+`">Mởi ra mắt</option>`;
-    document.getElementsByName("chonKhuyenMai")[0].innerHTML = s;
+    document.getElementsByName("chonKhuyenMai")[0].innerHTML = `
+        <option selected="selected" value="` + data[0].MaKM + `">Không</option>
+        <option value="` + data[1].MaKM + `">Trả góp</option>
+        <option value="` + data[2].MaKM + `">Giảm giá</option>
+        <option value="` + data[3].MaKM + `">Giá rẻ online</option>
+        <option value="` + data[4].MaKM + `">Mởi ra mắt</option>`;
 
 }
 
 function showGTKM() {
-    var giaTri = document.getElementsByName("chonKhuyenMai")[0].value;
+    let giaTri = document.getElementsByName("chonKhuyenMai")[0].value;
     switch (giaTri) {
         // lấy tất cả khuyến mãi
         case '1':
@@ -193,14 +191,14 @@ function showGTKM() {
 
 // ======================= Các Tab =========================
 function addEventChangeTab() {
-    var sidebar = document.getElementsByClassName('sidebar')[0];
-    var list_a = sidebar.getElementsByTagName('a');
-    for (var a of list_a) {
+    let sidebar = document.getElementsByClassName('sidebar')[0];
+    let list_a = sidebar.getElementsByTagName('a');
+    for (let a of list_a) {
         if (!a.onclick) {
             a.addEventListener('click', function() {
                 turnOff_Active();
                 this.classList.add('active');
-                var tab = this.childNodes[1].data.trim()
+                let tab = this.childNodes[1].data.trim()
                 openTab(tab);
             })
         }
@@ -208,17 +206,17 @@ function addEventChangeTab() {
 }
 
 function turnOff_Active() {
-    var sidebar = document.getElementsByClassName('sidebar')[0];
-    var list_a = sidebar.getElementsByTagName('a');
-    for (var a of list_a) {
+    let sidebar = document.getElementsByClassName('sidebar')[0];
+    let list_a = sidebar.getElementsByTagName('a');
+    for (let a of list_a) {
         a.classList.remove('active');
     }
 }
 
 function openTab(nameTab) {
     // ẩn hết
-    var main = document.getElementsByClassName('main')[0].children;
-    for (var e of main) {
+    let main = document.getElementsByClassName('main')[0].children;
+    for (let e of main) {
         e.style.display = 'none';
     }
 
@@ -245,21 +243,21 @@ function openTab(nameTab) {
 // ========================== Sản Phẩm ========================
 // Vẽ bảng danh sách sản phẩm
 function addTableProducts(list_products) {
-    var tc = document.getElementsByClassName('sanpham')[0].getElementsByClassName('table-content')[0];
-    var s = `<table class="table-outline hideImg">`;
+    let tc = document.getElementsByClassName('sanpham')[0].getElementsByClassName('table-content')[0];
+    let s = `<table class="table-outline hideImg">`;
 
-    for (var i = 0; i < list_products.length; i++) {
-        var p = list_products[i];
+    for (let i = 0; i < list_products.length; i++) {
+        let p = list_products[i];
         s += `<tr>
             <td style="width: 5%">` + (i + 1) + `</td>
             <td style="width: 10%">` + p.MaSP + `</td>
             <td style="width: 40%">
                 <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.TenSP.split(' ').join('-') + `">` + p.TenSP + `</a>
-                <img src="` + p.HinhAnh + `"></img>
+                <img src="` + p.HinhAnh + `" alt=""/>
             </td>
             <td style="width: 15%">` + parseInt(p.DonGia).toLocaleString() + `</td>
             <td style="width: 10%">` + /*promoToStringValue(*/ (p.KM.TenKM) /*)*/ + `</td>
-            <td style="width: 10%">` + (p.TrangThai==1?"Hiện":"Ẩn") + `</td>
+            <td style="width: 10%">` + (p.TrangThai===1?"Hiện":"Ẩn") + `</td>
             <td style="width: 10%">
                 <div class="tooltip">
                     <i class="fa fa-wrench" onclick="addKhungSuaSanPham('` + p.MaSP + `')"></i>
@@ -280,18 +278,18 @@ function addTableProducts(list_products) {
 
 // Tìm kiếm
 function timKiemSanPham(inp) {
-    var kieuTim = document.getElementsByName('kieuTimSanPham')[0].value;
-    var text = inp.value;
+    let kieuTim = document.getElementsByName('kieuTimSanPham')[0].value;
+    let text = inp.value;
 
     // Lọc
-    var vitriKieuTim = {
+    let vitriKieuTim = {
         'ma': 1,
         'ten': 2
     }; // mảng lưu vị trí cột
 
-    var listTr_table = document.getElementsByClassName('sanpham')[0].getElementsByClassName('table-content')[0].getElementsByTagName('tr');
-    for (var tr of listTr_table) {
-        var td = tr.getElementsByTagName('td')[vitriKieuTim[kieuTim]].innerHTML.toLowerCase();
+    let listTr_table = document.getElementsByClassName('sanpham')[0].getElementsByClassName('table-content')[0].getElementsByTagName('tr');
+    for (let tr of listTr_table) {
+        let td = tr.getElementsByTagName('td')[vitriKieuTim[kieuTim]].innerHTML.toLowerCase();
 
         if (td.indexOf(text.toLowerCase()) < 0) {
             tr.style.display = 'none';
@@ -303,29 +301,29 @@ function timKiemSanPham(inp) {
 
 // Thêm
 function layThongTinSanPhamTuTable(id) {
-    var khung = document.getElementById(id);
-    var tr = khung.getElementsByTagName('tr');
+    let khung = document.getElementById(id);
+    let tr = khung.getElementsByTagName('tr');
 
-    var masp = tr[1].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var name = tr[2].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var company = tr[3].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
-    var img =  document.getElementById("hinhanh").value;
-    var price = tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var amount = tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var star = tr[7].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var rateCount = tr[8].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var promoName = tr[9].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
-    var promoValue = tr[10].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let masp = tr[1].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let name = tr[2].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let company = tr[3].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
+    let img =  document.getElementById("hinhanh").value;
+    let price = tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let amount = tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let star = tr[7].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let rateCount = tr[8].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let promoName = tr[9].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
+    let promoValue = tr[10].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
 
-    var screen = tr[12].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var os = tr[13].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var camara = tr[14].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var camaraFront = tr[15].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var cpu = tr[16].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var ram = tr[17].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var rom = tr[18].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var microUSB = tr[19].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var battery = tr[20].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let screen = tr[12].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let os = tr[13].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let camara = tr[14].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let camaraFront = tr[15].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let cpu = tr[16].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let ram = tr[17].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let rom = tr[18].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let microUSB = tr[19].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let battery = tr[20].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
 
     return {
         "name": name,
@@ -356,18 +354,18 @@ function layThongTinSanPhamTuTable(id) {
 }
 
 function themSanPham() {
-    var newSp = layThongTinSanPhamTuTable('khungThemSanPham');
+    let newSp = layThongTinSanPhamTuTable('khungThemSanPham');
 
     //kt tên sp
-    var pattCheckTenSP = /([a-z A-Z0-9&():.'_-]{2,})$/;
-    if (pattCheckTenSP.test(newSp.name) == false)
+    let pattCheckTenSP = /([a-z A-Z0-9&():.'_-]{2,})$/;
+    if (pattCheckTenSP.test(newSp.name) === false)
     {
         alert ("Tên sản phẩm không hợp lệ");
         return false;
     }
 
     //kt hình
-    /*var pattCheckHinh= /^([0-9]{1,})[.](png|jpeg|jpg)$/;
+    /*let pattCheckHinh= /^([0-9]{1,})[.](png|jpeg|jpg)$/;
     if (pattCheckHinh.test(newSp.img) == false)
     {
         alert ("Ảnh không hợp lệ");
@@ -375,16 +373,16 @@ function themSanPham() {
     }*/
 
     //kt giá tiền
-    var pattCheckGia = /^([0-9]){1,}(000)$/;
-    if (pattCheckGia.test(newSp.price) == false)
+    let pattCheckGia = /^([0-9]){1,}(000)$/;
+    if (pattCheckGia.test(newSp.price) === false)
     {
         alert ("Đơn giá sản phẩm không hợp lệ");
         return false;
     }
 
     //kt số lượng
-    var pattCheckSL = /[0-9]{1,}$/;
-    if (pattCheckSL.test(newSp.amount) == false)
+    let pattCheckSL = /[0-9]{1,}$/;
+    if (pattCheckSL.test(newSp.amount) === false)
     {
         alert ("Số lượng sản phẩm không hợp lệ");
         return false;
@@ -424,8 +422,8 @@ function themSanPham() {
 
 }
 function resetForm() {
-    var khung = document.getElementById('khungThemSanPham');
-    var tr = khung.getElementsByTagName('tr');
+    let khung = document.getElementById('khungThemSanPham');
+    let tr = khung.getElementsByTagName('tr');
 
     tr[2].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
     tr[4].getElementsByTagName('td')[1].getElementsByTagName('img')[0].src = "";
@@ -445,13 +443,13 @@ function resetForm() {
 
 function autoMaSanPham(company) {
     // hàm tự tạo mã cho sản phẩm mới
-    var autoMaSP = list_products[list_products.length-1].MaSP;
+    let autoMaSP = list_products[list_products.length-1].MaSP;
     document.getElementById('maspThem').value = parseInt(autoMaSP)+1;
 }
 
 // Xóa
 function xoaSanPham(trangthai, masp, tensp) {
-    if (trangthai == 1)
+    if (trangthai === 1)
     {
         // alert ("Sản phẩm còn đang bán");
         Swal.fire({
@@ -520,20 +518,20 @@ function xoaSanPham(trangthai, masp, tensp) {
 
 // Sửa
 function suaSanPham(masp) {
-    var Sp = layThongTinSanPhamTuTable('khungSuaSanPham');
+    let Sp = layThongTinSanPhamTuTable('khungSuaSanPham');
     console.log(Sp);
     return false;
 }
 
 function addKhungSuaSanPham(masp) {
-    var sp;
-    for (var p of list_products) {
+    let sp;
+    for (let p of list_products) {
         if (p.MaSP == masp) {
             sp = p;
         }
     }
 
-    var s = `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
+    let s = `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
     <form method="post" action="" enctype="multipart/form-data" onsubmit="return suaSanPham('` + sp.MaSP + `')">
         <table class="overlayTable table-outline table-content table-header">
             <tr>
@@ -552,10 +550,10 @@ function addKhungSuaSanPham(masp) {
                 <td>
                     <select name="chonCompany" onchange="autoMaSanPham(this.value)">`
 
-                    var company = ["Apple", "Coolpad", "HTC", "Itel", "Mobell", "Vivo", "Oppo", "SamSung", "Phillips", "Nokia", "Motorola", "Motorola", "Xiaomi"];
+                    let company = ["Apple", "Coolpad", "HTC", "Itel", "Mobell", "Vivo", "Oppo", "SamSung", "Phillips", "Nokia", "Motorola", "Motorola", "Xiaomi"];
                     var i = 1;
-                    for (var c of company) {
-                        var masp = i++;
+                    for (let c of company) {
+                        let masp = i++;
                         if (sp.MaLSP == masp)
                             s += (`<option value="` + sp.MaLSP + `" selected="selected">` + c + `</option>`);
                         else s += (`<option value="` + masp + `">` + c + `</option>`);
@@ -669,14 +667,14 @@ function addKhungSuaSanPham(masp) {
             </tr>
         </table>`
 
-    var khung = document.getElementById('khungSuaSanPham');
+    let khung = document.getElementById('khungSuaSanPham');
     khung.innerHTML = s;
     khung.style.transform = 'scale(1)';
 }
 
 // Cập nhật ảnh sản phẩm
 function capNhatAnhSanPham(files, id, anh) {
-    var url = '';
+    let url = '';
     if (files.length) url = window.URL.createObjectURL(files[0]);
 
     document.getElementById(id).src = url;
@@ -685,8 +683,8 @@ function capNhatAnhSanPham(files, id, anh) {
 
 // Sắp Xếp sản phẩm
 function sortProductsTable(loai) {
-    var list = document.getElementsByClassName('sanpham')[0].getElementsByClassName("table-content")[0];
-    var tr = list.getElementsByTagName('tr');
+    let list = document.getElementsByClassName('sanpham')[0].getElementsByClassName("table-content")[0];
+    let tr = list.getElementsByTagName('tr');
 
     quickSort(tr, 0, tr.length - 1, loai, getValueOfTypeInTable_SanPham); // type cho phép lựa chọn sort theo mã hoặc tên hoặc giá ...
     decrease = !decrease;
@@ -694,7 +692,7 @@ function sortProductsTable(loai) {
 
 // Lấy giá trị của loại(cột) dữ liệu nào đó trong bảng
 function getValueOfTypeInTable_SanPham(tr, loai) {
-    var td = tr.getElementsByTagName('td');
+    let td = tr.getElementsByTagName('td');
     switch (loai) {
         case 'stt':
             return Number(td[0].innerHTML);
@@ -736,12 +734,12 @@ function refreshTableDonHang() {
     });
 }
 function addTableDonHang(data) {
-    var tc = document.getElementsByClassName('donhang')[0].getElementsByClassName('table-content')[0];
-    var s = `<table class="table-outline hideImg">`;
+    let tc = document.getElementsByClassName('donhang')[0].getElementsByClassName('table-content')[0];
+    let s = `<table class="table-outline hideImg">`;
 
     TONGTIEN = 0;
-    for (var i = 0; i < data.length; i++) {
-        var d = data[i];
+    for (let i = 0; i < data.length; i++) {
+        let d = data[i];
         s += `<tr>
             <td style="width: 5%">` + (i + 1) + `</td>
             <td style="width: 13%">` + d.MaHD + `</td>
@@ -770,24 +768,24 @@ function addTableDonHang(data) {
 }
 
 function getListDonHang() {
-    var u = getListUser();
-    var result = [];
-    for (var i = 0; i < u.length; i++) {
-        for (var j = 0; j < u[i].donhang.length; j++) {
+    let u = getListUser();
+    let result = [];
+    for (let i = 0; i < u.length; i++) {
+        for (let j = 0; j < u[i].donhang.length; j++) {
             // Tổng tiền
-            var tongtien = 0;
-            for (var s of u[i].donhang[j].sp) {
-                var timsp = timKiemTheoMa(list_products, s.ma);
+            let tongtien = 0;
+            for (let s of u[i].donhang[j].sp) {
+                let timsp = timKiemTheoMa(list_products, s.ma);
                 if (timsp.MaKM.name == 'giareonline') tongtien += stringToNum(timsp.MaKM.value);
                 else tongtien += stringToNum(timsp.DonGia);
             }
 
             // Ngày giờ
-            var x = new Date(u[i].donhang[j].ngaymua).toLocaleString();
+            let x = new Date(u[i].donhang[j].ngaymua).toLocaleString();
 
             // Các sản phẩm
-            var sps = '';
-            for (var s of u[i].donhang[j].sp) {
+            let sps = '';
+            for (let s of u[i].donhang[j].sp) {
                 sps += `<p style="text-align: right">` + (timKiemTheoMa(list_products, s.ma).name + ' [' + s.soluong + ']') + `</p>`;
             }
 
@@ -807,9 +805,9 @@ function getListDonHang() {
 
 // Duyệt
 function duyet(maDonHang, duyetDon) {
-    var u = getListUser();
-    for (var i = 0; i < u.length; i++) {
-        for (var j = 0; j < u[i].donhang.length; j++) {
+    let u = getListUser();
+    for (let i = 0; i < u.length; i++) {
+        for (let j = 0; j < u[i].donhang.length; j++) {
             if (u[i].donhang[j].ngaymua == maDonHang) {
                 if (duyetDon) {
                     if (u[i].donhang[j].tinhTrang == 'Đang chờ xử lý') {
@@ -842,13 +840,13 @@ function duyet(maDonHang, duyetDon) {
 }
 
 function locDonHangTheoKhoangNgay() {
-    var from = document.getElementById('fromDate').valueAsDate;
-    var to = document.getElementById('toDate').valueAsDate;
+    let from = document.getElementById('fromDate').valueAsDate;
+    let to = document.getElementById('toDate').valueAsDate;
 
-    var listTr_table = document.getElementsByClassName('donhang')[0].getElementsByClassName('table-content')[0].getElementsByTagName('tr');
-    for (var tr of listTr_table) {
-        var td = tr.getElementsByTagName('td')[5].innerHTML;
-        var d = new Date(td);
+    let listTr_table = document.getElementsByClassName('donhang')[0].getElementsByClassName('table-content')[0].getElementsByTagName('tr');
+    for (let tr of listTr_table) {
+        let td = tr.getElementsByTagName('td')[5].innerHTML;
+        let d = new Date(td);
 
         if (d >= from && d <= to) {
             tr.style.display = '';
@@ -859,19 +857,19 @@ function locDonHangTheoKhoangNgay() {
 }
 
 function timKiemDonHang(inp) {
-    var kieuTim = document.getElementsByName('kieuTimDonHang')[0].value;
-    var text = inp.value;
+    let kieuTim = document.getElementsByName('kieuTimDonHang')[0].value;
+    let text = inp.value;
 
     // Lọc
-    var vitriKieuTim = {
+    let vitriKieuTim = {
         'ma': 1,
         'khachhang': 2,
         'trangThai': 6
     };
 
-    var listTr_table = document.getElementsByClassName('donhang')[0].getElementsByClassName('table-content')[0].getElementsByTagName('tr');
-    for (var tr of listTr_table) {
-        var td = tr.getElementsByTagName('td')[vitriKieuTim[kieuTim]].innerHTML.toLowerCase();
+    let listTr_table = document.getElementsByClassName('donhang')[0].getElementsByClassName('table-content')[0].getElementsByTagName('tr');
+    for (let tr of listTr_table) {
+        let td = tr.getElementsByTagName('td')[vitriKieuTim[kieuTim]].innerHTML.toLowerCase();
 
         if (td.indexOf(text.toLowerCase()) < 0) {
             tr.style.display = 'none';
@@ -883,8 +881,8 @@ function timKiemDonHang(inp) {
 
 // Sắp xếp
 function sortDonHangTable(loai) {
-    var list = document.getElementsByClassName('donhang')[0].getElementsByClassName("table-content")[0];
-    var tr = list.getElementsByTagName('tr');
+    let list = document.getElementsByClassName('donhang')[0].getElementsByClassName("table-content")[0];
+    let tr = list.getElementsByTagName('tr');
 
     quickSort(tr, 0, tr.length - 1, loai, getValueOfTypeInTable_DonHang);
     decrease = !decrease;
@@ -892,7 +890,7 @@ function sortDonHangTable(loai) {
 
 // Lấy giá trị của loại(cột) dữ liệu nào đó trong bảng
 function getValueOfTypeInTable_DonHang(tr, loai) {
-    var td = tr.getElementsByTagName('td');
+    let td = tr.getElementsByTagName('td');
     switch (loai) {
         case 'stt':
             return Number(td[0].innerHTML);
@@ -938,7 +936,7 @@ function refreshTableKhachHang() {
 }
 
 function thayDoiTrangThaiND(inp, mand) {
-    var trangthai = (inp.checked?1:0);
+    let trangthai = (inp.checked?1:0);
     $.ajax({
         type: "POST",
         url: "php/xulykhachhang.php",
@@ -967,12 +965,12 @@ function thayDoiTrangThaiND(inp, mand) {
 
 
 function addTableKhachHang(data) {
-    var tc = document.getElementsByClassName('khachhang')[0].getElementsByClassName('table-content')[0];
-    var s = `<table class="table-outline hideImg">`;
+    let tc = document.getElementsByClassName('khachhang')[0].getElementsByClassName('table-content')[0];
+    let s = `<table class="table-outline hideImg">`;
 
 
-    for (var i = 0; i < data.length; i++) {
-        var u = data[i];
+    for (let i = 0; i < data.length; i++) {
+        let u = data[i];
         console.log(u.TrangThai)
 
         s += `<tr>
@@ -1002,19 +1000,19 @@ function addTableKhachHang(data) {
 
 // Tìm kiếm
 function timKiemNguoiDung(inp) {
-    var kieuTim = document.getElementsByName('kieuTimKhachHang')[0].value;
-    var text = inp.value;
+    let kieuTim = document.getElementsByName('kieuTimKhachHang')[0].value;
+    let text = inp.value;
 
     // Lọc
-    var vitriKieuTim = {
+    let vitriKieuTim = {
         'ten': 1,
         'email': 2,
         'taikhoan': 3
     };
 
-    var listTr_table = document.getElementsByClassName('khachhang')[0].getElementsByClassName('table-content')[0].getElementsByTagName('tr');
-    for (var tr of listTr_table) {
-        var td = tr.getElementsByTagName('td')[vitriKieuTim[kieuTim]].innerHTML.toLowerCase();
+    let listTr_table = document.getElementsByClassName('khachhang')[0].getElementsByClassName('table-content')[0].getElementsByTagName('tr');
+    for (let tr of listTr_table) {
+        let td = tr.getElementsByTagName('td')[vitriKieuTim[kieuTim]].innerHTML.toLowerCase();
 
         if (td.indexOf(text.toLowerCase()) < 0) {
             tr.style.display = 'none';
@@ -1034,7 +1032,7 @@ function voHieuHoaNguoiDung(TrangThai) {
     {
 
     }
-    var span = inp.parentElement.nextElementSibling;
+    let span = inp.parentElement.nextElementSibling;
     span.innerHTML = (inp.checked ? 'Khóa' : 'Mở');
 }
 
@@ -1075,15 +1073,15 @@ function xoaNguoiDung(mand) {
 
 // Sắp xếp
 function sortKhachHangTable(loai) {
-    var list = document.getElementsByClassName('khachhang')[0].getElementsByClassName("table-content")[0];
-    var tr = list.getElementsByTagName('tr');
+    let list = document.getElementsByClassName('khachhang')[0].getElementsByClassName("table-content")[0];
+    let tr = list.getElementsByTagName('tr');
 
     quickSort(tr, 0, tr.length - 1, loai, getValueOfTypeInTable_KhachHang);
     decrease = !decrease;
 }
 
 function getValueOfTypeInTable_KhachHang(tr, loai) {
-    var td = tr.getElementsByTagName('td');
+    let td = tr.getElementsByTagName('td');
     switch (loai) {
         case 'stt':
             return Number(td[0].innerHTML);
@@ -1101,11 +1099,11 @@ function getValueOfTypeInTable_KhachHang(tr, loai) {
 
 // ================== Sort ====================
 // https://github.com/HoangTran0410/First_html_css_js/blob/master/sketch.js
-var decrease = true; // Sắp xếp giảm dần
+let decrease = true; // Sắp xếp giảm dần
 
 // loại là tên cột, func là hàm giúp lấy giá trị từ cột loai
 function quickSort(arr, left, right, loai, func) {
-    var pivot,
+    let pivot,
         partitionIndex;
 
     if (left < right) {
@@ -1120,10 +1118,10 @@ function quickSort(arr, left, right, loai, func) {
 }
 
 function partition(arr, pivot, left, right, loai, func) {
-    var pivotValue = func(arr[pivot], loai),
+    let pivotValue = func(arr[pivot], loai),
         partitionIndex = left;
 
-    for (var i = left; i < right; i++) {
+    for (let i = left; i < right; i++) {
         if (decrease && func(arr[i], loai) > pivotValue ||
             !decrease && func(arr[i], loai) < pivotValue) {
             swap(arr, i, partitionIndex);
@@ -1135,8 +1133,8 @@ function partition(arr, pivot, left, right, loai, func) {
 }
 
 function swap(arr, i, j) {
-    var tempi = arr[i].cloneNode(true);
-    var tempj = arr[j].cloneNode(true);
+    let tempi = arr[i].cloneNode(true);
+    let tempj = arr[j].cloneNode(true);
     arr[i].parentNode.replaceChild(tempj, arr[i]);
     arr[j].parentNode.replaceChild(tempi, arr[j]);
 }
@@ -1164,7 +1162,7 @@ function progress(percent, bg, width, height) {
             </div>`
 }
 
-// for(var i = 0; i < list_products.length; i++) {
+// for(let i = 0; i < list_products.length; i++) {
 //     list_products[i].masp = list_products[i].company.substring(0, 3) + vitriCompany(list_products[i], i);
 // }
 

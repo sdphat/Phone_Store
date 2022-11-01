@@ -6,10 +6,11 @@
     <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    {!! NoCaptcha::renderJs("vi",false,'') !!}
     <title>Phone Store</title>
     <link rel="shortcut icon" href="{{asset("")}}assets/img/icon_phone_store.png"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+
     <!-- Jquery -->
     <script src="{{asset("")}}assets/lib/Jquery/Jquery.min.js"></script>
     <!-- owl carousel libraries -->
@@ -60,7 +61,7 @@
     </div>
     <div class="companyMenu group flexContain"></div>
 
-    <div class="timNangCao"style="max-width: 1200px;width: 100%;display: flex;flex-wrap:wrap;justify-content: center">
+    <div class="timNangCao" style="max-width: 1200px;width: 100%;display: flex;flex-wrap:wrap;justify-content: center">
         <div class="flexContain" style="width:100%">
             <div class="pricesRangeFilter dropdown">
                 <button class="dropbtn">Giá tiền</button>
@@ -128,34 +129,38 @@
                         <label>
                             Tên đăng nhập<span class="req">*</span>
                         </label>
-                        <input name="username" type="text" id="username" required autocomplete="off" />
+                        <input name="username" type="text" id="username" required autocomplete="off"/>
                     </div> <!-- /user name -->
                     <div class="field-wrap">
                         <label>
                             Mật khẩu<span class="req">*</span>
                         </label>
-                        <input name="pass" type="password" id="pass" required autocomplete="off" />
-                    </div> <!-- pass -->
-                    <p class="forgot"><a href="#">Quên mật khẩu?</a></p>
-                    <button type="submit" class="button button-block" />Tiếp tục</button>
+                        <input name="pass" type="password" id="pass" required autocomplete="off"/>
+                    </div>
+                    <div class="field-wrap">
+                        {!! NoCaptcha::display() !!}
+                    </div>
+                    {{--                    <p class="forgot"><a href="#">Quên mật khẩu?</a></p>--}}
+                    <button type="submit" class="button button-block"/>
+                    Tiếp tục</button>
                 </form> <!-- /form -->
             </div> <!-- /log in -->
             <div id="signup">
                 <h1>Đăng kí miễn phí</h1>
                 <!-- <form onsubmit="return signUp(this);"> -->
-                <form action="" method="post" name="formDangKy" onsubmit="return checkDangKy();">
+                <form action="" method="post" name="formDangKy" onsubmit="return checkDangKy();" >
                     <div class="top-row">
                         <div class="field-wrap">
                             <label>
                                 Họ<span class="req">*</span>
                             </label>
-                            <input name="ho" type="text" id="ho" required autocomplete="off" />
+                            <input name="ho" type="text" id="ho" required autocomplete="off"/>
                         </div>
                         <div class="field-wrap">
                             <label>
                                 Tên<span class="req">*</span>
                             </label>
-                            <input name="ten" id="ten" type="text" required autocomplete="off" />
+                            <input name="ten" id="ten" type="text" required autocomplete="off"/>
                         </div>
                     </div> <!-- / ho ten -->
                     <div class="top-row">
@@ -163,7 +168,8 @@
                             <label>
                                 Điện thoại<span class="req">*</span>
                             </label>
-                            <input name="sdt" id="sdt" type="text" pattern="\d*" minlength="10" maxlength="12" required autocomplete="off" />
+                            <input name="sdt" id="sdt" type="text" pattern="\d*" minlength="10" maxlength="12" required
+                                   autocomplete="off"/>
                         </div> <!-- /sdt -->
                         <div class="field-wrap">
                             <label>
@@ -177,25 +183,29 @@
                             Địa chỉ<span class="req">*</span>
                         </label>
                         <input name="diachi" id="diachi" type="text" required autocomplete="off" />
-                    </div> <!-- /user name -->
+                    </div>
                     <div class="field-wrap">
                         <label>
                             Tên đăng nhập<span class="req">*</span>
                         </label>
-                        <input name="newUser" id="newUser" type="text" required autocomplete="off" />
+                        <input name="newUser" id="newUser" type="text" required autocomplete="off"/>
                     </div> <!-- /user name -->
                     <div class="field-wrap">
                         <label>
                             Mật khẩu<span class="req">*</span>
                         </label>
-                        <input name="newPass" id="newPass" type="password" required autocomplete="off" />
-                    </div> <!-- /pass -->
-                    <button type="submit" class="button button-block" />Tạo tài khoản</button>
+                        <input name="newPass" id="newPass" type="password" required autocomplete="off"/>
+                    </div>
+                    <button type="submit" class="button button-block"/>
+                    Tạo tài khoản</button>
                 </form> <!-- /form -->
             </div> <!-- /sign up -->
         </div><!-- tab-content -->
     </div> <!-- /taikhoan -->
 </div>
+<script>
+    checkTaiKhoan();
+</script>
 <div class="plc">
     <section>
         <ul class="flexContain">

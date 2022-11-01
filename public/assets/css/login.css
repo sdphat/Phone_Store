@@ -4,8 +4,13 @@ html {
 body {
     height: 100%;
     margin: 0;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(#30799c, #8bc1d9) no-repeat fixed;
+}
+.title-form{
+    color: #1b6487;
 }
 
 /* Text Align */
@@ -24,41 +29,23 @@ body {
 
 /* Text Color */
 .text-whitesmoke {
-    color: whitesmoke
-}
-.text-darkyellow {
-    color: rgba(255, 235, 59, 0.432)
+    color: whitesmoke;
+    border-radius: 4px 4px 0 0;
+    background: #30799c;
+    padding: 10px;
 }
 
 /* Lines */
 
 .line-b {
-    border-bottom: 1px solid #FFEB3B !important;
+    border-bottom: 1px solid #428bca !important;
 }
 
 /* Buttons */
 .button {
     border-radius: 3px;
 }
-.form-button {
-    background-color: rgba(255, 235, 59, 0.24);
-    /*border-color: rgba(255, 235, 59, 0.24);*/
-    border: none;
-    padding: 10px;
-    color: #e6e6e6;
-}
-.form-button:hover,
-.form-button:focus,
-.form-button:active,
-.form-button.active,
-.form-button:active:focus,
-.form-button:active:hover,
-.form-button.active:hover,
-.form-button.active:focus {
-    background-color: rgba(255, 235, 59, 0.473);
-    border-color: rgba(255, 235, 59, 0.473);
-    color: #e6e6e6;
-}
+
 .button-l {
     width: 100% !important;
 }
@@ -134,11 +121,8 @@ body {
 
 .form-control,
 .border-line {
-    background-color: #5f5f5f;
-    background-image: none;
-    border: 1px solid #424242;
-    border-radius: 1px;
-    color: inherit;
+    border: 2px solid #aacdd5;
+    border-radius: 4px;
     display: block;
     padding: 6px 12px;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
@@ -146,9 +130,7 @@ body {
 }
 .form-control:focus,
 .border-line:focus {
-    border-color: #FFEB3B;
-    background-color: #616161;
-    color: #e6e6e6;
+    border-color: #428bca;
 }
 .form-control,
 .form-control:focus {
@@ -159,30 +141,18 @@ body {
 /* Container */
 
 .container-content {
-    background-color: #3a3a3aa2;
     color: inherit;
     padding: 15px 20px 20px 20px;
-    border-color: #FFEB3B;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px 0;
-}
-
-/* Backgrounds */
-
-.main-bg {
-
-    /*background: #fff;*/
-    background: linear-gradient( #000, #aaa);
+    border-radius: 4px;
 }
 
 /* Login & Register Pages*/
 
 .login-container {
-    max-width: 400px;
-    z-index: 100;
+    background-color: rgba(174, 217, 241, 0.64);
+    text-align: center;
+    border-radius: 4px;
     margin: 0 auto;
-    padding-top: 100px;
 }
 .login.login-container {
     width: 300px;
@@ -190,12 +160,6 @@ body {
 .wrapper.login-container {
     margin-top: 140px;
 }
-.logo-badge {
-    color: #e6e6e6;
-    font-size: 80px;
-    font-weight: 800;
-    letter-spacing: -10px;
-    margin-bottom: 0;
-}
+
 
 Resources

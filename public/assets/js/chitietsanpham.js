@@ -261,28 +261,3 @@ function createComment(name, value, star, time) {
                 <span class="time">` + time + `</span>
             </div>`;
 }
-
-/*// add hình
-function addSmallImg(img) {
-    var newDiv = `<div class='item'>
-                        <a>
-                            <img src=` + img + ` onclick="changepic(this.src)">
-                        </a>
-                    </div>`;
-    var banner = document.getElementsByClassName('owl-carousel')[0];
-    banner.innerHTML += newDiv;
-}
-
-// đóng mở xem hình
-function opencertain() {
-    document.getElementById("overlaycertainimg").style.transform = "scale(1)";
-}
-
-function closecertain() {
-    document.getElementById("overlaycertainimg").style.transform = "scale(0)";
-}
-
-// đổi hình trong chế độ xem hình
-function changepic(src) {
-    document.getElementById("bigimg").src = src;
-}*/

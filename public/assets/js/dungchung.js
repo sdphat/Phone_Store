@@ -3,7 +3,7 @@ function khoiTao() {
     setupEventTaiKhoan();
     capNhatThongTinUser();
 
-    document.getElementsByClassName('cart-number')[0].innerHTML = getSoLuongGioHang();;
+    document.getElementsByClassName('cart-number')[0].innerHTML = getSoLuongGioHang();
 }
 
 // ========= Các hàm liên quan tới danh sách sản phẩm =========
@@ -23,15 +23,15 @@ function setListGioHang(list) {
 }
 
 function addToGioHang(masp) {
-    var currentList = getListGioHang();
+    let currentList = getListGioHang();
 
     if(!currentList) {
         currentList = [];
     }
 
-    var daCo = false;
-    for(var sp of currentList) {
-        if(sp.masp == masp) {
+    let daCo = false;
+    for(let sp of currentList) {
+        if(sp.masp === masp) {
             sp.soLuong++;
             daCo = true;
         }
@@ -48,21 +48,20 @@ function addToGioHang(masp) {
 }
 
 function getSoLuongGioHang() {
-    var currentList = getListGioHang();
+    let currentList = getListGioHang();
 
-    var soLuong = 0;
+    let soLuong = 0;
     if(currentList != null) {
-        for(var sp of currentList) {
+        for(let sp of currentList) {
             soLuong += sp.soLuong;
         }
     }
-
-    return soLuong;
+    return soLuong+"";
 }
 
 function animateCartNumber() {
     // Hiệu ứng cho icon giỏ hàng
-    var cn = document.getElementsByClassName('cart-number')[0];
+    let cn = document.getElementsByClassName('cart-number')[0];
     cn.style.transform = 'scale(2)';
     cn.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
     cn.style.color = 'white';
@@ -76,7 +75,7 @@ function animateCartNumber() {
 
 function themVaoGioHang(masp, tensp) {
     getCurrentUser((user) => {
-        if(user && user.TrangThai == 0) {
+        if(user && user.TrangThai === 0) {
             Swal.fire({
                 title: 'Tài Khoản Bị Khóa!',
                 text: 'Tài khoản của bạn hiện đang bị khóa nên không thể thêm hàng!',
@@ -85,9 +84,6 @@ function themVaoGioHang(masp, tensp) {
                 confirmButtonText: 'Trở về',
                 footer: '<a href>Liên hệ với Admin</a>'
             });
-
-            return;
-
         } else {
             addToGioHang(masp);
             animateCartNumber();
@@ -125,7 +121,7 @@ function getCurrentUser(onSuccess, onFail) {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        success: function(data, status, xhr) {
+        success: function(data) {
             if(onSuccess) onSuccess(data);
         },
         error: function(e) {
@@ -136,8 +132,8 @@ function getCurrentUser(onSuccess, onFail) {
 
 // Hiển thị form tài khoản, giá trị truyền vào là true hoặc false
 function showTaiKhoan(show) {
-    var value = (show ? "scale(1)" : "scale(0)");
-    var div = document.getElementsByClassName('containTaikhoan')[0];
+    let value = (show ? "scale(1)" : "scale(0)");
+    let div = document.getElementsByClassName('containTaikhoan')[0];
     div.style.transform = value;
 }
 
@@ -148,22 +144,20 @@ function checkTaiKhoan() {
         if(!data) {
             showTaiKhoan(true);
         }
-
     }, (error) => {
-
+        console.log(error);
     })
 }
 
 //  ================================ WEB 2 =================================
 function checkDangKy() {
-    var ho = document.getElementById('ho').value;
-    var ten = document.getElementById('ten').value;
-    var sdt = document.getElementById('sdt').value;
-    var email = document.getElementById('email').value;
-    var diachi = document.getElementById('diachi').value;
-    var username = document.getElementById('newUser').value;
-    var pass = document.getElementById('newPass').value;
-
+    let ho = document.getElementById('ho').value;
+    let ten = document.getElementById('ten').value;
+    let sdt = document.getElementById('sdt').value;
+    let email = document.getElementById('email').value;
+    let diachi = document.getElementById('diachi').value;
+    let username = document.getElementById('newUser').value;
+    let pass = document.getElementById('newPass').value;
     $.ajax({
         url: "api/users",
         type: "post",
@@ -171,43 +165,54 @@ function checkDangKy() {
         timeout: 5000,
         data: {
             function: 'register',
-            data_ho: ho,
-            data_ten: ten,
-            data_sdt: sdt,
-            data_email: email,
-            data_diachi: diachi,
-            data_newUser: username,
-            data_newPass: pass
+            lastname: ho,
+            firstname: ten,
+            phone: sdt,
+            email: email,
+            address: diachi,
+            username: username,
+            password: pass,
+            "g-recaptcha-response":grecaptcha.getResponse()
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(kq) {
-            if(kq != null) {
+            if(kq.success) {
                 Swal.fire({
                     type: 'success',
-                    title: 'Đăng kí thành công ' + kq.TaiKhoan,
+                    title: 'Đăng kí thành công',
                     text: 'Bạn sẽ được đăng nhập tự động',
-                    confirmButtonText: 'Tuyệt'
-                }).then((result) => {
+                    confirmButtonText: "Xong"
+                }).then(() => {
                     capNhatThongTinUser();
                     showTaiKhoan(false);
                 });
             }
+            else {
+                let text = "";
+                for (let m of kq.message) {
+                    text += m + "\n";
+                }
+                Swal.fire({
+                    type: 'error',
+                    title: 'Chưa đăng ký xong',
+                    text: text,
+                    confirmButtonText: "Xong"
+                });
+            }
         },
         error: function(e) {
-            Swal.fire({
-                type: "error",
-                title: "Tên người dùng hoặc email đã được sử dụng trước đó",
-                // html: e.responseText
-            });
             console.log(e.responseText)
         }
     });
-
+    grecaptcha.reset();
     return false;
 }
 
 function checkDangNhap() {
-    var a = document.getElementById('username');
-    var b = document.getElementById('pass');
+    let a = document.getElementById('username');
+    let b = document.getElementById('pass');
 
     $.ajax({
         url: "api/users",
@@ -217,28 +222,32 @@ function checkDangNhap() {
         data: {
             function: 'login',
             username: a.value,
-            password: b.value
+            password: b.value,
+            "g-recaptcha-response":grecaptcha.getResponse()
         },
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        success: function(data, status, xhr) {
-            console.log(data);
-            if(data != null) {
+        success: function(data) {
+            if(data.success) {
                 Swal.fire({
                     type: "success",
                     title: "Đăng nhập thành công",
                     text: "Chào " + data.Ho + " " + data.Ten
-                }).then((result) => {
+                }).then(() => {
                     capNhatThongTinUser();
                 });
                 showTaiKhoan(false);
                 a.value="";
                 b.value="";
             } else {
+                let title = "";
+                for (let m of data.message) {
+                    title += m + "\n";
+                }
                 Swal.fire({
                     type: "error",
-                    title: "Tên tài khoản hoăc mật khẩu không đúng"
+                    title: title
                 });
             }
         },
@@ -251,6 +260,7 @@ function checkDangNhap() {
             console.log(e.responseText)
         }
     });
+    grecaptcha.reset();
     return false;
 }
 
@@ -277,11 +287,11 @@ function checkDangXuat(onSuccess) {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(data) {
-                    if(data == 'ok') {
+                    if(data === 'ok') {
                         Swal.fire({
                             type: "success",
                             title: "Đăng xuất thành công"
-                        }).then((result) => {
+                        }).then(() => {
                             capNhatThongTinUser();
                             setListGioHang(null);
                             animateCartNumber();
@@ -323,8 +333,8 @@ function capNhatThongTinUser() {
 }
 
 function promoToWeb(name, value) { // khuyen mai
-    if (!name || name == "Nothing") return "";
-    var contentLabel = "";
+    if (!name || name === "Nothing") return "";
+    let contentLabel = "";
     switch (name) {
         case "GiamGia":
             contentLabel = `<i class="fa fa-bolt"></i> Giảm ` + value.toLocaleString() + `&#8363;`;
@@ -343,27 +353,24 @@ function promoToWeb(name, value) { // khuyen mai
             break;
     }
 
-    var label =
-        `<label class=` + name.toLowerCase() + `>
+    return `<label class=` + name.toLowerCase() + `>
             ` + contentLabel + `
         </label>`;
-
-    return label;
 }
 
 //  ================================ END WEB 2 =================================
 
 // Tạo event, hiệu ứng cho form tài khoản
 function setupEventTaiKhoan() {
-    var taikhoan = document.getElementsByClassName('taikhoan')[0];
-    var list = taikhoan.getElementsByTagName('input');
+    let taikhoan = document.getElementsByClassName('taikhoan')[0];
+    let list = taikhoan.getElementsByTagName('input');
 
     // Tạo eventlistener cho input để tạo hiệu ứng label
     // Gồm 2 event onblur, onfocus được áp dụng cho từng input trong list bên trên
     ['blur', 'focus'].forEach(function(evt) {
-        for (var i = 0; i < list.length; i++) {
+        for (let i = 0; i < list.length; i++) {
             list[i].addEventListener(evt, function(e) {
-                var label = this.previousElementSibling; // lấy element ĐỨNG TRƯỚC this, this ở đây là input
+                let label = this.previousElementSibling; // lấy element ĐỨNG TRƯỚC this, this ở đây là input
                 if (e.type === 'blur') { // khi ấn chuột ra ngoài
                     if (this.value === '') { // không có value trong input thì đưa label lại như cũ
                         label.classList.remove('active');
@@ -380,9 +387,9 @@ function setupEventTaiKhoan() {
     })
 
     // Event chuyển tab login-signup
-    var tab = document.getElementsByClassName('tab');
-    for (var i = 0; i < tab.length; i++) {
-        var a = tab[i].getElementsByTagName('a')[0];
+    let tab = document.getElementsByClassName('tab');
+    for (let i = 0; i < tab.length; i++) {
+        let a = tab[i].getElementsByTagName('a')[0];
         a.addEventListener('click', function(e) {
             e.preventDefault(); // tắt event mặc định
 
@@ -401,10 +408,10 @@ function setupEventTaiKhoan() {
 
             // Ẩn phần nhập của login nếu ấn signup và ngược lại
             // href của 2 tab signup và login là #signup và #login -> tiện cho việc getElement dưới đây
-            var target = this.href.split('#')[1];
+            let target = this.href.split('#')[1];
             document.getElementById(target).style.display = 'block';
 
-            var hide = (target == 'login' ? 'signup' : 'login');
+            let hide = (target === 'login' ? 'signup' : 'login');
             document.getElementById(hide).style.display = 'none';
         })
     }
@@ -424,11 +431,11 @@ function stringToNum(str, char) {
 
 // https://www.w3schools.com/howto/howto_js_autocomplete.asp
 function autocomplete(inp, arr) {
-    var currentFocus;
+    let currentFocus;
 
     inp.addEventListener("keyup", function(e) {
-        if (e.keyCode != 13 && e.keyCode != 40 && e.keyCode != 38) { // not Enter,Up,Down arrow
-            var a, b, i, val = this.value;
+        if (e.keyCode !== 13 && e.keyCode !== 40 && e.keyCode !== 38) { // not Enter,Up,Down arrow
+            let a, b, i, val = this.value;
 
             /*close any already open lists of autocompleted values*/
             closeAllLists();
@@ -448,7 +455,7 @@ function autocomplete(inp, arr) {
             /*for each item in the array...*/
             for (i = 0; i < arr.length; i++) {
                 /*check if the item starts with the same letters as the text field value:*/
-                if (arr[i].name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                if (arr[i].name.substr(0, val.length).toUpperCase() === val.toUpperCase()) {
 
                     /*create a DIV element for each matching element:*/
                     b = document.createElement("DIV");
@@ -461,7 +468,7 @@ function autocomplete(inp, arr) {
                     b.innerHTML += "<input type='hidden' value='" + arr[i].name + "'>";
 
                     /*execute a function when someone clicks on the item value (DIV element):*/
-                    b.addEventListener("click", function(e) {
+                    b.addEventListener("click", function() {
                         /*insert the value for the autocomplete text field:*/
                         inp.value = this.getElementsByTagName("input")[0].value;
                         inp.focus();
@@ -478,20 +485,20 @@ function autocomplete(inp, arr) {
     });
     /*execute a function presses a key on the keyboard:*/
     inp.addEventListener("keydown", function(e) {
-        var x = document.getElementById(this.id + "autocomplete-list");
+        let x = document.getElementById(this.id + "autocomplete-list");
         if (x) x = x.getElementsByTagName("div");
-        if (e.keyCode == 40) {
-            /*If the arrow DOWN key is pressed, increase the currentFocus variable:*/
+        if (e.keyCode === 40) {
+            /*If the arrow DOWN key is pressed, increase the currentFocus letiable:*/
             currentFocus++;
             /*and and make the current item more visible:*/
             addActive(x);
-        } else if (e.keyCode == 38) { //up
+        } else if (e.keyCode === 38) { //up
             /*If the arrow UP key is pressed,
-            decrease the currentFocus variable:*/
+            decrease the currentFocus letiable:*/
             currentFocus--;
             /*and and make the current item more visible:*/
             addActive(x);
-        } else if (e.keyCode == 13) {
+        } else if (e.keyCode === 13) {
             /*If the ENTER key is pressed, prevent the form from being submitted,*/
 
             if (currentFocus > -1) {
@@ -517,16 +524,16 @@ function autocomplete(inp, arr) {
 
     function removeActive(x) {
         /*a function to remove the "active" class from all autocomplete items:*/
-        for (var i = 0; i < x.length; i++) {
+        for (let i = 0; i < x.length; i++) {
             x[i].classList.remove("autocomplete-active");
         }
     }
 
     function closeAllLists(elmnt) {
         /*close all autocomplete lists in the document, except the one passed as an argument:*/
-        var x = document.getElementsByClassName("autocomplete-items");
-        for (var i = 0; i < x.length; i++) {
-            if (elmnt != x[i] && elmnt != inp) {
+        let x = document.getElementsByClassName("autocomplete-items");
+        for (let i = 0; i < x.length; i++) {
+            if (elmnt !== x[i] && elmnt !== inp) {
                 x[i].parentNode.removeChild(x[i]);
             }
         }
@@ -539,36 +546,27 @@ function autocomplete(inp, arr) {
 
 // Thêm từ khóa tìm kiếm
 function addTags(nameTag, link) {
-    var new_tag = `<a href=` + link + `>` + nameTag + `</a>`;
+    let new_tag = `<a href=` + link + `>` + nameTag + `</a>`;
 
     // Thêm <a> vừa tạo vào khung tìm kiếm
-    var khung_tags = document.getElementsByClassName('tags')[0];
+    let khung_tags = document.getElementsByClassName('tags')[0];
     khung_tags.innerHTML += new_tag;
 }
 
 function smallmenu(number) {
-    if (number == 1) {
+    if (number === 1) {
         document.getElementById("openmenu").style.display = "none";
         document.getElementById("closemenu").style.display = "block";
         document.getElementsByClassName("content")[0].style.maxHeight = document.getElementsByClassName("content")[0].scrollHeight + "px";
         document.getElementsByClassName("content")[0].style.overflow = "unset";
 
-    } else if (number == 0) {
+    } else if (number === 0) {
         document.getElementById("openmenu").style.display = "block";
         document.getElementById("closemenu").style.display = "none";
         document.getElementsByClassName("content")[0].style.maxHeight = null;
         document.getElementsByClassName("content")[0].style.overflow = "hidden";
     }
 }
-
-function checklocalStorage() {
-    if (typeof(Storage) == "undefined") {
-        alert('Máy tính không hỗ trợ localStorage. Không thể lưu thông tin sản phẩm, khách hàng!!');
-    } else {
-        console.log('LocaStorage OKE!');
-    }
-}
-
 // Di chuyển lên đầu trang
 function gotoTop() {
     if (window.jQuery) {
@@ -599,24 +597,6 @@ function gotoBot() {
         document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
 }
-
-Date.prototype.toShortFormat = function() {
-    // var month_names = ["Jan", "Feb", "Mar",
-    //     "Apr", "May", "Jun",
-    //     "Jul", "Aug", "Sep",
-    //     "Oct", "Nov", "Dec"
-    // ];
-    var day = this.getDate();
-    var month_index = this.getMonth();
-    var year = this.getFullYear();
-
-    var second = this.getSeconds();
-    var minute = this.getMinutes();
-    var hour = this.getHours();
-
-    return day + "/" + (month_index+1) + "/" + year + " " + hour + ":" + minute;
-}
-
 function twoDigits(d) {
     if(0 <= d && d < 10) return "0" + d.toString();
     if(-10 < d && d < 0) return "-0" + (-1*d).toString();
@@ -632,153 +612,3 @@ function twoDigits(d) {
 Date.prototype.toMysqlFormat = function() {
     return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
 };
-
-
-// Test, not finished
-function auto_Get_Database() {
-    var ul = document.getElementsByClassName('homeproduct')[0];
-    var li = ul.getElementsByTagName('li');
-    for (var l of li) {
-        var a = l.getElementsByTagName('a')[0];
-        // name
-        var name = a.getElementsByTagName('h3')[0].innerHTML;
-
-        // price
-        var price = a.getElementsByClassName('price')[0]
-        price = price.getElementsByTagName('strong')[0].innerHTML;
-
-        // img
-        var img = a.getElementsByTagName('img')[0].src;
-        console.log(img);
-
-        // // rating
-        // var rating = a.getElementsByClassName('ratingresult')[0];
-        // var star = rating.getElementsByClassName('icontgdd-ystar').length;
-        // var rateCount = parseInt(rating.getElementsByTagName('span')[0].innerHTML);
-
-        // // promo
-        // var tragop = a.getElementsByClassName('installment');
-        // if(tragop.length) {
-
-        // }
-
-        // var giamgia = a.getElementsByClassName('discount').length;
-        // var giareonline = a.getElementsByClassName('shockprice').length;
-    }
-}
-
-function getThongTinSanPhamFrom_TheGioiDiDong() {
-    javascript: (function() {
-        var s = document.createElement('script');
-        s.innerHTML = `
-			(function () {
-				var ul = document.getElementsByClassName('parameter')[0];
-				var li_s = ul.getElementsByTagName('li');
-				var result = {};
-				result.detail = {};
-
-				for (var li of li_s) {
-					var loai = li.getElementsByTagName('span')[0].innerText;
-					var giatri = li.getElementsByTagName('div')[0].innerText;
-
-					switch (loai) {
-						case "Màn hình:":
-							result.detail.screen = giatri.replace('"', "'");
-							break;
-						case "Hệ điều hành:":
-							result.detail.os = giatri;
-							break;
-						case "Camera sau:":
-							result.detail.camara = giatri;
-							break;
-						case "Camera trước:":
-							result.detail.camaraFront = giatri;
-							break;
-						case "CPU:":
-							result.detail.cpu = giatri;
-							break;
-						case "RAM:":
-							result.detail.ram = giatri;
-							break;
-						case "Bộ nhớ trong:":
-							result.detail.rom = giatri;
-							break;
-						case "Thẻ nhớ:":
-							result.detail.microUSB = giatri;
-							break;
-						case "Dung lượng pin:":
-							result.detail.battery = giatri;
-							break;
-					}
-				}
-
-				console.log(JSON.stringify(result, null, "\t"));
-			})();`;
-        document.body.appendChild(s);
-    })();
-}
-
-// $('.taikhoan').find('input').on('keyup blur focus', function (e) {
-
-//     var $this = $(this),
-//         label = $this.prev('label');
-
-//     if (e.type === 'keyup') {
-//         if ($this.val() === '') {
-//             label.removeClass('active highlight');
-//         } else {
-//             label.addClass('active highlight');
-//         }
-//     } else if (e.type === 'blur') {
-//         if ($this.val() === '') {
-//             label.removeClass('active highlight');
-//         } else {
-//             label.removeClass('highlight');
-//         }
-//     } else if (e.type === 'focus') {
-
-//         if ($this.val() === '') {
-//             label.removeClass('highlight');
-//         } else if ($this.val() !== '') {
-//             label.addClass('highlight');
-//         }
-//     }
-
-// });
-
-// $('.tab a').on('click', function (e) {
-
-//     e.preventDefault();
-
-//     $(this).parent().addClass('active');
-//     $(this).parent().siblings().removeClass('active');
-
-//     target = $(this).attr('href');
-
-//     $('.tab-content > div').not(target).hide();
-
-//     $(target).fadeIn(600);
-
-// });
-
-// for(var p of list_products) {
-//     switch(p.promo.name) {
-//         case 'tragop':
-//             p.MaKM = 4;
-//         break;
-
-//         case 'giareonline':
-//             p.MaKM = 3;
-//         break;
-
-//         case 'giamgia':
-//             p.MaKM = 2;
-//         break;
-
-//         case 'moiramat':
-//             p.MaKM = 5;
-//         break;
-
-//         default: p.MaKM = 1;
-//     }
-// }

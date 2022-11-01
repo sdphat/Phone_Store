@@ -21,9 +21,6 @@ Route::get('/', function () {
 Route::get("/home",function (){
     return view("home");
 });
-Route::get('/admin_login', function () {
-    return view('admin-login');
-});
 Route::get("/product_details",function (){
     return view("product-details");
 });
@@ -37,3 +34,5 @@ Route::get("/test",function (){
     return view("welcome");
 });
 Route::get('admin', [UsersController::class, 'admin'])->name('users.admin');
+Route::get('admin-login', [UsersController::class, 'adminLoginPage'])->name('users.admin');
+

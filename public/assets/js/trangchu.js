@@ -6,20 +6,10 @@ var CurrentFilters = [];
 
 window.onload = function() {
     khoiTao();
-    // autocomplete cho khung tim kiem
-    // autocomplete(document.getElementById('search-box'), list_products);
-    // thêm tags (từ khóa) vào khung tìm kiếm
     var tags = ["Samsung", "iPhone", "Coolpad", "Oppo", "Mobi"];
     for (var t of tags) addTags(t, "home?search=" + t);
-
-    // =================== web 2 tìm nâng cao ================
-    // Thêm hình vào banner
     setupBanner();
-
-    // Thêm danh sách hãng điện thoại
     setupCompany();
-
-    // slider chọn khoảng giá
     $("#demoSlider").ionRangeSlider({
         type: "double",
         grid: true,
@@ -37,9 +27,6 @@ window.onload = function() {
             filtersAjax(createFilters('price', data.from * 1E6 + "-" + data.to * 1E6));
         },
     });
-    // ==================== End ===========================
-
-    // Thêm sản phẩm vào trang
     var filters = getFilterFromURL();
     if (filters.length) { // có filter
         filtersAjax(filters);
@@ -800,7 +787,6 @@ function hideSanPhamKhongThuoc(list) {
     }
 }
 
-//companysMenu responsive
 function setCompanysMenu() {
     var content = document.getElementsByClassName("companyMenu")[0];
     if (content.style.maxHeight) {

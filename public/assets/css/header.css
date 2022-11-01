@@ -129,7 +129,6 @@ form.input-search {
 
 .tags a:hover {
     color: var(--primary-text-hover);
-    text-decoration: underline;
 }
 
 /* W3 school autocomplete */
@@ -174,6 +173,7 @@ form.input-search {
 
 /* Tools Member */
 .tools-member {
+    color: var(--primary-text);
     float: right;
     display: table;
     margin-left: 10px;
