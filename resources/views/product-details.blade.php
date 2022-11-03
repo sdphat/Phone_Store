@@ -29,18 +29,17 @@
 <body>
 <x-header/>
 <section>
-
     <div class="chitietSanpham" style="min-height: 85vh">
         <h1>Điện thoại </h1>
         <div class="rowdetail group">
             <div class="picture">
-                <img src="">
+                <img src="" alt="">
             </div>
             <div class="price_sale">
                 <div class="area_price"> </div>
                 <div class="ship" style="display: none;">
                     <i class="fa fa-clock-o"></i>
-                    <div>NHẬN HÀNG TRONG 1 GIỜ</div>
+                    <div>Nhận hàng trong 1 giờ ở nội thành</div>
                 </div>
                 <div class="area_promo">
                     <strong>khuyến mãi</strong>
@@ -98,8 +97,8 @@
                         <label class="star star-1" for="star-1" title="Tệ"></label>
                     </form>
                 </div>
-                <textarea maxlength="250" id="inpBinhLuan" placeholder="Viết suy nghĩ của bạn vào đây..."></textarea>
-                <input id="btnBinhLuan" type="button" onclick="checkGuiBinhLuan()" value="GỬI BÌNH LUẬN">
+                <textarea maxlength="250" id="inpBinhLuan" placeholder="Viết bình luận"></textarea>
+                <input id="btnBinhLuan" type="button" onclick="checkGuiBinhLuan()" value="GỬI">
             </div>
             <!-- <h2>Bình luận</h2> -->
             <div class="container-comment">
@@ -110,90 +109,6 @@
         </div>
     </div>
 </section>
-<div class="containTaikhoan">
-    <span class="close" onclick="showTaiKhoan(false);">&times;</span>
-    <div class=" taikhoan">
-        <ul class="tab-group">
-            <li class="tab active"><a href="#login">Đăng nhập</a></li>
-            <li class="tab"><a href="#signup">Đăng kí</a></li>
-        </ul> <!-- /tab group -->
-        <div class="tab-content">
-            <div id="login">
-                <h1>Chào mừng bạn trở lại!</h1>
-                <!-- <form onsubmit="return logIn(this);"> -->
-                <form action="" method="post" name="formDangNhap" onsubmit="return checkDangNhap();">
-                    <div class="field-wrap">
-                        <label>
-                            Tên đăng nhập<span class="req">*</span>
-                        </label>
-                        <input name="username" type="text" id="username" required autocomplete="off" />
-                    </div> <!-- /user name -->
-                    <div class="field-wrap">
-                        <label>
-                            Mật khẩu<span class="req">*</span>
-                        </label>
-                        <input name="pass" type="password" id="pass" required autocomplete="off" />
-                    </div> <!-- pass -->
-                    <p class="forgot"><a href="#">Quên mật khẩu?</a></p>
-                    <button type="submit" class="button button-block" />Tiếp tục</button>
-                </form> <!-- /form -->
-            </div> <!-- /log in -->
-            <div id="signup">
-                <h1>Đăng kí miễn phí</h1>
-                <!-- <form onsubmit="return signUp(this);"> -->
-                <form action="" method="post" name="formDangKy" onsubmit="return checkDangKy();">
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                Họ<span class="req">*</span>
-                            </label>
-                            <input name="ho" type="text" id="ho" required autocomplete="off" />
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Tên<span class="req">*</span>
-                            </label>
-                            <input name="ten" id="ten" type="text" required autocomplete="off" />
-                        </div>
-                    </div> <!-- / ho ten -->
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                Điện thoại<span class="req">*</span>
-                            </label>
-                            <input name="sdt" id="sdt" type="text" pattern="\d*" minlength="10" maxlength="12" required autocomplete="off" />
-                        </div> <!-- /sdt -->
-                        <div class="field-wrap">
-                            <label>
-                                Email<span class="req">*</span>
-                            </label>
-                            <input name="email" id="email" type="email" required autocomplete="off" />
-                        </div> <!-- /email -->
-                    </div>
-                    <div class="field-wrap">
-                        <label>
-                            Địa chỉ<span class="req">*</span>
-                        </label>
-                        <input name="diachi" id="diachi" type="text" required autocomplete="off" />
-                    </div> <!-- /user name -->
-                    <div class="field-wrap">
-                        <label>
-                            Tên đăng nhập<span class="req">*</span>
-                        </label>
-                        <input name="newUser" id="newUser" type="text" required autocomplete="off" />
-                    </div> <!-- /user name -->
-                    <div class="field-wrap">
-                        <label>
-                            Mật khẩu<span class="req">*</span>
-                        </label>
-                        <input name="newPass" id="newPass" type="password" required autocomplete="off" />
-                    </div> <!-- /pass -->
-                    <button type="submit" class="button button-block" />Tạo tài khoản</button>
-                </form> <!-- /form -->
-            </div> <!-- /sign up -->
-        </div><!-- tab-content -->
-    </div> <!-- /taikhoan -->
-</div>
 <x-footer/>
 </body>
 

@@ -233,7 +233,7 @@ function checkDangNhap() {
                 Swal.fire({
                     type: "success",
                     title: "Đăng nhập thành công",
-                    text: "Chào " + data.Ho + " " + data.Ten
+                    text: "Chào " + data.user.Ho + " " + data.user.Ten
                 }).then(() => {
                     capNhatThongTinUser();
                 });

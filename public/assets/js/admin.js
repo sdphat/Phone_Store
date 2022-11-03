@@ -252,7 +252,7 @@ function addTableProducts(list_products) {
             <td style="width: 5%">` + (i + 1) + `</td>
             <td style="width: 10%">` + p.MaSP + `</td>
             <td style="width: 40%">
-                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.TenSP.split(' ').join('-') + `">` + p.TenSP + `</a>
+                <a title="Xem chi tiết" target="_blank" href="product-details?` + p.TenSP.split(' ').join('-') + `">` + p.TenSP + `</a>
                 <img src="` + p.HinhAnh + `" alt=""/>
             </td>
             <td style="width: 15%">` + parseInt(p.DonGia).toLocaleString() + `</td>
@@ -500,12 +500,15 @@ function xoaSanPham(trangthai, masp, tensp) {
                     maspdelete: masp
                 },
                 success: function(data, status, xhr) {
-
+                    Swal.fire({
+                        type: "success",
+                        title: "Đã xóa thông tin sản phẩm"
+                    });
                 },
                 error: function() {
                     Swal.fire({
                         type: "error",
-                        title: "Lỗi xóa"
+                        title: "Không thể xóa"
                     });
                 }
             });
@@ -718,7 +721,7 @@ function refreshTableDonHang() {
         dataType: "json",
         // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            function: "getall",
+            function: "getAll",
         },
         success: function(data, status, xhr) {
             addTableDonHang(data);
@@ -745,9 +748,9 @@ function addTableDonHang(data) {
             <td style="width: 13%">` + d.MaHD + `</td>
             <td style="width: 7%">` + d.MaND + `</td>
             <td style="width: 20%">` + /*d.sp*/ + `</td>
-            <td style="width: 15%">` + d.TongTien + `</td>
+            <td style="width: 15%">` + d.TongTien + `vnđ</td>
             <td style="width: 10%">` + d.NgayLap + `</td>
-            <td style="width: 10%">` + d.TinhTrang + `</td>
+            <td style="width: 10%">` + d.TrangThai + `</td>
             <td style="width: 10%">
                 <div class="tooltip">
                     <i class="fa fa-check" onclick="duyet('` + d.MaHD + `', true)"></i>
@@ -760,7 +763,7 @@ function addTableDonHang(data) {
 
             </td>
         </tr>`;
-        TONGTIEN += stringToNum(d.tongtien);
+        TONGTIEN += stringToNum(d.tongtien+"");
     }
 
     s += `</table>`;
@@ -915,22 +918,18 @@ function getValueOfTypeInTable_DonHang(tr, loai) {
 function refreshTableKhachHang() {
     $.ajax({
         type: "POST",
-        url: "php/xulykhachhang.php",
+        url: "api/users",
         dataType: "json",
         // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getall",
+            function: "getall",
         },
         success: function(data, status, xhr) {
             addTableKhachHang(data);
             //console.log(data);
         },
         error: function(e) {
-            Swal.fire({
-                type: "error",
-                title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
-                html: e.responseText
-            });
+            console.log("Lỗi xử lý dữ liệu");
         }
     });
 }
@@ -939,13 +938,13 @@ function thayDoiTrangThaiND(inp, mand) {
     let trangthai = (inp.checked?1:0);
     $.ajax({
         type: "POST",
-        url: "php/xulykhachhang.php",
+        url: "api/users",
         dataType: "json",
         // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "changeTT",
-            key: mand,
-            trangThai: trangthai
+            function: "changeStatus",
+            id: mand,
+            status: trangthai
         },
         success: function(data, status, xhr) {
             //list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
@@ -971,8 +970,6 @@ function addTableKhachHang(data) {
 
     for (let i = 0; i < data.length; i++) {
         let u = data[i];
-        console.log(u.TrangThai)
-
         s += `<tr>
             <td >` + (i + 1) + `</td>
             <td >` + u.Ho + ' ' + u.Ten + `</td>
@@ -1047,24 +1044,23 @@ function xoaNguoiDung(mand) {
         if(result.value) {
             $.ajax({
                 type: "POST",
-                url: "php/xulykhachhang.php",
+                url: "api/users",
                 dataType: "json",
                 // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
                 data: {
-                    request: "delete",
-                    mand: mand
+                    function: "delete",
+                    id: mand
                 },
                 success: function(data, status, xhr) {
                     refreshTableKhachHang();
                     //console.log(data);
                 },
                 error: function(e) {
-                    // Swal.fire({
-                    //     type: "error",
-                    //     title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
-                    //     html: e.responseText
-                    // });
-                    console.log(e.responseText);
+                    Swal.fire({
+                        type: "error",
+                        title: "Không thể xóa",
+                        html: e.responseText
+                    });
                 }
             });
         }

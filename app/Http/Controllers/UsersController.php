@@ -22,7 +22,7 @@ class UsersController extends Controller
         try {
             call_user_func_array([get_class($this), $f], [$request]);
         } catch (Exception $exception) {
-            echo "Not found " . $f;
+            echo "Not found " . $exception;
         }
     }
 
@@ -33,15 +33,22 @@ class UsersController extends Controller
 
     public function changeStatus(Request $request)
     {
-        $key = $request->get('key');
-        $status = $request->get('trangThai');
-        echo json_encode(Users::where("MaND", $key)->update(["TrangThai" => $status]));
+        try {
+            $key = $request->get("id");
+            $status = $request->get("status");
+            Users::where("MaND", $key)->update(["TrangThai" => $status]);
+        }catch (Exception $e){
+            echo $e;
+        }
     }
 
     public function delete(Request $request)
     {
-        $id = $request->get('mand');
-        echo json_encode(Products::where('MaND', $id)->delete());
+        try{
+            Products::where('MaND', $request->get("id"))->delete();
+        }catch(Exception $e){
+            echo $e;
+        }
     }
 
     public function login(Request $request)
@@ -63,6 +70,7 @@ class UsersController extends Controller
         if ($validator->fails()) {
             foreach ($validator->messages()->getMessages() as $messages) {
                 foreach ($messages as $message) {
+                    if($message==="The g-recaptcha-response field is required.") $message="Chưa xác thực captcha";
                     array_push($result["message"], $message);
                 }
             }
@@ -76,7 +84,7 @@ class UsersController extends Controller
             if (count($list) == 1) {
                 Users::where("MaND", $list[0]->MaND)->update(["api_token" => $token]);
                 $result["success"] = true;
-                $result["data"] = $list[0];
+                $result["user"] = $list[0];
                 array_push($result["message"], "Đăng nhập thành công");
             } else {
                 array_push($result["message"], "Tên tài khoản hoặc mật khẩu không đúng");

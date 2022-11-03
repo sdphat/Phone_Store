@@ -13,6 +13,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{asset("")}}assets/css/style.css">
     <link rel="stylesheet" href="{{asset("")}}assets/css/login.css">
 </head>
 <body>
@@ -35,7 +36,6 @@
                 {!! NoCaptcha::display() !!}
             </div>
             <button type="submit" onclick="login()" class="btn btn-info">Đăng nhập</button>
-
             {{--            <a class="text-darkyellow" href="#"><small>Quên mật khẩu?</small></a>--}}
             {{--            <p class="text-whitesmoke text-center"><small>Do not have an account?</small></p>--}}
         </form>

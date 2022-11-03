@@ -5,11 +5,11 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/*body,
+body,
 html {
-    min-width: 1024px;
-
-}*/
+    /*min-width: 1024px;*/
+background: #f5f5f5;
+}
 
 a {
     text-decoration: none;
@@ -238,4 +238,11 @@ hr {
         transform: scale(3);
         opacity: 0
     }
+}
+
+:root {
+    --primary-color: #6a40b8;
+    --primary-color-light: #b29dd9;
+    --primary-text:#ffffff;
+    --primary-text-hover:#dddddd;
 }

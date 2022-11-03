@@ -1,10 +1,3 @@
-/* Header */
-:root {
-    --primary-color: #6a40b8;
-    --primary-color-light: #b29dd9;
-    --primary-text:#ffffff;
-    --primary-text-hover:#dddddd;
-}
 .header-container{
     display: flex;
     flex-wrap: wrap;
@@ -229,21 +222,26 @@ form.input-search {
 }
 
 .member .menuMember {
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     position: absolute;
     left: 0;
     text-align: center;
-    min-width: 170px;
     transition-duration: .15s;
     transform: translateX(-40%) scale(0);
     background: var(--primary-color);
     color: var(--primary-text);
-    border: 2px var(--primary-text-hover) solid;
     border-radius: 4px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    overflow: hidden;
 }
 
 .member .menuMember a {
-    display: block;
-    padding: 10px 0;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
 }
 
 .member .menuMember a:hover {

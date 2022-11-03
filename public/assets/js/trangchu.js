@@ -7,7 +7,9 @@ var CurrentFilters = [];
 window.onload = function() {
     khoiTao();
     var tags = ["Samsung", "iPhone", "Coolpad", "Oppo", "Mobi"];
-    for (var t of tags) addTags(t, "home?search=" + t);
+    for (var t of tags){
+        addTags(t, "home?search=" + t);
+    }
     setupBanner();
     setupCompany();
     $("#demoSlider").ionRangeSlider({
@@ -76,9 +78,9 @@ function hienThiKhungSanPhamMacDinh() {
     var soLuong = (window.innerWidth < 1200 ? 4 : 5); // màn hình nhỏ thì hiển thị 4 sp, to thì hiển thị 5
 
     // Các màu
-    var yellow_red = ['#ff9c00', '#ec1f1f'];
-    var blue = ['#42bcf4', '#004c70'];
-    var green = ['#5de272', '#007012'];
+    var yellow_red = ['#fc8484', '#f62e2e'];
+    var blue = ['#7bd3fa', '#007afc'];
+    var green = ['#77fd8d', '#03fc2b'];
 
     // Thêm các khung sản phẩm
     addKhungSanPham('NỔI BẬT NHẤT', yellow_red, ['star=0', 'sort=SoDanhGia-desc', 'page=0'], soLuong);
@@ -274,11 +276,7 @@ function filtersAjax(filters, callback) {
             }
         },
         error: function(e) {
-            Swal.fire({
-                type: "error",
-                title: "Lỗi lấy dữ liệu sản phẩm filters (trangchu.js > filtersAjax)"+filters,
-                html: e.responseText
-            });
+            console.log("Lỗi lấy dữ liệu");
         }
     })
 }
@@ -397,17 +395,17 @@ function addKhungSanPham(tenKhung, color, filters, len) {
     // convert color to code
     var gradient = `background-image: linear-gradient(120deg, ` + color[0] + ` 0%, ` + color[1] + ` 50%, ` + color[0] + ` 100%);`
     var borderColor = `border-color: ` + color[0];
-    var borderA = ` border-left: 2px solid ` + color[0] + `; border-right: 2px solid ` + color[0] + `;`;
+    var borderA = ` border-left: 2px solid ` + color[0] + `; border-right: 2px solid ` + color[0]+ `; border-bottom: 2px solid ` + color[0] + `;`;
 
     // mở tag
     var s = `<div class="khungSanPham" style="` + borderColor + `">
-                <h3 class="tenKhung" style="` + gradient + `">* ` + tenKhung + ` *</h3>
+                <h3 class="tenKhung" style="` + gradient + `">` + tenKhung + `</h3>
                 <div class="listSpTrongKhung flexContain" data-tenkhung="` + tenKhung + `">
                     <div class="loader"></div>
                 </div>
-                <a class="xemTatCa" onclick='filtersAjax(`+JSON.stringify(filters)+`)' style="` + borderA + `" data-tenkhung="` + tenKhung + `">
+                <a class="xemTatCa" onclick='filtersAjax(`+JSON.stringify(filters)+`)' style="" data-tenkhung="` + tenKhung + `">
                 </a>
-              </div> <hr>`;
+              </div>`;
 
 
     // thêm khung vào contain-khung

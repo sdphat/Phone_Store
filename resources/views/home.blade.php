@@ -59,10 +59,10 @@
             <div id="iconCloseMenu" style="display: none;">▽</div>
         </button>
     </div>
-    <div class="companyMenu group flexContain"></div>
+    <div class="companyMenu group flexContain" style="background: #ffffff;border-radius: 4px"></div>
 
-    <div class="timNangCao" style="max-width: 1200px;width: 100%;display: flex;flex-wrap:wrap;justify-content: center">
-        <div class="flexContain" style="width:100%">
+    <div class="timNangCao" style="max-width: 1200px;width: 100%;display: flex;flex-wrap:wrap;justify-content: center;background: #ffffff;">
+        <div class="flexContain" style="width:100%;border: 2px solid lightgray;border-radius: 4px;background: var(--primary-color);padding: 0;">
             <div class="pricesRangeFilter dropdown">
                 <button class="dropbtn">Giá tiền</button>
                 <div class="dropdown-content"></div>
@@ -113,113 +113,7 @@
     <!-- Div hiển thị khung sp hot, khuyến mãi, mới ra mắt ... -->
     <div class="contain-khungSanPham"></div>
 </section>
-<div class="containTaikhoan">
-    <span class="close" onclick="showTaiKhoan(false);">&times;</span>
-    <div class=" taikhoan">
-        <ul class="tab-group">
-            <li class="tab active"><a href="#login">Đăng nhập</a></li>
-            <li class="tab"><a href="#signup">Đăng kí</a></li>
-        </ul> <!-- /tab group -->
-        <div class="tab-content">
-            <div id="login">
-                <h1>Chào mừng bạn trở lại!</h1>
-                <!-- <form onsubmit="return logIn(this);"> -->
-                <form action="" method="post" name="formDangNhap" onsubmit="return checkDangNhap();">
-                    <div class="field-wrap">
-                        <label>
-                            Tên đăng nhập<span class="req">*</span>
-                        </label>
-                        <input name="username" type="text" id="username" required autocomplete="off"/>
-                    </div> <!-- /user name -->
-                    <div class="field-wrap">
-                        <label>
-                            Mật khẩu<span class="req">*</span>
-                        </label>
-                        <input name="pass" type="password" id="pass" required autocomplete="off"/>
-                    </div>
-                    <div class="field-wrap">
-                        {!! NoCaptcha::display() !!}
-                    </div>
-                    {{--                    <p class="forgot"><a href="#">Quên mật khẩu?</a></p>--}}
-                    <button type="submit" class="button button-block"/>
-                    Tiếp tục</button>
-                </form> <!-- /form -->
-            </div> <!-- /log in -->
-            <div id="signup">
-                <h1>Đăng kí miễn phí</h1>
-                <!-- <form onsubmit="return signUp(this);"> -->
-                <form action="" method="post" name="formDangKy" onsubmit="return checkDangKy();" >
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                Họ<span class="req">*</span>
-                            </label>
-                            <input name="ho" type="text" id="ho" required autocomplete="off"/>
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Tên<span class="req">*</span>
-                            </label>
-                            <input name="ten" id="ten" type="text" required autocomplete="off"/>
-                        </div>
-                    </div> <!-- / ho ten -->
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                Điện thoại<span class="req">*</span>
-                            </label>
-                            <input name="sdt" id="sdt" type="text" pattern="\d*" minlength="10" maxlength="12" required
-                                   autocomplete="off"/>
-                        </div> <!-- /sdt -->
-                        <div class="field-wrap">
-                            <label>
-                                Email<span class="req">*</span>
-                            </label>
-                            <input name="email" id="email" type="email" required autocomplete="off" />
-                        </div> <!-- /email -->
-                    </div>
-                    <div class="field-wrap">
-                        <label>
-                            Địa chỉ<span class="req">*</span>
-                        </label>
-                        <input name="diachi" id="diachi" type="text" required autocomplete="off" />
-                    </div>
-                    <div class="field-wrap">
-                        <label>
-                            Tên đăng nhập<span class="req">*</span>
-                        </label>
-                        <input name="newUser" id="newUser" type="text" required autocomplete="off"/>
-                    </div> <!-- /user name -->
-                    <div class="field-wrap">
-                        <label>
-                            Mật khẩu<span class="req">*</span>
-                        </label>
-                        <input name="newPass" id="newPass" type="password" required autocomplete="off"/>
-                    </div>
-                    <button type="submit" class="button button-block"/>
-                    Tạo tài khoản</button>
-                </form> <!-- /form -->
-            </div> <!-- /sign up -->
-        </div><!-- tab-content -->
-    </div> <!-- /taikhoan -->
-</div>
-<script>
-    checkTaiKhoan();
-</script>
-<div class="plc">
-    <section>
-        <ul class="flexContain">
-            <li>Giao hàng hỏa tốc trong 1 giờ</li>
-            <li>Thanh toán linh hoạt: tiền mặt, visa / master, trả góp</li>
-            <li>Trải nghiệm sản phẩm tại nhà</li>
-            <li>Lỗi đổi tại nhà trong 1 ngày</li>
-            <li>Hỗ trợ suốt thời gian sử dụng.
-                <br>Hotline:
-                <a href="tel:12345678" style="color: #288ad6;">1234.5678</a>
-            </li>
-        </ul>
-    </section>
-</div>
+
 <x-footer/>
 </body>
 </html>

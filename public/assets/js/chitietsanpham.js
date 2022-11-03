@@ -141,7 +141,7 @@ function guiBinhLuan(nguoidung) {
 
     if(!soSao) {
         Swal.fire({
-            title: 'Thiếu!',
+            title: 'Chưa thể gửi bình luận',
             text: 'Bạn vui lòng đánh số sao',
             type: 'warning',
             grow: 'row'
@@ -151,7 +151,7 @@ function guiBinhLuan(nguoidung) {
 
     if(!binhLuan) {
         Swal.fire({
-            title: 'Thiếu!',
+            title: 'Chưa thể gửi bình luận',
             text: 'Bạn vui lòng để lại bình luận',
             type: 'warning',
             grow: 'row'

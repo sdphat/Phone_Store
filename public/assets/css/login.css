@@ -7,10 +7,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(#30799c, #8bc1d9) no-repeat fixed;
+    background: linear-gradient(var(--primary-color), var(--primary-color-light)) no-repeat fixed;
 }
 .title-form{
-    color: #1b6487;
+    color: var(--primary-color);
 }
 
 /* Text Align */
@@ -31,7 +31,7 @@ body {
 .text-whitesmoke {
     color: whitesmoke;
     border-radius: 4px 4px 0 0;
-    background: #30799c;
+    background: var(--primary-color);
     padding: 10px;
 }
 
@@ -121,7 +121,7 @@ body {
 
 .form-control,
 .border-line {
-    border: 2px solid #aacdd5;
+    border: 2px solid var(--primary-color-light);
     border-radius: 4px;
     display: block;
     padding: 6px 12px;
@@ -130,7 +130,7 @@ body {
 }
 .form-control:focus,
 .border-line:focus {
-    border-color: #428bca;
+    border-color: var(--primary-color);
 }
 .form-control,
 .form-control:focus {
@@ -149,7 +149,7 @@ body {
 /* Login & Register Pages*/
 
 .login-container {
-    background-color: rgba(174, 217, 241, 0.64);
+        background-color: rgba(174, 217, 241, 0.64);
     text-align: center;
     border-radius: 4px;
     margin: 0 auto;

@@ -161,7 +161,7 @@ class ProductsController extends Controller
     public function add(Request $request)
     {
         $data = $request->get('dataAdd');
-        $spAddArr = array(
+        Products::insert([
             'MaLSP' => $data['company'],
             'TenSP' => $data['name'],
             'DonGia' => $data['price'],
@@ -180,8 +180,7 @@ class ProductsController extends Controller
             'SoSao' => $data['star'],
             'SoDanhGia' => $data['rateCount'],
             'TrangThai' => $data['TrangThai']
-        );
-        echo json_encode(Products::insert($spAddArr));
+        ]);
     }
 
     public function delete(Request $request)
