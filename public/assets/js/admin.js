@@ -252,7 +252,7 @@ function addTableProducts(list_products) {
             <td style="width: 5%">` + (i + 1) + `</td>
             <td style="width: 10%">` + p.MaSP + `</td>
             <td style="width: 40%">
-                <a title="Xem chi tiết" target="_blank" href="product-details?` + p.TenSP.split(' ').join('-') + `">` + p.TenSP + `</a>
+                <a title="Xem chi tiết" target="_blank" href="product_details?` + p.MaSP + `">` + p.TenSP + `</a>
                 <img src="` + p.HinhAnh + `" alt=""/>
             </td>
             <td style="width: 15%">` + parseInt(p.DonGia).toLocaleString() + `</td>
@@ -747,8 +747,7 @@ function addTableDonHang(data) {
             <td style="width: 5%">` + (i + 1) + `</td>
             <td style="width: 13%">` + d.MaHD + `</td>
             <td style="width: 7%">` + d.MaND + `</td>
-            <td style="width: 20%">` + /*d.sp*/ + `</td>
-            <td style="width: 15%">` + d.TongTien + `vnđ</td>
+            <td style="width: 15%">` + parseInt(d.TongTien).toLocaleString() + `</td>
             <td style="width: 10%">` + d.NgayLap + `</td>
             <td style="width: 10%">` + d.TrangThai + `</td>
             <td style="width: 10%">

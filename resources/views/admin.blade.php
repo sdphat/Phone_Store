@@ -32,14 +32,10 @@
 </head>
 
 <body>
-<header>
-    <h2>SmartPhone Store - Admin</h2>
-</header>
 
 <!-- Menu -->
 <aside class="sidebar">
     <ul class="nav">
-        <li class="nav-title">MENU</li>
         <!-- <li class="nav-item"><a class="nav-link active"><i class="fa fa-home"></i> Home</a></li> -->
         <li class="nav-item" onclick="refreshTableSanPham()"><a class="nav-link"><i class="fa fa-th-large"></i> Sản Phẩm</a></li>
         <li class="nav-item" onclick="refreshTableDonHang()"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
@@ -60,9 +56,22 @@
     <div class="home">
 
     </div>
-
-    <!-- Sản Phẩm -->
     <div class="sanpham">
+        <div class="table-footer">
+            <select name="kieuTimSanPham">
+                <option value="ma">Tìm theo mã</option>
+                <option value="ten">Tìm theo tên</option>
+            </select>
+            <input type="text" placeholder="Tìm kiếm..." onkeyup="timKiemSanPham(this)">
+            <button onclick="document.getElementById('khungThemSanPham').style.transform = 'scale(1)'; autoMaSanPham()">
+                <i class="fa fa-plus-square"></i>
+                Thêm sản phẩm
+            </button>
+            <button onclick="refreshTableSanPham()">
+                <i class="fa fa-refresh"></i>
+                Làm mới
+            </button>
+        </div>
         <table class="table-header">
             <tr>
                 <!-- Theo độ rộng của table content -->
@@ -81,14 +90,15 @@
 
     <!--<div class="table-content">
             <?php
+    use App\Models\Products;
     $i = 1;
     echo "<table class='table-outline hideImg'>";
-    foreach (\App\Models\Products::all() as $rowname => $row) {
+    foreach (Products::all() as $rowname => $row) {
         echo "<tr>
                         <td style'width: 5%'>" . $i++ . "</td>
                         <td style='width: 10%'>" . $row['MaSP'] . "</td>
                         <td style='width: 40%'>
-                            <a title='Xem chi tiết' target='_blank' href='chitietsanpham.php?" . $row['TenSP'] . "'>" . $row['TenSP'] . "</a>
+                            <a title='Xem chi tiết' target='_blank' href='product-details?" . $row['MaSP'] . "'>" . $row['TenSP'] . "</a>
                             <img src='" . $row['HinhAnh'] . "'></img>
                         </td>
                         <td style='width: 15%'>" . $row['DonGia'] . "</td>
@@ -109,21 +119,7 @@
     ?>
         </div>-->
 
-        <div class="table-footer">
-            <select name="kieuTimSanPham">
-                <option value="ma">Tìm theo mã</option>
-                <option value="ten">Tìm theo tên</option>
-            </select>
-            <input type="text" placeholder="Tìm kiếm..." onkeyup="timKiemSanPham(this)">
-            <button onclick="document.getElementById('khungThemSanPham').style.transform = 'scale(1)'; autoMaSanPham()">
-                <i class="fa fa-plus-square"></i>
-                Thêm sản phẩm
-            </button>
-            <button onclick="refreshTableSanPham()">
-                <i class="fa fa-refresh"></i>
-                Làm mới
-            </button>
-        </div>
+
 
         <div id="khungThemSanPham" class="overlay">
             <span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
@@ -264,23 +260,6 @@
 
     <!-- Đơn Hàng -->
     <div class="donhang">
-        <table class="table-header">
-            <tr>
-                <!-- Theo độ rộng của table content -->
-                <th title="Sắp xếp" style="width: 5%" onclick="sortDonHangTable('stt')">Stt <i class="fa fa-sort"></i></th>
-                <th title="Sắp xếp" style="width: 13%" onclick="sortDonHangTable('madon')">Mã đơn <i class="fa fa-sort"></i></th>
-                <th title="Sắp xếp" style="width: 7%" onclick="sortDonHangTable('khach')">Khách <i class="fa fa-sort"></i></th>
-                <th title="Sắp xếp" style="width: 20%" onclick="sortDonHangTable('sanpham')">Sản phẩm <i class="fa fa-sort"></i></th>
-                <th title="Sắp xếp" style="width: 15%" onclick="sortDonHangTable('tongtien')">Tổng tiền <i class="fa fa-sort"></i></th>
-                <th title="Sắp xếp" style="width: 10%" onclick="sortDonHangTable('ngaygio')">Ngày giờ <i class="fa fa-sort"></i></th>
-                <th title="Sắp xếp" style="width: 10%" onclick="sortDonHangTable('trangthai')">Trạng thái <i class="fa fa-sort"></i></th>
-                <th style="width: 10%">Hành động</th>
-            </tr>
-        </table>
-
-        <div class="table-content">
-        </div>
-
         <div class="table-footer">
             <div class="timTheoNgay">
                 Từ ngày: <input type="date" id="fromDate">
@@ -296,12 +275,38 @@
             </select>
             <input type="text" placeholder="Tìm kiếm..." onkeyup="timKiemDonHang(this)">
         </div>
+        <table class="table-header">
+            <tr>
+                <!-- Theo độ rộng của table content -->
+                <th title="Sắp xếp" style="width: 5%" onclick="sortDonHangTable('stt')">Stt <i class="fa fa-sort"></i></th>
+                <th title="Sắp xếp" style="width: 13%" onclick="sortDonHangTable('madon')">Mã đơn <i class="fa fa-sort"></i></th>
+                <th title="Sắp xếp" style="width: 7%" onclick="sortDonHangTable('khach')">Khách <i class="fa fa-sort"></i></th>
+                <th title="Sắp xếp" style="width: 15%" onclick="sortDonHangTable('tongtien')">Tổng tiền <i class="fa fa-sort"></i></th>
+                <th title="Sắp xếp" style="width: 10%" onclick="sortDonHangTable('ngaygio')">Ngày giờ <i class="fa fa-sort"></i></th>
+                <th title="Sắp xếp" style="width: 10%" onclick="sortDonHangTable('trangthai')">Trạng thái <i class="fa fa-sort"></i></th>
+                <th style="width: 10%">Hành động</th>
+            </tr>
+        </table>
+
+        <div class="table-content">
+        </div>
+
+
 
     </div> <!-- // don hang -->
 
 
     <!-- Khách hàng -->
     <div class="khachhang">
+        <div class="table-footer">
+            <select name="kieuTimKhachHang">
+                <option value="ten">Tìm theo họ tên</option>
+                <option value="email">Tìm theo email</option>
+                <option value="taikhoan">Tìm theo tài khoản</option>
+            </select>
+            <input type="text" placeholder="Tìm kiếm..." onkeyup="timKiemNguoiDung(this)">
+            <button onclick="openThemNguoiDung()"><i class="fa fa-plus-square"></i> Thêm người dùng</button>
+        </div>
         <table class="table-header">
             <tr>
                 <!-- Theo độ rộng của table content -->
@@ -317,15 +322,7 @@
         <div class="table-content">
         </div>
 
-        <div class="table-footer">
-            <select name="kieuTimKhachHang">
-                <option value="ten">Tìm theo họ tên</option>
-                <option value="email">Tìm theo email</option>
-                <option value="taikhoan">Tìm theo tài khoản</option>
-            </select>
-            <input type="text" placeholder="Tìm kiếm..." onkeyup="timKiemNguoiDung(this)">
-            <button onclick="openThemNguoiDung()"><i class="fa fa-plus-square"></i> Thêm người dùng</button>
-        </div>
+
     </div> <!-- // khach hang -->
 
     <!-- Thống kê -->
