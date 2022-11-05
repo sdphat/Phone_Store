@@ -310,8 +310,6 @@ function layThongTinSanPhamTuTable(id) {
     let img =  document.getElementById("hinhanh").value;
     let price = tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     let amount = tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    let star = tr[7].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    let rateCount = tr[8].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     let promoName = tr[9].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
     let promoValue = tr[10].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
 
@@ -331,8 +329,6 @@ function layThongTinSanPhamTuTable(id) {
         "price": price,
         "company": company,
         "amount": amount,
-        "star": star,
-        "rateCount": rateCount,
         "promo": {
             "name": promoName,
             "value": promoValue
@@ -535,7 +531,7 @@ function addKhungSuaSanPham(masp) {
     }
 
     let s = `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
-    <form method="post" action="" enctype="multipart/form-data" onsubmit="return suaSanPham('` + sp.MaSP + `')">
+    <form method="post" action="" enctype="multipart/form-data" onsubmit="return false;">
         <table class="overlayTable table-outline table-content table-header">
             <tr>
                 <th colspan="2">` + sp.TenSP + `</th>
@@ -666,7 +662,7 @@ function addKhungSuaSanPham(masp) {
                 <td><input type="text" value="` + sp.Pin + `"></td>
             </tr>
             <tr>
-                <td colspan="2"  class="table-footer"> <button name="submit">SỬA</button> </td>
+                <td colspan="2"  class="table-footer"> <button name="submit" onclick="suaSanPham('\` + sp.MaSP + \`')">SỬA</button> </td>
             </tr>
         </table>`
 
