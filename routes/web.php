@@ -34,4 +34,7 @@ Route::get("/test",function (){
 });
 Route::get('admin', [UsersController::class, 'admin'])->name('users.admin');
 Route::get('admin-login', [UsersController::class, 'adminLoginPage'])->name('users.admin');
+Route::get('confirm-email', [UsersController::class, 'confirmEmail'])->name('users.confirmEmail');
+Route::get('user-update-info', [UsersController::class, 'confirmEmail'])->name('users.updateInfo');
+Route::get('user-change-password', [UsersController::class, 'changePassword'])->name('users.changePassword');
 

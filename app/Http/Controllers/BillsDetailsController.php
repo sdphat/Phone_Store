@@ -27,7 +27,7 @@ class BillsDetailsController extends Controller
             $sql="SELECT * FROM chitiethoadon WHERE MaHD=$billId";
             $billDetails=DB::select($sql);
             for($i = 0; $i < sizeof($billDetails); $i++) {
-                $billDetails[$i]["SP"] = Products::find( $billDetails[$i]['MaSP']);
+                $billDetails[$i]->SP = Products::find( $billDetails[$i]->MaSP);
             }
             echo '<table class="table table-striped" >
 		<tr style="text-align:center;vertical-align:middle;font-size:20px;background-color:coral;color:black!important">
@@ -38,13 +38,13 @@ class BillsDetailsController extends Controller
             forEach($billDetails as $row) {
                 echo '<tr>
 					<td scope="col" style="text-align:center;vertical-align:middle;">
-						<a href="chitietsanpham.php?'.$row['MaSP'].'">
-							<img style="width:100px;height:100px;" src="'.$row["SP"]["HinhAnh"].'"><br>
-							'.$row["SP"]["TenSP"].'
+						<a href="product_details?'.$row->MaSP.'">
+							<img style="width:100px;height:100px;" src="'.$row->SP->HinhAnh.'"><br>
+							'.$row->SP->TenSP.'
 						</a>
 					</td>
-					<td scope="col" style="text-align:center;vertical-align:middle;">'.$row["SoLuong"].'</td>
-					<td scope="col" style="text-align:center;vertical-align:middle;">'.$row["DonGia"].'</td>
+					<td scope="col" style="text-align:center;vertical-align:middle;">'.$row->SoLuong.'</td>
+					<td scope="col" style="text-align:center;vertical-align:middle;">'.$row->DonGia.'</td>
 				</tr>'	;
             }
             echo   '</table>';

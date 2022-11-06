@@ -44,7 +44,6 @@
                     <strong>Từ khóa: </strong>
                 </div>
             </div> <!-- End Search header -->
-
             <div class="tools-member">
                 <div class="member">
                     <a onclick="checkTaiKhoan()" id="btnTaiKhoan">
@@ -52,8 +51,9 @@
                         Tài khoản
                     </a>
                     <div class="menuMember hide">
-                        <a href="">Thông tin người dùng</a>
+                        <a href="{{url("user-update-info?otp=".csrf_token())}}">Cập nhật thông tin</a>
                         <a href="user">Lịch sử mua hàng</a>
+                        <a href="{{url("user-change-password?token=".csrf_token())}}">Đổi mật khẩu</a>
                         <a onclick="checkDangXuat();">Đăng xuất</a>
                     </div>
                 </div> <!-- End Member -->
@@ -111,41 +111,12 @@
             <div id="signup">
                 <h1>Đăng kí miễn phí</h1>
                 <!-- <form onsubmit="return signUp(this);"> -->
-                <form action="" method="post" name="formDangKy" onsubmit="return checkDangKy();" >
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                Họ<span class="req">*</span>
-                            </label>
-                            <input name="ho" type="text" id="ho" required autocomplete="off"/>
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Tên<span class="req">*</span>
-                            </label>
-                            <input name="ten" id="ten" type="text" required autocomplete="off"/>
-                        </div>
-                    </div> <!-- / ho ten -->
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                Điện thoại<span class="req">*</span>
-                            </label>
-                            <input name="sdt" id="sdt" type="text" pattern="\d*" minlength="10" maxlength="12" required
-                                   autocomplete="off"/>
-                        </div> <!-- /sdt -->
-                        <div class="field-wrap">
-                            <label>
-                                Email<span class="req">*</span>
-                            </label>
-                            <input name="email" id="email" type="email" required autocomplete="off" />
-                        </div> <!-- /email -->
-                    </div>
+                <form action="" method="post" name="formDangKy" onsubmit="return false;">
                     <div class="field-wrap">
                         <label>
-                            Địa chỉ<span class="req">*</span>
+                            Email<span class="req">*</span>
                         </label>
-                        <input name="diachi" id="diachi" type="text" required autocomplete="off" />
+                        <input name="email" id="email" type="email" required autocomplete="off"/>
                     </div>
                     <div class="field-wrap">
                         <label>
@@ -159,7 +130,26 @@
                         </label>
                         <input name="newPass" id="newPass" type="password" required autocomplete="off"/>
                     </div>
-                    <button type="submit" class="button button-block"/>
+                    <div class="top-row">
+                        <div class="field-wrap">
+                            <label>Họ</label>
+                            <input name="ho" type="text" id="ho" autocomplete="off"/>
+                        </div>
+                        <div class="field-wrap">
+                            <label>Tên</label>
+                            <input name="ten" id="ten" type="text" autocomplete="off"/>
+                        </div>
+                    </div> <!-- / ho ten -->
+                    <div class="field-wrap">
+                        <label>Điện thoại</label>
+                        <input name="sdt" id="sdt" type="text" pattern="\d*" minlength="10" maxlength="12"
+                               autocomplete="off"/>
+                    </div> <!-- /sdt -->
+                    <div class="field-wrap">
+                        <label>Địa chỉ</label>
+                        <input name="diachi" id="diachi" type="text"autocomplete="off"/>
+                    </div>
+                    <button type="submit" onclick="checkDangKy();" class="button button-block"/>
                     Tạo tài khoản</button>
                 </form> <!-- /form -->
             </div> <!-- /sign up -->

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OTPMail;
 use App\Models\Products;
 use App\Models\Users;
 use Exception;
@@ -12,7 +13,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -37,16 +40,16 @@ class UsersController extends Controller
             $key = $request->get("id");
             $status = $request->get("status");
             Users::where("MaND", $key)->update(["TrangThai" => $status]);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             echo $e;
         }
     }
 
     public function delete(Request $request)
     {
-        try{
+        try {
             Products::where('MaND', $request->get("id"))->delete();
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo $e;
         }
     }
@@ -70,7 +73,7 @@ class UsersController extends Controller
         if ($validator->fails()) {
             foreach ($validator->messages()->getMessages() as $messages) {
                 foreach ($messages as $message) {
-                    if($message==="The g-recaptcha-response field is required.") $message="Chưa xác thực captcha";
+                    if ($message === "The g-recaptcha-response field is required.") $message = "Chưa xác thực captcha";
                     array_push($result["message"], $message);
                 }
             }
@@ -82,6 +85,7 @@ class UsersController extends Controller
             $sql = "SELECT * FROM nguoidung WHERE TaiKhoan='$username' AND MatKhau='$password' AND MaQuyen=$MaQuyen AND TrangThai=1";
             $list = DB::select($sql);
             if (count($list) == 1) {
+                Users::where("api_token", $token)->update(["api_token" => null]);
                 Users::where("MaND", $list[0]->MaND)->update(["api_token" => $token]);
                 $result["success"] = true;
                 $result["user"] = $list[0];
@@ -99,13 +103,9 @@ class UsersController extends Controller
         $result["success"] = false;
         $result["message"] = [];
         $validator = Validator::make($request->all(), [
-            "lastname"=>"required",
-            "firstname"=>"required",
-            "phone"=>"required",
-            "email"=>"required|email",
-            "address"=>"required",
-            "username"=>"required",
-            "password"=>"required",
+            "email" => "required|email",
+            "username" => "required",
+            "password" => "required|min:6",
 //            'password' => 'required|min:6|max:20|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|confirmed',
         ]);
         if ($validator->fails()) {
@@ -124,7 +124,7 @@ class UsersController extends Controller
                 $newUser = $request->get('username');
                 $newPass = $request->get('password');
                 $newPass = md5($newPass);
-                $token = $request->header("X-CSRF-TOKEN");
+                $token = Str::random(60);
                 Users::create([
                     "Ho" => $ho,
                     "Ten" => $ten,
@@ -134,16 +134,125 @@ class UsersController extends Controller
                     "TaiKhoan" => $newUser,
                     "MatKhau" => $newPass,
                     "MaQuyen" => 1,
-                    "TrangThai" => 1,
+                    "TrangThai" => 0,
                     "api_token" => $token,
                 ]);
+                $mailData = [
+                    'title' => 'Xác nhận đăng ký',
+                    "otp" => $token
+                ];
                 $result["success"] = true;
-                array_push($result["message"], "Tài khoản đã được đăng ký thành công");
-            }catch (Exception $exception){
+                Mail::to('nguyentandat16052000@gmail.com')->send(new OTPMail($mailData));
+                return;
+            } catch (Exception $exception) {
                 array_push($result["message"], "Tên tài khoản đã được sử dụng");
             }
         }
         echo json_encode($result);
+    }
+
+    public function confirmEmail(Request $request): Factory|View|Application
+    {
+        $otp = $request->get("otp");
+        $users = Users::where("api_token", $otp)->get();
+        if (count($users) === 1) {
+            $user = $users[0];
+            return view("user-info", compact("user"));
+        }
+        return view("errors.404");
+    }
+
+    public function changePassword(Request $request): Factory|View|Application
+    {
+        $otp = $request->get("token");
+        $users = Users::where("api_token", $otp)->get();
+        if (count($users) === 1) {
+            $user = $users[0];
+            return view("user-change-password", compact("user"));
+        }
+        return view("errors.404");
+    }
+
+    public function handleChangePass(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old' => 'required',
+            'new' => 'required',
+//            'password' => 'required|min:6|max:20|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|confirmed',
+        ]);
+        if ($validator->fails()) {
+            foreach ($validator->messages()->getMessages() as $messages) {
+                foreach ($messages as $message) {
+                    echo($message);
+                }
+            }
+            return;
+        }
+        $token = $request->header("X-CSRF-TOKEN");
+        $users = Users::where("api_token", $token)->get();
+        if (count($users) === 1) {
+            $pass=$users[0]->MatKhau;
+            $pass=$pass;
+            if($pass===md5($request->get("old"))){
+                $new = $request->get("new");
+                $again = $request->get("again");
+                if($new===$again){
+                    $new=md5($new);
+                    Users::where("api_token", $token)->Update([
+                        "MatKhau" => $new
+                    ]);
+                    echo "Đổi mật khẩu thành công";
+                }
+                else{
+                    echo "Mật khẩu nhập lại không khớp";
+                }
+            }
+            else{
+                echo "Mật khẩu cũ không đúng";
+            }
+        }
+        else{
+            echo "Lỗi xác thực";
+        }
+    }
+
+    public function confirmRegister(Request $request)
+    {
+        $token = $request->header("X-CSRF-TOKEN");
+        $id = $request->get("id");
+        $otp = $request->get("otp");
+        $ho = $request->get("ho");
+        $ten = $request->get("ten");
+        $sdt = $request->get("sdt");
+        $address = $request->get("address");
+        try {
+            $loginID = "no";
+            $logins = Users::where("api_token", $token)->get();
+            if (count($logins) > 0) $loginID = $logins[0]->MaND;
+            if ($loginID == $id) {
+                Users::where("MaND", $id)->update([
+                    "api_token" => $token,
+                    "Ho" => $ho,
+                    "Ten" => $ten,
+                    "SDT" => $sdt,
+                    "DiaChi" => $address,
+                    "TrangThai" => 1
+                ]);
+            } else {
+                Users::where("api_token", $token)->update(["api_token" => null]);
+                Users::where("api_token", $otp)->update([
+                    "api_token" => $token,
+                    "Ho" => $ho,
+                    "Ten" => $ten,
+                    "SDT" => $sdt,
+                    "DiaChi" => $address,
+                    "TrangThai" => 1
+                ]);
+            }
+        } catch (Exception $exception) {
+            echo "No";
+        }
+        echo "OK";
     }
 
     public function loginUserInformation(Request $request)

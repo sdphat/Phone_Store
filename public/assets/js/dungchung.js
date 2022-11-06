@@ -172,24 +172,11 @@ function checkDangKy() {
             address: diachi,
             username: username,
             password: pass,
-            "g-recaptcha-response":grecaptcha.getResponse()
-        },
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(kq) {
-            if(kq.success) {
-                Swal.fire({
-                    type: 'success',
-                    title: 'Đăng kí thành công',
-                    text: 'Bạn sẽ được đăng nhập tự động',
-                    confirmButtonText: "Xong"
-                }).then(() => {
-                    capNhatThongTinUser();
-                    showTaiKhoan(false);
-                });
-            }
-            else {
+            console.log(kq);
+            if(!kq.success)
+            {
                 let text = "";
                 for (let m of kq.message) {
                     text += m + "\n";
@@ -203,7 +190,15 @@ function checkDangKy() {
             }
         },
         error: function(e) {
-            console.log(e.responseText)
+            Swal.fire({
+                type: 'success',
+                title: 'Đăng kí thành công',
+                text: 'Vui lòng xác nhận email.',
+                confirmButtonText: "Xong"
+            }).then(() => {
+                //     capNhatThongTinUser();
+                showTaiKhoan(false);
+            });
         }
     });
     grecaptcha.reset();

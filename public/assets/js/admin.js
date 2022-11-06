@@ -310,6 +310,8 @@ function layThongTinSanPhamTuTable(id) {
     let img =  document.getElementById("hinhanh").value;
     let price = tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     let amount = tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let star = tr[7].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    let rateCount = tr[8].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     let promoName = tr[9].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
     let promoValue = tr[10].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
 
@@ -329,6 +331,8 @@ function layThongTinSanPhamTuTable(id) {
         "price": price,
         "company": company,
         "amount": amount,
+        "star": star,
+        "rateCount": rateCount,
         "promo": {
             "name": promoName,
             "value": promoValue
@@ -1054,7 +1058,6 @@ function xoaNguoiDung(mand) {
                     Swal.fire({
                         type: "error",
                         title: "Không thể xóa",
-                        html: e.responseText
                     });
                 }
             });
