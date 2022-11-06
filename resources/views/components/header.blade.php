@@ -10,10 +10,9 @@
 
             <ul class="top-nav-quicklink flexContain">
                 <li><a href="home"><i class="fa fa-home"></i> Trang chủ</a></li>
-                <li><a href=""><i class="fa fa-newspaper-o"></i> Tin tức</a></li>
-                <li><a href=""><i class="fa fa-handshake-o"></i> Tuyển dụng</a></li>
+                <li><a href="home"><i class="fa fa-info-circle" aria-hidden="true"></i> Hỗ trợ</a></li>
+                <li><a href=""><i class="fa fa-handshake-o"></i> Đối tác</a></li>
                 <li><a href=""><i class="fa fa-info-circle"></i> Giới thiệu</a></li>
-                <li><a href=""><i class="fa fa-wrench"></i> Bảo hành</a></li>
                 <li><a href=""><i class="fa fa-phone"></i> Liên hệ</a></li>
             </ul> <!-- End Quick link -->
         </section><!-- End Section -->
@@ -100,12 +99,14 @@
                         </label>
                         <input name="pass" type="password" id="pass" required autocomplete="off"/>
                     </div>
+                    <p class="forgot"><a href="forgot-password">Quên mật khẩu?</a></p>
                     <div class="field-wrap">
+                        {!! NoCaptcha::renderJs("vi",false,'') !!}
                         {!! NoCaptcha::display() !!}
                     </div>
-                    {{--                    <p class="forgot"><a href="#">Quên mật khẩu?</a></p>--}}
-                    <button type="submit" class="button button-block"/>
-                    Tiếp tục</button>
+
+                    <button type="submit" class="button button-block">Tiếp tục</button>
+
                 </form> <!-- /form -->
             </div> <!-- /log in -->
             <div id="signup">
@@ -147,7 +148,7 @@
                     </div> <!-- /sdt -->
                     <div class="field-wrap">
                         <label>Địa chỉ</label>
-                        <input name="diachi" id="diachi" type="text"autocomplete="off"/>
+                        <input name="diachi" id="diachi" type="text" autocomplete="off"/>
                     </div>
                     <button type="submit" onclick="checkDangKy();" class="button button-block"/>
                     Tạo tài khoản</button>

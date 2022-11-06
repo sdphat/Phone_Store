@@ -3,34 +3,34 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use JetBrains\PhpStorm\Pure;
 
-class OTPMail extends Mailable
+class NewPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $mailData;
+    public $data;
 
-    public function __construct($mailData)
+    public function __construct($data)
     {
-        $this->mailData = $mailData;
+        $this->data=$data;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Phone Store - Xác thực email',
+            subject: 'Phone Store - Xác nhận tạo mật khẩu mới',
         );
     }
 
-    #[Pure] public function content(): Content
+    public function content()
     {
         return new Content(
-            view: 'emails.otp',
+            view: 'emails.new-password',
         );
     }
 

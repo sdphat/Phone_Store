@@ -32,9 +32,15 @@ Route::get("/cart",function (){
 Route::get("/test",function (){
     return view("welcome");
 });
+Route::get("/forgot-password",function (){
+    return view("forgot-password");
+});
 Route::get('admin', [UsersController::class, 'admin'])->name('users.admin');
 Route::get('admin-login', [UsersController::class, 'adminLoginPage'])->name('users.admin');
 Route::get('confirm-email', [UsersController::class, 'confirmEmail'])->name('users.confirmEmail');
+Route::get('new-password', [UsersController::class, 'newPassword'])->name('users.newPassword');
 Route::get('user-update-info', [UsersController::class, 'confirmEmail'])->name('users.updateInfo');
 Route::get('user-change-password', [UsersController::class, 'changePassword'])->name('users.changePassword');
+Route::get('forget-password', [UsersController::class, 'changePassword'])->name('users.changePassword');
+
 

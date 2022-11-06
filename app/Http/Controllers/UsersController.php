@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewPasswordMail;
 use App\Mail\OTPMail;
 use App\Models\Products;
 use App\Models\Users;
@@ -68,7 +69,6 @@ class UsersController extends Controller
             'username' => 'required',
             'password' => 'required',
             'g-recaptcha-response' => 'required|captcha',
-//            'password' => 'required|min:6|max:20|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|confirmed',
         ]);
         if ($validator->fails()) {
             foreach ($validator->messages()->getMessages() as $messages) {
@@ -115,37 +115,43 @@ class UsersController extends Controller
                 }
             }
         } else {
-            try {
-                $ho = $request->get("lastname");
-                $ten = $request->get("firstname");
-                $sdt = $request->get("phone");
-                $email = $request->get("email");
-                $diachi = $request->get("address");
-                $newUser = $request->get('username');
-                $newPass = $request->get('password');
-                $newPass = md5($newPass);
-                $token = Str::random(60);
-                Users::create([
-                    "Ho" => $ho,
-                    "Ten" => $ten,
-                    "SDT" => $sdt,
-                    "Email" => $email,
-                    "DiaChi" => $diachi,
-                    "TaiKhoan" => $newUser,
-                    "MatKhau" => $newPass,
-                    "MaQuyen" => 1,
-                    "TrangThai" => 0,
-                    "api_token" => $token,
-                ]);
-                $mailData = [
-                    'title' => 'Xác nhận đăng ký',
-                    "otp" => $token
-                ];
-                $result["success"] = true;
-                Mail::to('nguyentandat16052000@gmail.com')->send(new OTPMail($mailData));
-                return;
-            } catch (Exception $exception) {
-                array_push($result["message"], "Tên tài khoản đã được sử dụng");
+            $ho = $request->get("lastname");
+            $ten = $request->get("firstname");
+            $sdt = $request->get("phone");
+            $email = $request->get("email");
+            $diachi = $request->get("address");
+            $newUser = $request->get('username');
+            $newPass = $request->get('password');
+            $newPass = md5($newPass);
+            $token = Str::random(60);
+            $users = Users::where("Email", $email)->get();
+            if (count($users) === 1) {
+                array_push($result["message"], "Email đã được đăng ký bạn có thể nhấp vào quên mật khẩu để lấy lại tài khoản");
+            } else {
+                try {
+
+                    Users::create([
+                        "Ho" => $ho,
+                        "Ten" => $ten,
+                        "SDT" => $sdt,
+                        "Email" => $email,
+                        "DiaChi" => $diachi,
+                        "TaiKhoan" => $newUser,
+                        "MatKhau" => $newPass,
+                        "MaQuyen" => 1,
+                        "TrangThai" => 0,
+                        "api_token" => $token,
+                    ]);
+                    $mailData = [
+                        'title' => 'Xác nhận đăng ký',
+                        "otp" => $token
+                    ];
+                    $result["success"] = true;
+                    Mail::to('nguyentandat16052000@gmail.com')->send(new OTPMail($mailData));
+                    return;
+                } catch (Exception $exception) {
+                    array_push($result["message"], "Tên tài khoản đã được sử dụng");
+                }
             }
         }
         echo json_encode($result);
@@ -191,27 +197,24 @@ class UsersController extends Controller
         $token = $request->header("X-CSRF-TOKEN");
         $users = Users::where("api_token", $token)->get();
         if (count($users) === 1) {
-            $pass=$users[0]->MatKhau;
-            $pass=$pass;
-            if($pass===md5($request->get("old"))){
+            $pass = $users[0]->MatKhau;
+            $pass = $pass;
+            if ($pass === md5($request->get("old"))) {
                 $new = $request->get("new");
                 $again = $request->get("again");
-                if($new===$again){
-                    $new=md5($new);
+                if ($new === $again) {
+                    $new = md5($new);
                     Users::where("api_token", $token)->Update([
                         "MatKhau" => $new
                     ]);
                     echo "Đổi mật khẩu thành công";
-                }
-                else{
+                } else {
                     echo "Mật khẩu nhập lại không khớp";
                 }
-            }
-            else{
+            } else {
                 echo "Mật khẩu cũ không đúng";
             }
-        }
-        else{
+        } else {
             echo "Lỗi xác thực";
         }
     }
@@ -303,5 +306,86 @@ class UsersController extends Controller
     public function adminLogin(Request $request)
     {
         $this->userLogin($request, 2);
+    }
+
+    public function handleForgotPassword(Request $request)
+    {
+        $result = [];
+        $result["true"] = false;
+        $result["noty"] = [];
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'g-recaptcha-response' => 'required|captcha',
+//            'password' => 'required|min:6|max:20|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|confirmed',
+        ]);
+        if ($validator->fails()) {
+            foreach ($validator->messages()->getMessages() as $messages) {
+                foreach ($messages as $message) {
+                    if ($message === "The g-recaptcha-response field is required.") $message = "Chưa xác thực captcha";
+                    array_push($result["noty"], $message);
+                }
+            }
+        } else {
+            $users = Users::where("Email", $request->get("email"))->get();
+            if (count($users) === 1) {
+                $token = Str::random(60);
+                Users::where("Email", $request->get("email"))->update(["api_token" => $token]);
+                $mailData = [
+                    'title' => 'Xác nhận đăng ký',
+                    "token" => $token
+                ];
+                $result["success"] = true;
+                array_push($result["noty"], "Vui lòng xác nhận email và tạo mật khẩu mới");
+                echo json_encode($result);
+                Mail::to('nguyentandat16052000@gmail.com')->send(new NewPasswordMail($mailData));
+                return;
+            } else {
+                array_push($result["noty"], "Email chưa được đăng ký");
+            }
+        }
+        echo json_encode($result);
+    }
+
+    public function newPassword(Request $request): Factory|View|Application
+    {
+        $otp = $request->get("token");
+        $users = Users::where("api_token", $otp)->get();
+        if (count($users) === 1) {
+            $user = $users[0];
+            return view("user-new-password", compact("user"));
+        }
+        return view("errors.404");
+    }
+
+    public function handleNewPassword(Request $request)
+    {
+        $token = $request->get("token");
+        $users = Users::where("api_token", $token)->get();
+        if (count($users) === 1) {
+            $validator = Validator::make($request->all(), [
+                'new' => 'required',
+                'again' => 'required',
+//            'password' => 'required|min:6|max:20|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|confirmed',
+            ]);
+            if ($validator->fails()) {
+                foreach ($validator->messages()->getMessages() as $messages) {
+                    foreach ($messages as $message) {
+                        echo($message);
+                    }
+                }
+            } else {
+                $new = $request->get("new");
+                $again = $request->get("again");
+                if ($new === $again) {
+                    $new = md5($new);
+                    Users::where("api_token", $token)->Update(["MatKhau" => $new]);
+                    echo "Đổi mật khẩu thành công";
+                } else {
+                    echo "Mật khẩu nhập lại không khớp";
+                }
+            }
+        } else {
+            echo "Lỗi xác thực";
+        }
     }
 }
