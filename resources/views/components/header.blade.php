@@ -101,6 +101,7 @@
                         <input name="pass" type="password" id="pass" required autocomplete="off"/>
                     </div>
                     <div class="field-wrap">
+                        {!! NoCaptcha::renderJs("vi",false,'') !!}
                         {!! NoCaptcha::display() !!}
                     </div>
                     {{--                    <p class="forgot"><a href="#">Quên mật khẩu?</a></p>--}}
