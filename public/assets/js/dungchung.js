@@ -151,11 +151,7 @@ function checkTaiKhoan() {
 
 //  ================================ WEB 2 =================================
 function checkDangKy() {
-    let ho = document.getElementById('ho').value;
-    let ten = document.getElementById('ten').value;
-    let sdt = document.getElementById('sdt').value;
     let email = document.getElementById('email').value;
-    let diachi = document.getElementById('diachi').value;
     let username = document.getElementById('newUser').value;
     let pass = document.getElementById('newPass').value;
     $.ajax({
@@ -165,31 +161,14 @@ function checkDangKy() {
         timeout: 5000,
         data: {
             function: 'register',
-            lastname: ho,
-            firstname: ten,
-            phone: sdt,
             email: email,
-            address: diachi,
             username: username,
             password: pass,
-            "g-recaptcha-response":grecaptcha.getResponse()
-        },
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(kq) {
-            if(kq.success) {
-                Swal.fire({
-                    type: 'success',
-                    title: 'Đăng kí thành công',
-                    text: 'Bạn sẽ được đăng nhập tự động',
-                    confirmButtonText: "Xong"
-                }).then(() => {
-                    capNhatThongTinUser();
-                    showTaiKhoan(false);
-                });
-            }
-            else {
+            console.log(kq);
+            if(!kq.success)
+            {
                 let text = "";
                 for (let m of kq.message) {
                     text += m + "\n";
@@ -203,7 +182,15 @@ function checkDangKy() {
             }
         },
         error: function(e) {
-            console.log(e.responseText)
+            Swal.fire({
+                type: 'success',
+                title: 'Đăng kí thành công',
+                text: 'Vui lòng xác nhận email.',
+                confirmButtonText: "Xong"
+            }).then(() => {
+                //     capNhatThongTinUser();
+                showTaiKhoan(false);
+            });
         }
     });
     grecaptcha.reset();

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin - Thế giới điện thoại</title>
+    <title>Phone Store | Admin</title>
     <link rel="shortcut icon" href="{{asset("")}}assets/img/favicon.ico" />
 
     <!-- Load font awesome icons -->
@@ -56,7 +56,7 @@
     <div class="home">
 
     </div>
-    <div class="sanpham">
+    <div class="sanpham" >
         <div class="table-footer">
             <select name="kieuTimSanPham">
                 <option value="ma">Tìm theo mã</option>
@@ -123,7 +123,7 @@
 
         <div id="khungThemSanPham" class="overlay">
             <span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
-            <form method="post" action="" enctype="multipart/form-data" onsubmit="return themSanPham();">
+            <form method="post" action="" enctype="multipart/form-data" onsubmit="return false;">
                 <table class="overlayTable table-outline table-content table-header">
                     <tr>
                         <th colspan="2">Thêm Sản Phẩm</th>
@@ -248,7 +248,7 @@
                         <td><input type="text"></td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="table-footer"> <button name="submit">THÊM</button> </td>
+                        <td colspan="2" class="table-footer"> <button name="submit" onclick="themSanPham();">THÊM</button> </td>
                     </tr>
                 </table>
             </form>

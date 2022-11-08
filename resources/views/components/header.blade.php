@@ -7,13 +7,11 @@
                 <a class="fa fa-google"></a>
                 <a class="fa fa-youtube"></a>
             </div> <!-- End Social Topnav -->
-
             <ul class="top-nav-quicklink flexContain">
                 <li><a href="home"><i class="fa fa-home"></i> Trang chủ</a></li>
-                <li><a href=""><i class="fa fa-newspaper-o"></i> Tin tức</a></li>
-                <li><a href=""><i class="fa fa-handshake-o"></i> Tuyển dụng</a></li>
+                <li><a href="home"><i class="fa fa-info-circle" aria-hidden="true"></i> Hỗ trợ</a></li>
+                <li><a href=""><i class="fa fa-handshake-o"></i> Đối tác</a></li>
                 <li><a href=""><i class="fa fa-info-circle"></i> Giới thiệu</a></li>
-                <li><a href=""><i class="fa fa-wrench"></i> Bảo hành</a></li>
                 <li><a href=""><i class="fa fa-phone"></i> Liên hệ</a></li>
             </ul> <!-- End Quick link -->
         </section><!-- End Section -->
@@ -44,7 +42,6 @@
                     <strong>Từ khóa: </strong>
                 </div>
             </div> <!-- End Search header -->
-
             <div class="tools-member">
                 <div class="member">
                     <a onclick="checkTaiKhoan()" id="btnTaiKhoan">
@@ -52,8 +49,9 @@
                         Tài khoản
                     </a>
                     <div class="menuMember hide">
-                        <a href="">Thông tin người dùng</a>
+                        <a href="{{url("user-update-info?otp=".csrf_token())}}">Cập nhật thông tin</a>
                         <a href="user">Lịch sử mua hàng</a>
+                        <a href="{{url("user-change-password?token=".csrf_token())}}">Đổi mật khẩu</a>
                         <a onclick="checkDangXuat();">Đăng xuất</a>
                     </div>
                 </div> <!-- End Member -->
@@ -85,8 +83,6 @@
         </ul> <!-- /tab group -->
         <div class="tab-content">
             <div id="login">
-                <h1>Chào mừng bạn trở lại!</h1>
-                <!-- <form onsubmit="return logIn(this);"> -->
                 <form action="" method="post" name="formDangNhap" onsubmit="return checkDangNhap();">
                     <div class="field-wrap">
                         <label>
@@ -100,53 +96,31 @@
                         </label>
                         <input name="pass" type="password" id="pass" required autocomplete="off"/>
                     </div>
+
                     <div class="field-wrap">
                         {!! NoCaptcha::renderJs("vi",false,'') !!}
                         {!! NoCaptcha::display() !!}
                     </div>
-                    {{--                    <p class="forgot"><a href="#">Quên mật khẩu?</a></p>--}}
-                    <button type="submit" class="button button-block"/>
-                    Tiếp tục</button>
-                </form> <!-- /form -->
+                    <div class="field-wrap">
+                    <button type="submit" class="button button-block" style="font-size: 14px">Đăng nhập</button>
+                    </div>
+                    <p class="forgot" style="display: flex;justify-content: left;"><a href="forgot-password">Quên mật khẩu?</a></p>
+                </form>
+                <div style="margin-top:10px;height: 2px;background: var(--primary-color-light);display: flex;justify-content: center;align-items: center"><p style="display: flex;justify-content: center;padding: 10px;background: #dbdfe3;color: var(--primary-color-light)">Hoặc</p></div>
+                <div style="display: flex;justify-content: center;height: 40px;margin: 10px">
+                    <a href="google/redirect"style="height: 100%;border: solid 2px var(--primary-color-light);align-items: center; display: flex;justify-content: center;width: 100px;background: var(--primary-color);color: white;border-radius: 4px;overflow: hidden;margin-right: 8px;"><i class="fa fa-google"></i>&nbsp;Google</a>
+                    <a href="facebook/redirect"style="height: 100%;border: solid 2px var(--primary-color-light);align-items: center; display: flex;justify-content: center;width: 100px;background: var(--primary-color);color: white;border-radius: 4px;overflow: hidden"><i class="fa fa-facebook"></i> &nbsp;Facebook</a>
+                </div>
+
             </div> <!-- /log in -->
             <div id="signup">
-                <h1>Đăng kí miễn phí</h1>
                 <!-- <form onsubmit="return signUp(this);"> -->
-                <form action="" method="post" name="formDangKy" onsubmit="return checkDangKy();" >
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                Họ<span class="req">*</span>
-                            </label>
-                            <input name="ho" type="text" id="ho" required autocomplete="off"/>
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Tên<span class="req">*</span>
-                            </label>
-                            <input name="ten" id="ten" type="text" required autocomplete="off"/>
-                        </div>
-                    </div> <!-- / ho ten -->
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                Điện thoại<span class="req">*</span>
-                            </label>
-                            <input name="sdt" id="sdt" type="text" pattern="\d*" minlength="10" maxlength="12" required
-                                   autocomplete="off"/>
-                        </div> <!-- /sdt -->
-                        <div class="field-wrap">
-                            <label>
-                                Email<span class="req">*</span>
-                            </label>
-                            <input name="email" id="email" type="email" required autocomplete="off" />
-                        </div> <!-- /email -->
-                    </div>
+                <form action="" method="post" name="formDangKy" onsubmit="return false;">
                     <div class="field-wrap">
                         <label>
-                            Địa chỉ<span class="req">*</span>
+                            Email<span class="req">*</span>
                         </label>
-                        <input name="diachi" id="diachi" type="text" required autocomplete="off" />
+                        <input name="email" id="email" type="email" required autocomplete="off"/>
                     </div>
                     <div class="field-wrap">
                         <label>
@@ -160,9 +134,14 @@
                         </label>
                         <input name="newPass" id="newPass" type="password" required autocomplete="off"/>
                     </div>
-                    <button type="submit" class="button button-block"/>
-                    Tạo tài khoản</button>
-                </form> <!-- /form -->
+                    <button type="submit" onclick="checkDangKy();" class="button button-block"/>Đăng ký</button>
+                    <div class="field-wrap"></div>
+                </form>
+                <div style="margin-top:10px;height: 2px;background: var(--primary-color-light);display: flex;justify-content: center;align-items: center"><p style="display: flex;justify-content: center;padding: 10px;background: #dbdfe3;color: var(--primary-color-light)">Hoặc</p></div>
+                <div style="display: flex;justify-content: center;height: 40px;margin: 10px">
+                    <a href="google/redirect"style="height: 100%;border: solid 2px var(--primary-color-light);align-items: center; display: flex;justify-content: center;width: 100px;background: var(--primary-color);color: white;border-radius: 4px;overflow: hidden;margin-right: 8px;"><i class="fa fa-google"></i>&nbsp;Google</a>
+                    <a href="facebook/redirect"style="height: 100%;border: solid 2px var(--primary-color-light);align-items: center; display: flex;justify-content: center;width: 100px;background: var(--primary-color);color: white;border-radius: 4px;overflow: hidden"><i class="fa fa-facebook"></i> &nbsp;Facebook</a>
+                </div>
             </div> <!-- /sign up -->
         </div><!-- tab-content -->
     </div> <!-- /taikhoan -->

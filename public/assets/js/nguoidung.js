@@ -7,7 +7,7 @@ window.onload = function () {
 
     // thêm tags (từ khóa) vào khung tìm kiếm
     var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
-    for (var t of tags) addTags(t, "index.php?search=" + t);
+    for (var t of tags) addTags(t, "Home?search=" + t);
 
     getCurrentUser((data) => {
         if(data) {
@@ -43,9 +43,9 @@ window.onload = function () {
 function xemChiTiet(mahd) {
     $.ajax({
         type: "POST",
-        url: "api/bills",
+        url: "api/bill-details",
         data:{
-            function: "tableBills",
+            function: "tableBillDetails",
             mahd: mahd
         },
         headers: {
@@ -306,7 +306,7 @@ function addDonHang(dh) {
                 <tr>
                     <td>` + (i + 1) + `</td>
                     <td class="noPadding imgHide">
-                        <a target="_blank" href="chitietsanpham.php?` + p.name.split(' ').join('-') + `" title="Xem chi tiết">
+                        <a target="_blank" href="product_details?` + p.name.split(' ').join('-') + `" title="Xem chi tiết">
                             ` + p.name + `
                             <img src="` + p.img + `">
                         </a>
