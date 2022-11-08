@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use App\Mail\NewPasswordMail;
 use App\Mail\OTPMail;
 use App\Models\Products;
+use App\Models\User;
 use App\Models\Users;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class UsersController extends Controller
 {
@@ -115,11 +118,7 @@ class UsersController extends Controller
                 }
             }
         } else {
-            $ho = $request->get("lastname");
-            $ten = $request->get("firstname");
-            $sdt = $request->get("phone");
             $email = $request->get("email");
-            $diachi = $request->get("address");
             $newUser = $request->get('username');
             $newPass = $request->get('password');
             $newPass = md5($newPass);
@@ -131,11 +130,11 @@ class UsersController extends Controller
                 try {
 
                     Users::create([
-                        "Ho" => $ho,
-                        "Ten" => $ten,
-                        "SDT" => $sdt,
+                        "Ho" => "",
+                        "Ten" => "",
+                        "SDT" => "",
                         "Email" => $email,
-                        "DiaChi" => $diachi,
+                        "DiaChi" => "",
                         "TaiKhoan" => $newUser,
                         "MatKhau" => $newPass,
                         "MaQuyen" => 1,
@@ -386,6 +385,66 @@ class UsersController extends Controller
             }
         } else {
             echo "Lỗi xác thực";
+        }
+    }
+
+    public function loginWithGoogle()
+    {
+        $googleUser = Socialite::driver("google")->user();
+        $user = Users::where("MatKhau", $googleUser->id)->first();
+        if ($user) {
+            Users::where("MatKhau", $googleUser->id)->update(["api_token" => csrf_token()]);
+            return redirect("home");
+        } else {
+            $email = $googleUser->getEmail();
+            $newPass = $googleUser->getId();
+            $newUser = $googleUser["name"];
+            $ho = $googleUser->user["family_name"];
+            $ten = $googleUser->user["given_name"];
+            $sdt = "";
+            $diachi = "";
+            $token = Str::random(60);
+            Users::create([
+                "Ho" => $ho,
+                "Ten" => $ten,
+                "SDT" => $sdt,
+                "Email" => $email,
+                "DiaChi" => $diachi,
+                "TaiKhoan" => $newUser,
+                "MatKhau" => $newPass,
+                "MaQuyen" => 1,
+                "TrangThai" => 0,
+                "api_token" => $token,
+            ]);
+            return redirect("confirm-email?otp=" . $token);
+        }
+    }
+
+    public function loginWithFacebook()
+    {
+        $facebookUser = Socialite::driver("facebook")->user();
+        $id = $facebookUser->getId();
+        $user = Users::where("MatKhau", $id)->first();
+        if ($user) {
+            Users::where("MatKhau", $id)->update(["api_token" => csrf_token()]);
+            return redirect("home");
+        } else {
+            $name = $facebookUser->getName();
+            $email = $facebookUser->getEmail();
+            $token = Str::random(60);
+            Users::create([
+                "Ho" => "",
+                "Ten" => "",
+                "SDT" => "",
+                "Email" => $email,
+                "DiaChi" => "",
+                "TaiKhoan" => $name,
+                "MatKhau" => $id,
+                "MaQuyen" => 1,
+                "TrangThai" => 0,
+                "api_token" => $token,
+            ]);
+            return redirect("confirm-email?otp=" . $token);
         }
     }
 }
