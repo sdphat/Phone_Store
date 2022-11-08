@@ -6,7 +6,7 @@
     <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Phone Store</title>
+    <title>Phone Store | Trang chủ</title>
     <link rel="shortcut icon" href="{{asset("")}}assets/img/icon_phone_store.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 

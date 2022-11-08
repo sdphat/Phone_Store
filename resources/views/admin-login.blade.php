@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin Login</title>
+    <title>Phone Store | Admin login</title>
     <link rel="shortcut icon" href="{{asset("")}}assets/img/icon_phone_store.png"/>
     <!-- Jquery -->
     <script src="{{asset("")}}assets/lib/Jquery/Jquery.min.js"></script>

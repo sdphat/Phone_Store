@@ -21,7 +21,7 @@
     <!-- ============== Footer ============= -->
     <div class="copy-right">
         <p>
-            All rights reserved © 2018-{{ date("Y") }}- Designed by
+            All rights reserved © {{ date("Y") }}- Designed by
             <span style="color: #eee; font-weight: bold">DatTeam-group</span>
         </p>
     </div>

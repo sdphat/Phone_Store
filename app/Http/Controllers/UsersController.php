@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Mail\NewPasswordMail;
 use App\Mail\OTPMail;
 use App\Models\Products;
-use App\Models\User;
 use App\Models\Users;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -388,30 +387,30 @@ class UsersController extends Controller
         }
     }
 
-    public function loginWithGoogle()
+    public function loginWithGoogle(): Redirector|Application|RedirectResponse
     {
         $googleUser = Socialite::driver("google")->user();
-        $user = Users::where("MatKhau", $googleUser->id)->first();
+        $id = $googleUser->getId();
+        $name = $googleUser["name"];
+        $user = Users::where("MatKhau", $id)->where("TaiKhoan", $name)->first();
         if ($user) {
-            Users::where("MatKhau", $googleUser->id)->update(["api_token" => csrf_token()]);
+            $token=csrf_token();
+            Users::where("api_token", $token)->update(["api_token" => null]);
+            Users::where("MatKhau", $id)->where("TaiKhoan", $name)->update(["api_token" => csrf_token()]);
             return redirect("home");
         } else {
             $email = $googleUser->getEmail();
-            $newPass = $googleUser->getId();
-            $newUser = $googleUser["name"];
             $ho = $googleUser->user["family_name"];
             $ten = $googleUser->user["given_name"];
-            $sdt = "";
-            $diachi = "";
             $token = Str::random(60);
             Users::create([
                 "Ho" => $ho,
                 "Ten" => $ten,
-                "SDT" => $sdt,
+                "SDT" => "",
                 "Email" => $email,
-                "DiaChi" => $diachi,
-                "TaiKhoan" => $newUser,
-                "MatKhau" => $newPass,
+                "DiaChi" => "",
+                "TaiKhoan" => $name,
+                "MatKhau" => $id,
                 "MaQuyen" => 1,
                 "TrangThai" => 0,
                 "api_token" => $token,
@@ -420,16 +419,18 @@ class UsersController extends Controller
         }
     }
 
-    public function loginWithFacebook()
+    public function loginWithFacebook(): Redirector|Application|RedirectResponse
     {
         $facebookUser = Socialite::driver("facebook")->user();
         $id = $facebookUser->getId();
-        $user = Users::where("MatKhau", $id)->first();
+        $name = $facebookUser->getName();
+        $user = Users::where("MatKhau", $id)->where("TaiKhoan",$name)->first();
         if ($user) {
-            Users::where("MatKhau", $id)->update(["api_token" => csrf_token()]);
+            $token=csrf_token();
+            Users::where("api_token", $token)->update(["api_token" => null]);
+            Users::where("MatKhau", $id)->update(["api_token" => $token]);
             return redirect("home");
         } else {
-            $name = $facebookUser->getName();
             $email = $facebookUser->getEmail();
             $token = Str::random(60);
             Users::create([

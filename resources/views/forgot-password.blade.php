@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Phone Store | Quên mật khẩu</title>
     <script src="{{asset("")}}assets/lib/Jquery/Jquery.min.js"></script>
-    <title>Document</title>
 </head>
 <body>
 <form onsubmit="return false;">

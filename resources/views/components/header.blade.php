@@ -7,7 +7,6 @@
                 <a class="fa fa-google"></a>
                 <a class="fa fa-youtube"></a>
             </div> <!-- End Social Topnav -->
-
             <ul class="top-nav-quicklink flexContain">
                 <li><a href="home"><i class="fa fa-home"></i> Trang chủ</a></li>
                 <li><a href="home"><i class="fa fa-info-circle" aria-hidden="true"></i> Hỗ trợ</a></li>
