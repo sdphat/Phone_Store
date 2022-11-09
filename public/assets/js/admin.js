@@ -1018,9 +1018,6 @@ function timKiemNguoiDung(inp) {
     }
 }
 
-function openThemNguoiDung() {
-    window.alert('Not Available!');
-}
 
 // vô hiệu hóa người dùng (tạm dừng, không cho đăng nhập vào)
 function voHieuHoaNguoiDung(TrangThai) {

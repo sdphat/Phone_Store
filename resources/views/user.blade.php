@@ -40,7 +40,6 @@
 <body>
 <x-header/>
 <section>
-    <div class="infoUser"> </div>
     <div class="listDonHang"> </div>
     <div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

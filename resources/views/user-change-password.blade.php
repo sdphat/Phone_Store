@@ -14,25 +14,25 @@
 <form style="max-width: 1200px;width: 100%;" onsubmit="return false;">
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="inputEmail4">Tên đăng nhập: {{$user->TaiKhoan}}</label><br>
-            <label for="inputEmail4">Email: {{$user->Email}}</label>
+            <label>Tên đăng nhập: {{$user->TaiKhoan}}</label><br>
+            <label>Email: {{$user->Email}}</label>
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="inputPassword4">Mật khẩu cũ</label>
+            <label for="old">Mật khẩu cũ</label>
             <input type="password" class="form-control" id="old" placeholder="Mật khẩu cũ" value="">
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="inputPassword4">Mật khẩu mới</label>
+            <label for="new">Mật khẩu mới</label>
             <input type="password" class="form-control" id="new" placeholder="Mật khẩu mới" value="">
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="inputPassword4">Nhập lần nữa</label>
+            <label for="again">Nhập lần nữa</label>
             <input type="text" class="form-control" id="again" placeholder="Nhập lần nữa" value="">
         </div>
     </div>
@@ -52,23 +52,23 @@
             },
             data: {
                 "function": "handleChangePass",
-                "old":old,
-                "new":newPass,
-                "again":again
+                "old": old,
+                "new": newPass,
+                "again": again
             },
             success: function (data) {
                 alert(data);
-                if(data==="Đổi mật khẩu thành công"){
-                    window.location="home";
+                if (data === "Đổi mật khẩu thành công") {
+                    window.location = "home";
                 }
             },
             error: function (xhr, exception) {
-                var msg = "";
+                let msg;
                 if (xhr.status === 0) {
                     msg = "Not connect.\n Verify Network." + xhr.responseText;
-                } else if (xhr.status == 404) {
+                } else if (xhr.status === 404) {
                     msg = "Requested page not found. [404]" + xhr.responseText;
-                } else if (xhr.status == 500) {
+                } else if (xhr.status === 500) {
                     msg = "Internal Server Error [500]." + xhr.responseText;
                 } else if (exception === "parsererror") {
                     msg = "Requested JSON parse failed.";

@@ -15,7 +15,7 @@
     <div class="text-center" style="max-width: 250px;top: 10px;">
         <img src="http://127.0.0.1:8000/assets/img/eror404.png" alt=""
              style="width: 100%;max-width: 250px;margin:50px 0 40px 0 ">
-        <a href="home" class="btn btn-primary"style="background: var(--primary-color);border: none;">Trở về trang chủ</a>
+        <a href="{{url("")}}/home" class="btn btn-primary"style="background: var(--primary-color);border: none;">Trở về trang chủ</a>
     </div>
 </div>
 </body>

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Mail\NewPasswordMail;
 use App\Mail\OTPMail;
-use App\Models\Products;
 use App\Models\Users;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -51,7 +50,7 @@ class UsersController extends Controller
     public function delete(Request $request)
     {
         try {
-            Products::where('MaND', $request->get("id"))->delete();
+            Users::where('MaND', $request->get("id"))->delete();
         } catch (Exception $e) {
             echo $e;
         }
@@ -84,14 +83,19 @@ class UsersController extends Controller
             $username = $request->get('username');
             $password = $request->get('password');
             $password = md5($password);
-            $sql = "SELECT * FROM nguoidung WHERE TaiKhoan='$username' AND MatKhau='$password' AND MaQuyen=$MaQuyen AND TrangThai=1";
+            $sql = "SELECT * FROM nguoidung WHERE TaiKhoan='$username' AND MatKhau='$password' AND MaQuyen=$MaQuyen";
             $list = DB::select($sql);
             if (count($list) == 1) {
-                Users::where("api_token", $token)->update(["api_token" => null]);
-                Users::where("MaND", $list[0]->MaND)->update(["api_token" => $token]);
-                $result["success"] = true;
-                $result["user"] = $list[0];
-                array_push($result["message"], "Đăng nhập thành công");
+                if ($list[0]->TrangThai === 1) {
+                    Users::where("api_token", $token)->update(["api_token" => null]);
+                    Users::where("MaND", $list[0]->MaND)->update(["api_token" => $token]);
+                    $result["success"] = true;
+                    $result["user"] = $list[0];
+                    array_push($result["message"], "Đăng nhập thành công");
+                } else {
+                    array_push($result["message"], "Tài khoản đã đã bị khóa");
+                }
+
             } else {
                 array_push($result["message"], "Tên tài khoản hoặc mật khẩu không đúng");
             }
@@ -108,7 +112,6 @@ class UsersController extends Controller
             "email" => "required|email",
             "username" => "required",
             "password" => "required|min:6",
-//            'password' => 'required|min:6|max:20|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|confirmed',
         ]);
         if ($validator->fails()) {
             foreach ($validator->messages()->getMessages() as $messages) {
@@ -116,41 +119,28 @@ class UsersController extends Controller
                     array_push($result["message"], $message);
                 }
             }
+            echo json_encode($result);
+            return;
+        }
+        $email = $request->get("email");
+        $token = Str::random(60);
+        $user = Users::where("Email", $email)->first();
+        if ($user) {
+            array_push($result["message"], "Email đã được đăng ký bạn có thể nhấp vào quên mật khẩu để lấy lại tài khoản");
         } else {
-            $email = $request->get("email");
-            $newUser = $request->get('username');
-            $newPass = $request->get('password');
-            $newPass = md5($newPass);
-            $token = Str::random(60);
-            $users = Users::where("Email", $email)->get();
-            if (count($users) === 1) {
-                array_push($result["message"], "Email đã được đăng ký bạn có thể nhấp vào quên mật khẩu để lấy lại tài khoản");
-            } else {
-                try {
-
-                    Users::create([
-                        "Ho" => "",
-                        "Ten" => "",
-                        "SDT" => "",
-                        "Email" => $email,
-                        "DiaChi" => "",
-                        "TaiKhoan" => $newUser,
-                        "MatKhau" => $newPass,
-                        "MaQuyen" => 1,
-                        "TrangThai" => 0,
-                        "api_token" => $token,
-                    ]);
-                    $mailData = [
-                        'title' => 'Xác nhận đăng ký',
-                        "otp" => $token
-                    ];
-                    $result["success"] = true;
-                    Mail::to('nguyentandat16052000@gmail.com')->send(new OTPMail($mailData));
-                    return;
-                } catch (Exception $exception) {
-                    array_push($result["message"], "Tên tài khoản đã được sử dụng");
-                }
-            }
+            Users::create([
+                "Email" => $email,
+                "TaiKhoan" => $request->get('username'),
+                "MatKhau" => md5($request->get('password')),
+                "api_token" => $token,
+            ]);
+            $result["success"] = true;
+            echo json_encode($result);
+            Mail::to('nguyentandat16052000@gmail.com')->send(new OTPMail([
+                'title' => 'Xác nhận đăng ký',
+                "otp" => $token
+            ]));
+            return;
         }
         echo json_encode($result);
     }
@@ -196,7 +186,6 @@ class UsersController extends Controller
         $users = Users::where("api_token", $token)->get();
         if (count($users) === 1) {
             $pass = $users[0]->MatKhau;
-            $pass = $pass;
             if ($pass === md5($request->get("old"))) {
                 $new = $request->get("new");
                 $again = $request->get("again");
@@ -221,15 +210,14 @@ class UsersController extends Controller
     {
         $token = $request->header("X-CSRF-TOKEN");
         $id = $request->get("id");
-        $otp = $request->get("otp");
         $ho = $request->get("ho");
         $ten = $request->get("ten");
         $sdt = $request->get("sdt");
         $address = $request->get("address");
         try {
             $loginID = "no";
-            $logins = Users::where("api_token", $token)->get();
-            if (count($logins) > 0) $loginID = $logins[0]->MaND;
+            $user = Users::where("api_token", $token)->first();
+            if ($user) $loginID = $user->MaND;
             if ($loginID == $id) {
                 Users::where("MaND", $id)->update([
                     "api_token" => $token,
@@ -241,7 +229,7 @@ class UsersController extends Controller
                 ]);
             } else {
                 Users::where("api_token", $token)->update(["api_token" => null]);
-                Users::where("api_token", $otp)->update([
+                Users::where("api_token", $request->get("otp"))->update([
                     "api_token" => $token,
                     "Ho" => $ho,
                     "Ten" => $ten,
@@ -251,7 +239,8 @@ class UsersController extends Controller
                 ]);
             }
         } catch (Exception $exception) {
-            echo "No";
+            echo $exception;
+            return;
         }
         echo "OK";
     }
@@ -260,7 +249,7 @@ class UsersController extends Controller
     {
         $token = $request->header("X-CSRF-TOKEN");
         $user = Users::where("api_token", $token)->get();
-        if (count($user) == 1) {
+        if (count($user) == 1 && $user[0]->TrangThai == 1) {
             echo json_encode($user[0]);
         } else {
             echo json_encode(null);
@@ -283,7 +272,7 @@ class UsersController extends Controller
             if (count($users) == 1) {
                 if ($users[0]->MaQuyen == 2) return view("admin");
             }
-        } catch (Exception $exception) {
+        } catch (Exception) {
         }
         return redirect("home");
     }
@@ -296,7 +285,7 @@ class UsersController extends Controller
             if (count($users) == 1) {
                 if ($users[0]->MaQuyen == 2) return redirect("admin");
             }
-        } catch (Exception $exception) {
+        } catch (Exception) {
         }
         return view("admin-login");
     }
@@ -328,14 +317,13 @@ class UsersController extends Controller
             if (count($users) === 1) {
                 $token = Str::random(60);
                 Users::where("Email", $request->get("email"))->update(["api_token" => $token]);
-                $mailData = [
-                    'title' => 'Xác nhận đăng ký',
-                    "token" => $token
-                ];
                 $result["success"] = true;
                 array_push($result["noty"], "Vui lòng xác nhận email và tạo mật khẩu mới");
                 echo json_encode($result);
-                Mail::to('nguyentandat16052000@gmail.com')->send(new NewPasswordMail($mailData));
+                Mail::to('nguyentandat16052000@gmail.com')->send(new NewPasswordMail([
+                    'title' => 'Tạo mật khẩu mới',
+                    "token" => $token
+                ]));
                 return;
             } else {
                 array_push($result["noty"], "Email chưa được đăng ký");
@@ -362,8 +350,7 @@ class UsersController extends Controller
         if (count($users) === 1) {
             $validator = Validator::make($request->all(), [
                 'new' => 'required',
-                'again' => 'required',
-//            'password' => 'required|min:6|max:20|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|confirmed',
+                'again' => 'required'
             ]);
             if ($validator->fails()) {
                 foreach ($validator->messages()->getMessages() as $messages) {
@@ -391,59 +378,45 @@ class UsersController extends Controller
     {
         $googleUser = Socialite::driver("google")->user();
         $id = $googleUser->getId();
-        $name = $googleUser["name"];
-        $user = Users::where("MatKhau", $id)->where("TaiKhoan", $name)->first();
+        $user = Users::where("MatKhau", $id)->first();
         if ($user) {
-            $token=csrf_token();
-            Users::where("api_token", $token)->update(["api_token" => null]);
-            Users::where("MatKhau", $id)->where("TaiKhoan", $name)->update(["api_token" => csrf_token()]);
-            return redirect("home");
+            return $this->loginWithID($id);
         } else {
-            $email = $googleUser->getEmail();
-            $ho = $googleUser->user["family_name"];
-            $ten = $googleUser->user["given_name"];
             $token = Str::random(60);
             Users::create([
-                "Ho" => $ho,
-                "Ten" => $ten,
-                "SDT" => "",
-                "Email" => $email,
-                "DiaChi" => "",
-                "TaiKhoan" => $name,
+                "Ho" => $googleUser->user["family_name"],
+                "Ten" => $googleUser->user["given_name"],
+                "TaiKhoan" => $googleUser["name"],
                 "MatKhau" => $id,
-                "MaQuyen" => 1,
-                "TrangThai" => 0,
                 "api_token" => $token,
+                "TrangThai"=>1
             ]);
             return redirect("confirm-email?otp=" . $token);
         }
+    }
+
+    public function loginWithID($id): Redirector|Application|RedirectResponse
+    {
+        $token = csrf_token();
+        Users::where("api_token", $token)->update(["api_token" => null]);
+        Users::where("MatKhau", $id)->update(["api_token" => $token]);
+        return redirect("home");
     }
 
     public function loginWithFacebook(): Redirector|Application|RedirectResponse
     {
         $facebookUser = Socialite::driver("facebook")->user();
         $id = $facebookUser->getId();
-        $name = $facebookUser->getName();
-        $user = Users::where("MatKhau", $id)->where("TaiKhoan",$name)->first();
+        $user = Users::where("MatKhau", $id)->first();
         if ($user) {
-            $token=csrf_token();
-            Users::where("api_token", $token)->update(["api_token" => null]);
-            Users::where("MatKhau", $id)->update(["api_token" => $token]);
-            return redirect("home");
+            return $this->loginWithID($id);
         } else {
-            $email = $facebookUser->getEmail();
             $token = Str::random(60);
             Users::create([
-                "Ho" => "",
-                "Ten" => "",
-                "SDT" => "",
-                "Email" => $email,
-                "DiaChi" => "",
-                "TaiKhoan" => $name,
+                "TaiKhoan" => $facebookUser->getName(),
                 "MatKhau" => $id,
-                "MaQuyen" => 1,
-                "TrangThai" => 0,
                 "api_token" => $token,
+                "TrangThai"=>1,
             ]);
             return redirect("confirm-email?otp=" . $token);
         }

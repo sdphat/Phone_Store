@@ -43,8 +43,12 @@
         <li class="nav-item"><a class="nav-link"><i class="fa fa-bar-chart-o"></i> Thống Kê</a></li>
         <hr>
         <li class="nav-item">
+            <a class="nav-link" href="{{url("user-change-password?token=".csrf_token())}}"><i class="fa fa-unlock-alt" aria-hidden="true"></i>Đổi mật khẩu</a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link" id="btnDangXuat">
-                <i class="fa fa-arrow-left"></i>
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
                 Đăng xuất
             </a>
         </li>
@@ -99,7 +103,7 @@
                         <td style='width: 10%'>" . $row['MaSP'] . "</td>
                         <td style='width: 40%'>
                             <a title='Xem chi tiết' target='_blank' href='product-details?" . $row['MaSP'] . "'>" . $row['TenSP'] . "</a>
-                            <img src='" . $row['HinhAnh'] . "'></img>
+                            <img src='" . $row['HinhAnh'] . "' alt="">
                         </td>
                         <td style='width: 15%'>" . $row['DonGia'] . "</td>
                         <td style='width: 15%'>" . $row['MaKM'] . "</td>
@@ -305,7 +309,6 @@
                 <option value="taikhoan">Tìm theo tài khoản</option>
             </select>
             <input type="text" placeholder="Tìm kiếm..." onkeyup="timKiemNguoiDung(this)">
-            <button onclick="openThemNguoiDung()"><i class="fa fa-plus-square"></i> Thêm người dùng</button>
         </div>
         <table class="table-header">
             <tr>

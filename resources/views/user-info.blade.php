@@ -14,8 +14,10 @@
 <form style="max-width: 1200px;width: 100%;" onsubmit="return false;">
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="inputEmail4">Tên đăng nhập: {{$user->TaiKhoan}}</label><br>
-            <label for="inputEmail4">Email: {{$user->Email}}</label>
+            <label>Tên đăng nhập: {{$user->TaiKhoan}}</label><br>
+            @if($user->Email)
+            <label>Email: {{$user->Email}}</label>
+            @endif
         </div>
     </div>
     <div class="form-row">
@@ -63,6 +65,7 @@
                 "address":address,
             },
             success: function (data) {
+                console.log(data);
                 if(data==="OK")window.location="{{url("")}}/home";
             },
             error: function (xhr, exception) {
