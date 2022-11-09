@@ -103,7 +103,7 @@
                         <td style='width: 10%'>" . $row['MaSP'] . "</td>
                         <td style='width: 40%'>
                             <a title='Xem chi tiết' target='_blank' href='product-details?" . $row['MaSP'] . "'>" . $row['TenSP'] . "</a>
-                            <img src='" . $row['HinhAnh'] . "' alt="">
+                            <img src='" . $row['HinhAnh'] . "'>
                         </td>
                         <td style='width: 15%'>" . $row['DonGia'] . "</td>
                         <td style='width: 15%'>" . $row['MaKM'] . "</td>
