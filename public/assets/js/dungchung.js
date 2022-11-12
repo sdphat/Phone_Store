@@ -166,7 +166,6 @@ function checkDangKy() {
             password: pass,
         },
         success: function(kq) {
-            console.log(kq);
             if(!kq.success)
             {
                 let text = "";

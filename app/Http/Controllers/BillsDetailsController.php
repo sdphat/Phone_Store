@@ -15,7 +15,7 @@ class BillsDetailsController extends Controller
         $f = $request->get("function");
         try {
             call_user_func_array(["App\\Http\\Controllers\\BillsDetailsController", $f], [$request]);
-        }catch (Exception $exception){
+        }catch (Exception){
             echo "Not found";
         }
     }

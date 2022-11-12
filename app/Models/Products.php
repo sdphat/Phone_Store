@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * @method static find(mixed $MaSP)
+ * @method static where(string $string, mixed $masp)
  */
 class Products extends Model
 {

@@ -17,29 +17,29 @@
     <link rel="stylesheet" href="{{asset("")}}assets/css/login.css">
 </head>
 <body>
-<div class="login-container">
-    <h1 class="text-whitesmoke">
+<div class="margin-t" style="background: #f9f9f9;border-radius: 8px;overflow: hidden">
+    <h1 class="text-whitesmoke" style="display: flex;justify-content: center">
         <img src="{{asset("assets/img/Logo_Phone_Store.png")}}" alt=""><br>
     </h1>
     <div class="container-content">
-        <h3 class="title-form">Admin login</h3>
-        <form onsubmit="return false;" class="margin-t">
-            <div class="form-group">
+        <h3 class="title-form" style="text-align: center">Admin login</h3>
+        <form onsubmit="return false;">
+            <label for="username" class="form-group" style="width: 100%">
                 <input type="text" class="form-control" placeholder="Tên đăng nhập" name="username" id="username">
-            </div>
-            <div class="form-group">
-                <input name="password" id="password" type="password" class="form-control"
-                       placeholder="*****">
-            </div>
-            <div class="form-group">
+            </label>
+            <label for="password" class="form-group" style="width: 100%">
+                <input name="password" id="password" type="password" class="form-control" placeholder="Mật khẩu">
+            </label>
+            <div class="form-group" style="width: 100%;">
                 {!! NoCaptcha::renderJs("vi",false,'') !!}
                 {!! NoCaptcha::display() !!}
+                <a class="text-darkyellow" href="{{url("")}}/forgot-password"><small>Quên mật khẩu</small></a>
             </div>
-            <button type="submit" onclick="login()" class="btn btn-info">Đăng nhập</button>
-            {{--            <a class="text-darkyellow" href="#"><small>Quên mật khẩu?</small></a>--}}
-            {{--            <p class="text-whitesmoke text-center"><small>Do not have an account?</small></p>--}}
+            <div class="form-group" style="width: 100%;display: flex;justify-content: center">
+                <button type="submit" onclick="login()" class="btn btn-info">Đăng nhập</button>
+            </div>
         </form>
-        <p class="margin-t"><small> Dat's Team &copy; {{date("Y")}}</small></p>
+        <p class="margin-t" style="display: flex;justify-content: center"><small> Dat's Team &copy; {{date("Y")}}</small></p>
     </div>
 </div>
 <script>
@@ -61,14 +61,14 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (data, status, xhr) {
+            success: function (data) {
                 let title = "";
                 for (let m of data.message) {
                     title += m + "\n";
                 }
                 alert(title);
                 if (data.success) {
-                    window.location="admin";
+                    window.location = "admin";
                 }
             },
             error: function (e) {

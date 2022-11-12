@@ -9,12 +9,13 @@
     <title>Phone Store | Quên mật khẩu</title>
     <script src="{{asset("")}}assets/lib/Jquery/Jquery.min.js"></script>
 </head>
-<body>
-<form onsubmit="return false;">
-    <input type="email" placeholder="Nhập email" id="email">
+<body style="display: flex;justify-content: center;align-items: center;">
+<form onsubmit="return false;" style=" background:whitesmoke;border-radius:4px;padding:10px;display: flex;justify-content: center;flex-wrap: wrap;max-width: 350px;width: 100%;">
+    <h3>Yêu cầu tạo mật khẩu mới</h3>
+    <label for="email" style="padding-bottom: 10px;"><input style="width: 300px;height: 30px;border-radius: 2px;border: silver solid 1px;box-shadow: silver;outline:none" type="email" placeholder="Nhập email" id="email"></label>
     {!! NoCaptcha::renderJs("vi",false,'') !!}
     {!! NoCaptcha::display() !!}
-    <button type="submit"onclick="send();">Gửi</button>
+    <button onclick="send();" style="margin:10px;background: blueviolet;color: white;border-radius: 2px; border: none;width: 100px;height: 34px">Gửi</button>
 </form>
 <script>
     function send(){
@@ -36,7 +37,7 @@
                 }
                 alert(m);
             },
-            error: function (e) {
+            error: function () {
                 alert("Đã gửi yêu cầu tạo mật khẩu mới. Vui lòng xác nhận email và tạo lại mật khẩu mới");
                 window.location="home";
             }

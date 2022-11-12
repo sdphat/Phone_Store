@@ -11,7 +11,7 @@ class RolesController extends Controller
         $f = $request->get("function");
         try {
             call_user_func_array(["App\\Http\\Controllers\\RolesController", $f], [$request]);
-        }catch (Exception $exception){
+        }catch (Exception){
             echo "Not found";
         }
     }

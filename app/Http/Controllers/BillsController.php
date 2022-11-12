@@ -6,6 +6,7 @@ use App\Models\BillDetails;
 use App\Models\Bills;
 use App\Models\Products;
 use App\Models\Users;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +17,7 @@ class BillsController extends Controller
         $f = $request->get("function");
         try {
             call_user_func_array(["App\\Http\\Controllers\\BillsController", $f], [$request]);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             echo "Not found";
         }
     }
@@ -96,7 +97,7 @@ class BillsController extends Controller
             } else {
                 echo '<h2 style="color:green; text-align:center;">
 						Hiện chưa có đơn hàng nào,
-						<a href="home" style="color:blue">Mua ngay</a>
+						<a href="'.url("").'/home" style="color:blue">Mua ngay</a>
 					</h2>';
             }
         }

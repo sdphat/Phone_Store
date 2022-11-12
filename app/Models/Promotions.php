@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static whereIn(string $string, array $array)
+ * @method static find(mixed $id)
  */
 class Promotions extends Model
 {

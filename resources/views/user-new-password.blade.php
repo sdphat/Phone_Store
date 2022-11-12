@@ -55,7 +55,7 @@
                     window.location="home";
                 }
             },
-            error: function (xhr, exception) {
+            error: function () {
                 console.log("Lỗi");
             }
         });

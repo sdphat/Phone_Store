@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductTypes;
+use Exception;
 use Illuminate\Http\Request;
 
 class ProductTypesController extends Controller
@@ -12,7 +13,7 @@ class ProductTypesController extends Controller
         $f = $request->get("function");
         try {
             call_user_func_array(["App\\Http\\Controllers\\ProductTypesController", $f], [$request]);
-        }catch (Exception $exception){
+        }catch (Exception){
             echo "Not found";
         }
     }
