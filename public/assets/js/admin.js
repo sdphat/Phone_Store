@@ -1,25 +1,26 @@
 let TONGTIEN = 0;
 
-window.onload = function() {
 
-    document.getElementById("btnDangXuat").onclick = function() {
-        checkDangXuat(()=>{
-            window.location.href = "admin"
+window.onload = function () {
+
+    document.getElementById("btnDangXuat").onclick = function () {
+        checkDangXuat(() => {
+            window.location.href = "admin";
         });
-    }
+    };
 
-    getCurrentUser((user)=>{
-        if(user !== null && user.MaQuyen !== 1) {
+    getCurrentUser((user) => {
+        if (user !== null && user.MaQuyen !== 1) {
             addEventChangeTab();
             addThongKe();
             openTab('Home');
         } else {
             document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
         }
-    }, ()=> {
+    }, () => {
         document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
     });
-}
+};
 
 function refreshTableSanPham() {
     $.ajax({
@@ -30,17 +31,17 @@ function refreshTableSanPham() {
         data: {
             function: "getall",
         },
-        success: function(data) {
+        success: function (data) {
             list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
             addTableProducts(data);
         },
-        error: function(e) {
+        error: function (e) {
             Swal.fire({
                 type: "error",
                 title: "Lỗi lấy dữ liệu sản phẩm (admin.js > refreshTableSanPham)",
                 html: e.responseText
             });
-            console.log(e.responseText)
+            console.log(e.responseText);
         }
     });
 }
@@ -114,21 +115,21 @@ function ajaxLoaiSanPham() {
         data: {
             function: "getall"
         },
-        success: function(data) {
+        success: function (data) {
             showLoaiSanPham(data);
         },
-        error: function(e) {
+        error: function (e) {
 
         }
     });
 }
 
 function showLoaiSanPham(data) {
-    let s="";
+    let s = "";
     for (let i = 0; i < data.length; i++) {
-            let p = data[i];
-                s +=`<option value="` + p.MaLSP + `">` + p.TenLSP + `</option>`;
-        }
+        let p = data[i];
+        s += `<option value="` + p.MaLSP + `">` + p.TenLSP + `</option>`;
+    }
     document.getElementsByName("chonCompany")[0].innerHTML = s;
 }
 
@@ -141,11 +142,11 @@ function ajaxKhuyenMai() {
         data: {
             function: "getall"
         },
-        success: function(data) {
+        success: function (data) {
             showKhuyenMai(data);
             showGTKM(data);
         },
-        error: function(e) {
+        error: function (e) {
         }
     });
 }
@@ -165,23 +166,23 @@ function showGTKM() {
     switch (giaTri) {
         // lấy tất cả khuyến mãi
         case '1':
-                document.getElementById("giatrikm").value = 0;
+            document.getElementById("giatrikm").value = 0;
             break;
 
         case '2':
-                document.getElementById("giatrikm").value = 500000;
+            document.getElementById("giatrikm").value = 500000;
             break;
 
         case '3':
-                document.getElementById("giatrikm").value = 650000;
+            document.getElementById("giatrikm").value = 650000;
             break;
 
         case '4':
-                document.getElementById("giatrikm").value = 0;
+            document.getElementById("giatrikm").value = 0;
             break;
 
         case '5':
-                document.getElementById("giatrikm").value = 0;
+            document.getElementById("giatrikm").value = 0;
             break;
 
         default:
@@ -195,12 +196,12 @@ function addEventChangeTab() {
     let list_a = sidebar.getElementsByTagName('a');
     for (let a of list_a) {
         if (!a.onclick) {
-            a.addEventListener('click', function() {
+            a.addEventListener('click', function () {
                 turnOff_Active();
                 this.classList.add('active');
-                let tab = this.childNodes[1].data.trim()
+                let tab = this.childNodes[1].data.trim();
                 openTab(tab);
-            })
+            });
         }
     }
 }
@@ -257,7 +258,7 @@ function addTableProducts(list_products) {
             </td>
             <td style="width: 15%">` + parseInt(p.DonGia).toLocaleString() + `</td>
             <td style="width: 10%">` + /*promoToStringValue(*/ (p.KM.TenKM) /*)*/ + `</td>
-            <td style="width: 10%">` + (p.TrangThai===1?"Hiện":"Ẩn") + `</td>
+            <td style="width: 10%">` + (p.TrangThai === 1 ? "Hiện" : "Ẩn") + `</td>
             <td style="width: 10%">
                 <div class="tooltip">
                     <i class="fa fa-wrench" onclick="addKhungSuaSanPham('` + p.MaSP + `')"></i>
@@ -300,14 +301,14 @@ function timKiemSanPham(inp) {
 }
 
 // Thêm
-function layThongTinSanPhamTuTable(id) {
+function layThongTinSanPhamTuTable(id, inputFileId) {
     let khung = document.getElementById(id);
     let tr = khung.getElementsByTagName('tr');
 
     let masp = tr[1].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     let name = tr[2].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     let company = tr[3].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
-    let img =  document.getElementById("hinhanh").value;
+    let img = document.getElementById(inputFileId).value;
     let price = tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     let amount = tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     let star = tr[7].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
@@ -354,13 +355,12 @@ function layThongTinSanPhamTuTable(id) {
 }
 
 function themSanPham() {
-    let newSp = layThongTinSanPhamTuTable('khungThemSanPham');
+    let newSp = layThongTinSanPhamTuTable('khungThemSanPham', 'product-image-update-input');
 
     //kt tên sp
     let pattCheckTenSP = /([a-z A-Z0-9&():.'_-]{2,})$/;
-    if (pattCheckTenSP.test(newSp.name) === false)
-    {
-        alert ("Tên sản phẩm không hợp lệ");
+    if (pattCheckTenSP.test(newSp.name) === false) {
+        alert("Tên sản phẩm không hợp lệ");
         return false;
     }
 
@@ -374,43 +374,57 @@ function themSanPham() {
 
     //kt giá tiền
     let pattCheckGia = /^([0-9]){1,}(000)$/;
-    if (pattCheckGia.test(newSp.price) === false)
-    {
-        alert ("Đơn giá sản phẩm không hợp lệ");
+    if (pattCheckGia.test(newSp.price) === false) {
+        alert("Đơn giá sản phẩm không hợp lệ");
         return false;
     }
 
     //kt số lượng
     let pattCheckSL = /[0-9]{1,}$/;
-    if (pattCheckSL.test(newSp.amount) === false)
-    {
-        alert ("Số lượng sản phẩm không hợp lệ");
+    if (pattCheckSL.test(newSp.amount) === false) {
+        alert("Số lượng sản phẩm không hợp lệ");
         return false;
     }
 
+    let formData = new FormData();
+
+    formData.append('image', document.getElementById('product-image-input').files[0]);
+
     $.ajax({
         type: "POST",
-        url: "api/products",
-        dataType: "json",
-        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
-        data: {
-            function: "add",
-            dataAdd: newSp
-        },
-        success: function(data, status, xhr) {
-            Swal.fire({
-                type: 'success',
-                title: 'Thêm thành công'
-            })
-            resetForm();
-            document.getElementById('khungThemSanPham').style.transform = 'scale(0)';
-            refreshTableSanPham();
-        },
-        error: function(e) {
-            Swal.fire({
-                type: "error",
-                title: "Lỗi add",
-                html: e.responseText
+        url: "api/upload-product-image",
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function (data, status, xhr) {
+            if(data) {
+                newSp.img = data;
+            } else {
+                newSp.img = newSp.HinhAnh;
+            }
+            $.ajax({
+                type: "POST",
+                url: "api/products",
+                dataType: "json",
+                // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+                data: {
+                    function: "add",
+                    dataAdd: newSp
+                },
+                success: function (data, status, xhr) {
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Thêm thành công'
+                    });
+                    resetForm();
+                    document.getElementById('khungThemSanPham').style.transform = 'scale(0)';
+                    refreshTableSanPham();
+                },
+                error: function (data, status, xhr) {
+                    resetForm();
+                    document.getElementById('khungThemSanPham').style.transform = 'scale(0)';
+                    refreshTableSanPham();
+                },
             });
         }
     });
@@ -430,34 +444,34 @@ function resetForm() {
     tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
     tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "0";
 
-    tr[12].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-    tr[13].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-    tr[14].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-    tr[15].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-    tr[16].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-    tr[17].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-    tr[18].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-    tr[19].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-    tr[20].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[12].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[13].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[14].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[15].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[16].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[17].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[18].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[19].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[20].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
 }
 
 function autoMaSanPham(company) {
     // hàm tự tạo mã cho sản phẩm mới
-    let autoMaSP = list_products[list_products.length-1].MaSP;
-    document.getElementById('maspThem').value = parseInt(autoMaSP)+1;
+    let autoMaSP = list_products[list_products.length - 1].MaSP;
+    document.getElementById('maspThem').value = parseInt(autoMaSP) + 1;
 }
+
 
 // Xóa
 function xoaSanPham(trangthai, masp, tensp) {
-    if (trangthai === 1)
-    {
+    if (trangthai === 1) {
         // alert ("Sản phẩm còn đang bán");
         Swal.fire({
             type: 'warning',
             title: 'Bạn có muốn ẨN ' + tensp + ' không!',
             showCancelButton: true
         }).then((result) => {
-            if(result.value) {
+            if (result.value) {
                 $.ajax({
                     type: "POST",
                     url: "api/products",
@@ -468,14 +482,14 @@ function xoaSanPham(trangthai, masp, tensp) {
                         id: masp,
                         trangthai: 0
                     },
-                    success: function(data, status, xhr) {
+                    success: function (data, status, xhr) {
                         Swal.fire({
                             type: 'success',
                             title: 'Ẩn thành công'
-                        })
+                        });
                         refreshTableSanPham();
                     },
-                    error: function(e) {
+                    error: function (e) {
                         Swal.fire({
                             type: "error",
                             title: "Lỗi xóa",
@@ -484,10 +498,9 @@ function xoaSanPham(trangthai, masp, tensp) {
                     }
                 });
             }
-        })
+        });
     }
-    else
-    {
+    else {
         if (window.confirm('Bạn có chắc muốn xóa ' + tensp)) {
             // Xóa
             $.ajax({
@@ -499,13 +512,13 @@ function xoaSanPham(trangthai, masp, tensp) {
                     function: "delete",
                     maspdelete: masp
                 },
-                success: function(data, status, xhr) {
+                success: function (data, status, xhr) {
                     Swal.fire({
                         type: "success",
                         title: "Đã xóa thông tin sản phẩm"
                     });
                 },
-                error: function() {
+                error: function () {
                     Swal.fire({
                         type: "error",
                         title: "Không thể xóa"
@@ -521,9 +534,85 @@ function xoaSanPham(trangthai, masp, tensp) {
 
 // Sửa
 function suaSanPham(masp) {
-    let Sp = layThongTinSanPhamTuTable('khungSuaSanPham');
-    console.log(Sp);
-    return false;
+    let newSp = layThongTinSanPhamTuTable('khungSuaSanPham', 'product-image-update-input');
+    //kt tên sp
+    let pattCheckTenSP = /([a-z A-Z0-9&():.'_-]{2,})$/;
+    if (pattCheckTenSP.test(newSp.name) === false) {
+        alert("Tên sản phẩm không hợp lệ");
+        return false;
+    }
+
+    //kt hình
+    /*let pattCheckHinh= /^([0-9]{1,})[.](png|jpeg|jpg)$/;
+    if (pattCheckHinh.test(newSp.img) == false)
+    {
+        alert ("Ảnh không hợp lệ");
+        return false;
+    }*/
+
+    //kt giá tiền
+    let pattCheckGia = /^([0-9]){1,}(000)$/;
+    if (pattCheckGia.test(newSp.price) === false) {
+        alert("Đơn giá sản phẩm không hợp lệ");
+        return false;
+    }
+
+    //kt số lượng
+    let pattCheckSL = /[0-9]{1,}$/;
+    if (pattCheckSL.test(newSp.amount) === false) {
+        alert("Số lượng sản phẩm không hợp lệ");
+        return false;
+    }
+
+    let formData = new FormData();
+
+    formData.append('image', document.getElementById('product-image-update-input').files[0]);
+
+    $.ajax({
+        type: "POST",
+        url: "api/upload-product-image",
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function (data, status, xhr) {
+            console.log(data);
+            if(data) {
+                newSp.img = data;
+            } else {
+                newSp.img = list_products.find((product) => product.MaSP = masp).HinhAnh;
+            }
+            console.log('hinh anh', newSp);
+            $.ajax({
+                type: "POST",
+                url: "api/products",
+                dataType: "json",
+                // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+                data: {
+                    function: "update",
+                    dataUpdate: newSp
+                },
+                success: function (data, status, xhr) {
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Sửa thành công'
+                    });
+                    resetForm();
+                    document.getElementById('khungSuaSanPham').style.transform = 'scale(0)';
+                    refreshTableSanPham();
+                },
+                error: function (data, status, xhr) {
+                    resetForm();
+                    document.getElementById('khungSuaSanPham').style.transform = 'scale(0)';
+                    refreshTableSanPham();
+                },
+            });
+        }
+    });
+
+
+
+    alert('Sửa sản phẩm "' + newSp.name + '" thành công.');
+    refreshTableSanPham();
 }
 
 function addKhungSuaSanPham(masp) {
@@ -533,6 +622,8 @@ function addKhungSuaSanPham(masp) {
             sp = p;
         }
     }
+
+    console.log(sp);
 
     let s = `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
     <form method="post" action="" enctype="multipart/form-data" onsubmit="return false;">
@@ -545,23 +636,23 @@ function addKhungSuaSanPham(masp) {
                 <td><input disabled="disabled" type="text" id="maspSua" name="maspSua" value="` + sp.MaSP + `"></td>
             </tr>
             <tr>
-                <td>Tên sẩn phẩm:</td>
+                <td>Tên sản phẩm:</td>
                 <td><input type="text" value="` + sp.TenSP + `"></td>
             </tr>
             <tr>
                 <td>Hãng:</td>
                 <td>
-                    <select name="chonCompany" onchange="autoMaSanPham(this.value)">`
+                    <select name="chonCompany" onchange="autoMaSanPham(this.value)">`;
 
-                    let company = ["Apple", "Coolpad", "HTC", "Itel", "Mobell", "Vivo", "Oppo", "SamSung", "Phillips", "Nokia", "Motorola", "Motorola", "Xiaomi"];
-                    var i = 1;
-                    for (let c of company) {
-                        let masp = i++;
-                        if (sp.MaLSP == masp)
-                            s += (`<option value="` + sp.MaLSP + `" selected="selected">` + c + `</option>`);
-                        else s += (`<option value="` + masp + `">` + c + `</option>`);
-                    }
-                    s+=`</select>
+    let company = ["Apple", "Coolpad", "HTC", "Itel", "Mobell", "Vivo", "Oppo", "SamSung", "Phillips", "Nokia", "Motorola", "Motorola", "Xiaomi"];
+    var i = 1;
+    for (let c of company) {
+        let masp = i++;
+        if (sp.MaLSP == masp)
+            s += (`<option value="` + sp.MaLSP + `" selected="selected">` + c + `</option>`);
+        else s += (`<option value="` + masp + `">` + c + `</option>`);
+    }
+    s += `</select>
                 </td>
             </tr>
             <?php
@@ -591,14 +682,18 @@ function addKhungSuaSanPham(masp) {
             <tr>
                             <td>Hình:</td>
                             <td>
-                                <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
-                                <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
+                                <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src=${sp.HinhAnh}>
+                                <input id="product-image-update-input" type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
                                 <input style="display: none;" type="text" id="hinhanh" value="">
                             </td>
                         </tr>
             <tr>
                 <td>Giá tiền:</td>
                 <td><input type="text" value="` + sp.DonGia + `"></td>
+            </tr>
+            <tr>
+                <td>Số lượng:</td>
+                <td><input type="text" value="` + sp.SoLuong + `"></td>
             </tr>
             <tr>
                 <td>Số sao:</td>
@@ -611,14 +706,14 @@ function addKhungSuaSanPham(masp) {
             <tr>
                 <td>Khuyến mãi:</td>
                 <td>
-                    <select name="chonKhuyenMai" onchange="showGTKM()">`
-                            var i = 1;
-                            s += (`<option selected="selected" value="` + i++ + `">Không</option>`);
-                            s += (`<option value="` + i++ + `">Giảm giá</option>`);
-                            s += (`<option value="` + i++ + `">Giá rẻ online</option>`);
-                            s += (`<option value="` + i++ + `">Trả góp</option>`);
-                            s += (`<option value="` + i++ + `">Mới ra mắt</option>`);
-                        s+=`</script>
+                    <select name="chonKhuyenMai" onchange="showGTKM()">`;
+    var i = 1;
+    s += (`<option selected="selected" value="` + i++ + `">Không</option>`);
+    s += (`<option value="` + i++ + `">Giảm giá</option>`);
+    s += (`<option value="` + i++ + `">Giá rẻ online</option>`);
+    s += (`<option value="` + i++ + `">Trả góp</option>`);
+    s += (`<option value="` + i++ + `">Mới ra mắt</option>`);
+    s += `</script>
                     </select>
                 </td>
             </tr>
@@ -666,9 +761,9 @@ function addKhungSuaSanPham(masp) {
                 <td><input type="text" value="` + sp.Pin + `"></td>
             </tr>
             <tr>
-                <td colspan="2"  class="table-footer"> <button name="submit" onclick="suaSanPham('\` + sp.MaSP + \`')">SỬA</button> </td>
+                <td colspan="2"  class="table-footer"> <button name="submit" onclick="suaSanPham(${sp.MaSP})">SỬA</button> </td>
             </tr>
-        </table>`
+        </table>`;
 
     let khung = document.getElementById('khungSuaSanPham');
     khung.innerHTML = s;
@@ -723,11 +818,12 @@ function refreshTableDonHang() {
         data: {
             function: "getAll",
         },
-        success: function(data, status, xhr) {
+        success: function (data, status, xhr) {
             addTableDonHang(data);
+            products = data;
             console.log(data);
         },
-        error: function(e) {
+        error: function (e) {
             Swal.fire({
                 type: "error",
                 title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
@@ -762,7 +858,7 @@ function addTableDonHang(data) {
 
             </td>
         </tr>`;
-        TONGTIEN += stringToNum(d.tongtien+"");
+        TONGTIEN += stringToNum(d.tongtien + "");
     }
 
     s += `</table>`;
@@ -923,18 +1019,18 @@ function refreshTableKhachHang() {
         data: {
             function: "getall",
         },
-        success: function(data, status, xhr) {
+        success: function (data, status, xhr) {
             addTableKhachHang(data);
             //console.log(data);
         },
-        error: function(e) {
+        error: function (e) {
             console.log("Lỗi xử lý dữ liệu");
         }
     });
 }
 
 function thayDoiTrangThaiND(inp, mand) {
-    let trangthai = (inp.checked?1:0);
+    let trangthai = (inp.checked ? 1 : 0);
     $.ajax({
         type: "POST",
         url: "api/users",
@@ -945,12 +1041,12 @@ function thayDoiTrangThaiND(inp, mand) {
             id: mand,
             status: trangthai
         },
-        success: function(data, status, xhr) {
+        success: function (data, status, xhr) {
             //list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
             // refreshTableKhachHang();
             //console.log(data);
         },
-        error: function(e) {
+        error: function (e) {
             // Swal.fire({
             //     type: "error",
             //     title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
@@ -977,10 +1073,10 @@ function addTableKhachHang(data) {
             <td >
                 <div class="tooltip">
                     <label class="switch">
-                        <input type="checkbox" `+(u.TrangThai==1?"checked":"")+` onclick="thayDoiTrangThaiND(this, '`+u.MaND+`')">
+                        <input type="checkbox" `+ (u.TrangThai == 1 ? "checked" : "") + ` onclick="thayDoiTrangThaiND(this, '` + u.MaND + `')">
                         <span class="slider round"></span>
                     </label>
-                    <span class="tooltiptext">` + (u.TrangThai ?    'Mở' : 'Khóa') + `</span>
+                    <span class="tooltiptext">` + (u.TrangThai ? 'Mở' : 'Khóa') + `</span>
                 </div>
                 <div class="tooltip">
                     <i class="fa fa-remove" onclick="xoaNguoiDung('` + u.MaND + `')"></i>
@@ -1021,8 +1117,7 @@ function timKiemNguoiDung(inp) {
 
 // vô hiệu hóa người dùng (tạm dừng, không cho đăng nhập vào)
 function voHieuHoaNguoiDung(TrangThai) {
-    if (TrangThai == 1)
-    {
+    if (TrangThai == 1) {
 
     }
     let span = inp.parentElement.nextElementSibling;
@@ -1036,8 +1131,8 @@ function xoaNguoiDung(mand) {
         type: "question",
         showCancelButton: true,
         cancelButtonText: "Hủy"
-    }).then((result)=>{
-        if(result.value) {
+    }).then((result) => {
+        if (result.value) {
             $.ajax({
                 type: "POST",
                 url: "api/users",
@@ -1047,11 +1142,11 @@ function xoaNguoiDung(mand) {
                     function: "delete",
                     id: mand
                 },
-                success: function(data, status, xhr) {
+                success: function (data, status, xhr) {
                     refreshTableKhachHang();
                     //console.log(data);
                 },
-                error: function(e) {
+                error: function (e) {
                     Swal.fire({
                         type: "error",
                         title: "Không thể xóa",
@@ -1059,7 +1154,7 @@ function xoaNguoiDung(mand) {
                 }
             });
         }
-    })
+    });
 }
 
 // Sắp xếp
@@ -1150,7 +1245,7 @@ function progress(percent, bg, width, height) {
 
     return `<div class="progress" style="width: ` + width + `; height:` + height + `">
                 <div class="progress-bar bg-info" style="width: ` + percent + `%; background-color:` + bg + `"></div>
-            </div>`
+            </div>`;
 }
 
 // for(let i = 0; i < list_products.length; i++) {

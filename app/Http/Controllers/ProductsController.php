@@ -21,6 +21,35 @@ class ProductsController extends Controller
         }
     }
 
+    public function update(Request $request) {
+        try {
+            $data = $request->get('dataUpdate');
+            Products::query()->where('MaSP', $data['masp'])->update([
+                'MaLSP' => $data['company'],
+                'TenSP' => $data['name'],
+                'DonGia' => $data['price'],
+                'SoLuong' => $data['amount'],
+                'HinhAnh' => $data['img'],
+                'MaKM' => $data['promo']['name'],
+                'ManHinh' => $data['detail']['screen'],
+                'HDH' => $data['detail']['os'],
+                'CamSau' => $data['detail']['camara'],
+                'CamTruoc' => $data['detail']['camaraFront'],
+                'CPU' => $data['detail']['cpu'],
+                'Ram' => $data['detail']['ram'],
+                'Rom' => $data['detail']['rom'],
+                'SDCard' => $data['detail']['microUSB'],
+                'Pin' => $data['detail']['battery'],
+                'SoSao' => $data['star'],
+                'SoDanhGia' => $data['rateCount'],
+                'TrangThai' => $data['TrangThai']
+            ]);
+            echo json_encode(Products::query()->find($data->masp));
+        } catch(Exception $ex) {
+            dd($ex);
+        }
+    }
+
     public function getAll(Request $request)
     {
         $list = Products::all();
@@ -97,9 +126,9 @@ class ProductsController extends Controller
                     $tenThanhPhanCanSort = $s[0];
                     $typeSort = ($s[1] == "asc" ? "ASC" : "DESC");
                     break;
-                // case 'page':
-                //     $page = $dauBang[1];
-                //     break;
+                    // case 'page':
+                    //     $page = $dauBang[1];
+                    //     break;
                 default:
                     # code...
                     break;
@@ -160,27 +189,32 @@ class ProductsController extends Controller
 
     public function add(Request $request)
     {
-        $data = $request->get('dataAdd');
-        Products::insert([
-            'MaLSP' => $data['company'],
-            'TenSP' => $data['name'],
-            'DonGia' => $data['price'],
-            'SoLuong' => $data['amount'],
-            'HinhAnh' => $data['img'],
-            'MaKM' => $data['promo']['name'],
-            'ManHinh' => $data['detail']['screen'],
-            'HDH' => $data['detail']['os'],
-            'CamSau' => $data['detail']['camara'],
-            'CamTruoc' => $data['detail']['camaraFront'],
-            'CPU' => $data['detail']['cpu'],
-            'Ram' => $data['detail']['ram'],
-            'Rom' => $data['detail']['rom'],
-            'SDCard' => $data['detail']['microUSB'],
-            'Pin' => $data['detail']['battery'],
-            'SoSao' => $data['star'],
-            'SoDanhGia' => $data['rateCount'],
-            'TrangThai' => $data['TrangThai']
-        ]);
+        try {
+            $data = $request->get('dataAdd');
+    
+            Products::insert([
+                'MaLSP' => $data['company'],
+                'TenSP' => $data['name'],
+                'DonGia' => $data['price'],
+                'SoLuong' => $data['amount'],
+                'HinhAnh' => $data['img'],
+                'MaKM' => $data['promo']['name'],
+                'ManHinh' => $data['detail']['screen'],
+                'HDH' => $data['detail']['os'],
+                'CamSau' => $data['detail']['camara'],
+                'CamTruoc' => $data['detail']['camaraFront'],
+                'CPU' => $data['detail']['cpu'],
+                'Ram' => $data['detail']['ram'],
+                'Rom' => $data['detail']['rom'],
+                'SDCard' => $data['detail']['microUSB'],
+                'Pin' => $data['detail']['battery'],
+                'SoSao' => $data['star'],
+                'SoDanhGia' => $data['rateCount'],
+                'TrangThai' => $data['TrangThai']
+            ]);
+        } catch(Exception $ex) {
+            dd($ex);
+        }
     }
 
     public function delete(Request $request)
@@ -247,8 +281,10 @@ class ProductsController extends Controller
             $uploadOk = 0;
         }
         // Allow certain file formats
-        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-            && $imageFileType != "gif") {
+        if (
+            $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif"
+        ) {
             echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
             $uploadOk = 0;
         }

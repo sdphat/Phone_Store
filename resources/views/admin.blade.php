@@ -138,7 +138,7 @@
                     </tr>
                     <tr>
                         <td>Tên sản phẩm:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>Hãng:</td>
@@ -178,17 +178,17 @@
                         <td>Hình:</td>
                         <td>
                             <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
-                            <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
+                            <input id="product-image-input" type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
                             <input style="display: none;" type="text" id="hinhanh" value="">
                         </td>
                     </tr>
                     <tr>
                         <td>Giá tiền:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" value="0"></td>
                     </tr>
                     <tr>
                         <td>Số lượng:</td>
-                        <td><input type="text" value="0"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>Số sao:</td>
@@ -217,39 +217,39 @@
                     </tr>
                     <tr>
                         <td>Màn hình:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>Hệ điều hành:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>Camara sau:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>Camara trước:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>CPU:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>RAM:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>Bộ nhớ trong:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>Thẻ nhớ:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td>Dung lượng Pin:</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" ></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="table-footer"> <button name="submit" onclick="themSanPham();">THÊM</button> </td>
