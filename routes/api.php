@@ -35,8 +35,8 @@ Route::apiResource('users', UsersController::class);
 
 Route::post("upload-product-image", function (Request $request) {
     if ($request->hasFile("image")) {
-        $request->file("image")->move('img/products', $request->file("image")->getClientOriginalName());
-        return "img/products/".$request->file("image")->getClientOriginalName();
+        $request->file("image")->move('assets/img/products', $request->file("image")->getClientOriginalName());
+        return "assets/img/products/".$request->file("image")->getClientOriginalName();
     }
     return "";
 });

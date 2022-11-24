@@ -1,0 +1,682 @@
+{
+	"info": {
+		"_postman_id": "916df5db-d506-4ba1-be9d-bb1dc845e001",
+		"name": "Phone store APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24593641"
+	},
+	"item": [
+		{
+			"name": "Get all bills",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"getAll\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/bills",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"bills"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Add bill",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"add\",\n    \"dulieu\": {\n        \"maNguoiDung\": \"2\",\n        \"ngayLap\": \"2022-07-16 08:12:13\",\n        \"tenNguoiNhan\": \"Trần Duy\",\n        \"sdtNguoiNhan\": \"0903512886\",\n        \"diaChiNguoiNhan\": \"273 An Dương Vương\",\n        \"phuongThucTT\": \"Trực tiếp khi nhận hàng\",\n        \"tongTien\": \"9000000\",\n        \"TrangThai\": \"1\",\n        \"dssp\": [\n            {\n                \"masp\": \"4\",\n                \"soLuong\": \"1\"\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/bills",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"bills"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all banners",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"function\": \"getallbanners\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"function\": \"getallbanners\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    \"../assets/img/banners/banner1.png\",\n    \"../assets/img/banners/banner2.png\",\n    \"../assets/img/banners/banner3.png\",\n    \"../assets/img/banners/banner4.png\",\n    \"../assets/img/banners/banner5.png\",\n    \"../assets/img/banners/banner6.png\",\n    \"../assets/img/banners/banner7.png\",\n    \"../assets/img/banners/banner8.png\",\n    \"../assets/img/banners/banner9.png\",\n    \"../assets/img/banners/banner0.gif\"\n]"
+				}
+			]
+		},
+		{
+			"name": "Add product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"add\",\n    \"dataAdd\": {\n    \"company\": \"1\",\n    \"name\": \"IPhone 8\",\n    \"price\": \"9000000\",\n    \"amount\": \"50\",\n    \"img\": \"/assets/products/img/iphone8.jpg\",\n    \"promo\": {\n      \"name\": \"1\"\n    },\n    \"detail\": {\n      \"screen\": \"4.7\",\n      \"os\": \"iOS 11\",\n      \"camara\": \"12MP\",\n      \"camaraFront\": \"7MP\",\n      \"cpu\": \"Hexa-core (2x Monsoon + 4x Mistral)\",\n      \"ram\": \"2GB\",\n      \"rom\": \"8GB\",\n      \"microUSB\": \"512MB\",\n      \"battery\": \"1821 mAh\"\n    },\n    \"star\": \"0\",\n    \"rateCount\": \"0\",\n    \"TrangThai\": \"1\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"getAll\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": [
+				{
+					"name": "Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"function\": \"getAll\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "[\r\n  {\r\n    \"MaSP\": 2,\r\n    \"MaLSP\": 7,\r\n    \"TenSP\": \"Oppo F91\",\r\n    \"DonGia\": 7690000,\r\n    \"SoLuong\": 10,\r\n    \"HinhAnh\": \"img\\/products\\/7up.jpg\",\r\n    \"MaKM\": 1,\r\n    \"ManHinh\": \"LTPS LCD, 6.3', Full HD+\",\r\n    \"HDH\": \"ColorOS 5.2 (Android 8.1)\",\r\n    \"CamSau\": \"16 MP v\\u00e0 2 MP (2 camera)\",\r\n    \"CamTruoc\": \"25 MP\",\r\n    \"CPU\": \"MediaTek Helio P60 8 nh\\u00e2n 64-bit\",\r\n    \"Ram\": \"4 GB\",\r\n    \"Rom\": \"64 GB\",\r\n    \"SDCard\": \"MicroSD, h\\u1ed7 tr\\u1ee3 t\\u1ed1i \\u0111a 256 GB\",\r\n    \"Pin\": \"3500 mAh, c\\u00f3 s\\u1ea1c nhanh\",\r\n    \"SoSao\": 4,\r\n    \"SoDanhGia\": 2,\r\n    \"TrangThai\": 1,\r\n    \"updated_at\": \"2022-11-13T07:04:47.000000Z\",\r\n    \"created_at\": \"-000001-11-30T00:00:00.000000Z\",\r\n    \"KM\": {\r\n      \"MaKM\": 1,\r\n      \"TenKM\": \"Kh\\u00f4ng khuy\\u1ebfn m\\u00e3i\",\r\n      \"LoaiKM\": \"Nothing\",\r\n      \"GiaTriKM\": 0,\r\n      \"NgayBD\": \"2019-04-08 00:00:00\",\r\n      \"NgayKT\": \"2022-04-17 00:00:00\"\r\n    },\r\n    \"LSP\": {\r\n      \"MaLSP\": 7,\r\n      \"TenLSP\": \"Oppo\",\r\n      \"HinhAnh\": \"Oppo.jpg\",\r\n      \"Mota\": \"Camara Selphi cuc chat tu Oppo\",\r\n      \"created_at\": \"-000001-11-30T00:00:00.000000Z\",\r\n      \"updated_at\": \"-000001-11-30T00:00:00.000000Z\"\r\n    }\r\n  },\r\n  {\r\n    \"MaSP\": 3,\r\n    \"MaLSP\": 10,\r\n    \"TenSP\": \"Nokia 5.1 Plus\",\r\n    \"DonGia\": 4790000,\r\n    \"SoLuong\": 10,\r\n    \"HinhAnh\": \"img\\/products\\/7up.jpg\",\r\n    \"MaKM\": 1,\r\n    \"ManHinh\": \"IPS LCD, 5.8', HD+\",\r\n    \"HDH\": \"Android One\",\r\n    \"CamSau\": \"13 MP v\\u00e0 5 MP (2 camera)\",\r\n    \"CamTruoc\": \"8 MP\",\r\n    \"CPU\": \"MediaTek Helio P60 8 nh\\u00e2n 64-bit\",\r\n    \"Ram\": \"3 GB\",\r\n    \"Rom\": \"32 GB\",\r\n    \"SDCard\": \"MicroSD, h\\u1ed7 tr\\u1ee3 t\\u1ed1i \\u0111a 256 GB\",\r\n    \"Pin\": \"3060 mAh, c\\u00f3 s\\u1ea1c nhanh\",\r\n    \"SoSao\": 0,\r\n    \"SoDanhGia\": 0,\r\n    \"TrangThai\": 1,\r\n    \"updated_at\": \"2022-11-13T07:50:01.000000Z\",\r\n    \"created_at\": \"-000001-11-30T00:00:00.000000Z\",\r\n    \"KM\": {\r\n      \"MaKM\": 1,\r\n      \"TenKM\": \"Kh\\u00f4ng khuy\\u1ebfn m\\u00e3i\",\r\n      \"LoaiKM\": \"Nothing\",\r\n      \"GiaTriKM\": 0,\r\n      \"NgayBD\": \"2019-04-08 00:00:00\",\r\n      \"NgayKT\": \"2022-04-17 00:00:00\"\r\n    },\r\n    \"LSP\": {\r\n      \"MaLSP\": 10,\r\n      \"TenLSP\": \"Nokia\",\r\n      \"HinhAnh\": \"Nokia.jpg\",\r\n      \"Mota\": \"C\\u00e1c s\\u1ea3n ph\\u1ea9m \\u0111\\u1ebfn t\\u1eeb th\\u01b0\\u01a1ng hi\\u1ec7u Nokia\",\r\n      \"created_at\": \"-000001-11-30T00:00:00.000000Z\",\r\n      \"updated_at\": \"-000001-11-30T00:00:00.000000Z\"\r\n    }\r\n  }\r\n]"
+				}
+			]
+		},
+		{
+			"name": "Hide product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"hide\",\n    \"id\": \"1\",\n    \"trangthai\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Get small banner",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"function\": \"getsmallbanner\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "getsmallbanner",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"function\": \"getsmallbanner\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    \"../assets/img/smallBanners/blackFriday.gif\"\n]"
+				}
+			]
+		},
+		{
+			"name": "Filter product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"function\": \"handleFilters\",\r\n    \"filters\": [\r\n        \"search=samsung\",\r\n        \r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Filter",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"function\": \"getsmallbanner\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Get all product types",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"getAll\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/product_types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"product_types"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Add product type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"add\",\n    \"dataAdd\": {\n        \"TenLSP\": \"Maven\",\n        \"HinhAnh\": \"Maven.png\",\n        \"MoTa\": \"All products of Maven\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/product_types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"product_types"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all promotions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"getAll\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/promotions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"promotions"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Get promotion by id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"getById\",\n    \"id\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/promotions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"promotions"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"getAll\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"delete\",\n    \"id\": \"4\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Change user status",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"changeStatus\",\n    \"id\": \"4\",\n    \"status\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Get votes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"get\",\n    \"masp\": \"4\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/voted",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"voted"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		},
+		{
+			"name": "Add vote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"function\": \"add\",\n    \"masp\": \"4\",\n    \"mand\": \"2\",\n    \"sosao\": \"5\",\n    \"binhluan\": \"Điện thoại tốt\",\n    \"thoigian\": \"2022-07-16 08:12:13\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/voted",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"voted"
+					]
+				},
+				"description": "Update product"
+			},
+			"response": []
+		}
+	]
+}

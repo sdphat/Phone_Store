@@ -355,7 +355,7 @@ function layThongTinSanPhamTuTable(id, inputFileId) {
 }
 
 function themSanPham() {
-    let newSp = layThongTinSanPhamTuTable('khungThemSanPham', 'product-image-update-input');
+    let newSp = layThongTinSanPhamTuTable('khungThemSanPham', 'product-image-input');
 
     //kt tên sp
     let pattCheckTenSP = /([a-z A-Z0-9&():.'_-]{2,})$/;

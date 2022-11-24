@@ -1,1 +1,7 @@
-POST http://localhost:8000/api/bill-details?function=getById&id=25
+# POST http://localhost:8000/api/bill-details?function=getById&id=25
+POST http://localhost:8000/api/products
+Content-Type: application/json
+
+{
+  "function": "getAll"
+}

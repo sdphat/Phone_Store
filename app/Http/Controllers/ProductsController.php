@@ -11,6 +11,55 @@ use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
+    /**
+     * @OA\GET(
+     *      path="/products",
+     *      operationId="products",
+     *      tags={"Products"},
+     *      summary="Gọi API của product",
+     *      description="Return data",
+     *      @OA\RequestBody(
+     *      @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                      property="function",
+     *                      type="string"
+     *                 ),
+     *
+     *                 example={"function": "update", "dataUpdate": {
+     *                     "company": "apple",
+     *           "name": "IPhone 8",
+     *           "price": "9000000",
+     *           "amount": "50",
+     *           "img": "/assets/products/img/iphone8.jpg",
+     *           "promo": {
+     *              "name": "Sale tháng 12",
+     *           },
+     *           "detail": {
+     *              "screen": "4.7",
+     *              "os":"iOS 11",
+     *              "camera": "12MP",
+     *              "cameraFront": "7MP",
+     *              "cpu": "Hexa-core (2x Monsoon + 4x Mistral)",
+     *              "ram": "2GB",
+     *              "rom": "8GB",
+     *              "microUSB": "512MB",
+     *              "battery": "1821 mAh",
+     *           },
+     *           "star": "4",
+     *           "rateCount": "52",
+     *           "TrangThai": "1"
+     *                 }}
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Thành công",
+     *       )
+     * )
+     */
     public function store(Request $request)
     {
         $f = $request->get("function");
@@ -21,7 +70,8 @@ class ProductsController extends Controller
         }
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         try {
             $data = $request->get('dataUpdate');
             Products::query()->where('MaSP', $data['masp'])->update([
@@ -45,7 +95,7 @@ class ProductsController extends Controller
                 'TrangThai' => $data['TrangThai']
             ]);
             echo json_encode(Products::query()->find($data->masp));
-        } catch(Exception $ex) {
+        } catch (Exception $ex) {
             dd($ex);
         }
     }
@@ -191,7 +241,7 @@ class ProductsController extends Controller
     {
         try {
             $data = $request->get('dataAdd');
-    
+
             Products::insert([
                 'MaLSP' => $data['company'],
                 'TenSP' => $data['name'],
@@ -212,7 +262,7 @@ class ProductsController extends Controller
                 'SoDanhGia' => $data['rateCount'],
                 'TrangThai' => $data['TrangThai']
             ]);
-        } catch(Exception $ex) {
+        } catch (Exception $ex) {
             dd($ex);
         }
     }

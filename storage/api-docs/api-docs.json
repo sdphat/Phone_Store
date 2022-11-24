@@ -1,0 +1,85 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel OpenApi Demo Documentation",
+        "description": "L5 Swagger OpenApi description",
+        "contact": {
+            "email": "admin@admin.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Gọi API của product",
+                "description": "Return data",
+                "operationId": "products",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "function": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "function": "update",
+                                    "dataUpdate": {
+                                        "company": "apple",
+                                        "name": "IPhone 8",
+                                        "price": "9000000",
+                                        "amount": "50",
+                                        "img": "/assets/products/img/iphone8.jpg",
+                                        "promo": {
+                                            "name": "Sale tháng 12"
+                                        },
+                                        "detail": {
+                                            "screen": "4.7",
+                                            "os": "iOS 11",
+                                            "camera": "12MP",
+                                            "cameraFront": "7MP",
+                                            "cpu": "Hexa-core (2x Monsoon + 4x Mistral)",
+                                            "ram": "2GB",
+                                            "rom": "8GB",
+                                            "microUSB": "512MB",
+                                            "battery": "1821 mAh"
+                                        },
+                                        "star": "4",
+                                        "rateCount": "52",
+                                        "TrangThai": "1"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thành công"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Projects",
+            "description": "API Endpoints of Projects"
+        }
+    ]
+}
