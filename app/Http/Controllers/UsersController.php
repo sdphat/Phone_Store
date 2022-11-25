@@ -136,7 +136,7 @@ class UsersController extends Controller
             ]);
             $result["success"] = true;
             echo json_encode($result);
-            Mail::to('nguyentandat16052000@gmail.com')->send(new OTPMail([
+            Mail::to($email)->send(new OTPMail([
                 'title' => 'Xác nhận đăng ký',
                 "otp" => $token
             ]));
@@ -320,7 +320,7 @@ class UsersController extends Controller
                 $result["success"] = true;
                 array_push($result["noty"], "Vui lòng xác nhận email và tạo mật khẩu mới");
                 echo json_encode($result);
-                Mail::to('nguyentandat16052000@gmail.com')->send(new NewPasswordMail([
+                Mail::to($request->get("email"))->send(new NewPasswordMail([
                     'title' => 'Tạo mật khẩu mới',
                     "token" => $token
                 ]));
@@ -384,8 +384,8 @@ class UsersController extends Controller
         } else {
             $token = Str::random(60);
             Users::create([
-                "Ho" => $googleUser->user["family_name"],
-                "Ten" => $googleUser->user["given_name"],
+                "Ho" => $googleUser->user["family_name"] ?? "",
+                "Ten" => $googleUser->user["given_name"] ?? "",
                 "TaiKhoan" => $googleUser["name"],
                 "MatKhau" => $id,
                 "api_token" => $token,
